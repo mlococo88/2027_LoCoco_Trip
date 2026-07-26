@@ -18,18 +18,31 @@
   body{background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.5;padding:clamp(1rem,4vw,3.5rem) clamp(1rem,4vw,2rem);}
   .wrap{max-width:940px;margin:0 auto;}
 
-  /* Header */
-  header{margin-bottom:2.4rem;}
+  header{margin-bottom:1.6rem;}
   .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.9rem;}
   h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.3rem,7vw,4rem);line-height:1.02;letter-spacing:-.01em;}
   h1 em{font-style:italic;color:var(--palermo);}
   .subhead{margin-top:1rem;font-size:clamp(1rem,2.4vw,1.15rem);color:var(--muted);max-width:40ch;}
   .meta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;font-size:.9rem;}
-  .meta b{font-weight:600;} .meta span{color:var(--muted);}
-  .meta .total{color:var(--palermo);font-weight:600;}
+  .meta b{font-weight:600;} .meta span{color:var(--muted);} .meta .total{color:var(--palermo);font-weight:600;}
 
-  /* Journey ribbon */
-  .ribbon{margin:2.2rem 0 .6rem;display:grid;grid-template-columns:repeat(5,1fr);border-radius:10px;overflow:hidden;box-shadow:0 1px 0 var(--line);}
+  /* Toolbar */
+  .toolbar{position:sticky;top:0;z-index:40;margin:1.4rem 0 .6rem;display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;
+    background:rgba(244,243,238,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;}
+  .tb-title{font-weight:600;font-size:.92rem;}
+  .saved{font-size:.78rem;color:var(--edinburgh);opacity:0;transition:opacity .2s ease;font-weight:600;}
+  .saved.show{opacity:1;}
+  .tb-actions{margin-left:auto;display:flex;flex-wrap:wrap;gap:.4rem;}
+  .btn{font-family:"Inter",sans-serif;font-size:.82rem;font-weight:600;padding:.4rem .8rem;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;transition:opacity .15s ease;}
+  .btn:hover{opacity:.85;}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);}
+  .btn.ghost:hover{border-color:var(--ink);opacity:1;}
+  .btn.danger{color:var(--palermo);border-color:var(--palermo);}
+  .howto{font-size:.82rem;color:var(--muted);margin:.4rem 0 0;line-height:1.55;}
+  .howto b{color:#3a4247;}
+
+  /* Ribbon */
+  .ribbon{margin:1.8rem 0 .6rem;display:grid;grid-template-columns:repeat(5,1fr);border-radius:10px;overflow:hidden;box-shadow:0 1px 0 var(--line);}
   .leg{padding:.85rem .9rem 1rem;color:#fff;min-height:78px;}
   .leg .n{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
   .leg .place{font-family:"Fraunces",serif;font-size:1.12rem;font-weight:500;margin-top:.15rem;}
@@ -38,10 +51,9 @@
   .leg.l-edinburgh{background:var(--edinburgh);} .leg.l-palermo{background:var(--palermo);} .leg.l-home{background:var(--travel);}
   .ribbon-caption{font-size:.78rem;color:var(--muted);font-style:italic;}
 
-  /* Section heads */
-  .section-head{display:flex;align-items:baseline;gap:.9rem;margin:3rem 0 1.2rem;padding-bottom:.6rem;border-bottom:1.5px solid var(--ink);}
+  .section-head{display:flex;align-items:baseline;gap:.9rem;margin:2.8rem 0 1.2rem;padding-bottom:.6rem;border-bottom:1.5px solid var(--ink);}
   .section-head h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.65rem;letter-spacing:-.01em;}
-  .section-head .hint{font-size:.85rem;color:var(--muted);margin-left:auto;}
+  .section-head .hint{font-size:.85rem;color:var(--muted);margin-left:auto;text-align:right;}
 
   /* Calendar */
   .cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;}
@@ -55,6 +67,8 @@
   .cell .dnum{font-size:.78rem;font-weight:600;font-variant-numeric:tabular-nums;}
   .cell .tag{display:block;font-size:.56rem;line-height:1.15;margin-top:2px;text-transform:uppercase;letter-spacing:.03em;font-weight:600;}
   .cell .ico{position:absolute;top:3px;right:5px;font-size:.72rem;}
+  .cell .dot{position:absolute;bottom:4px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--edinburgh);display:none;}
+  .cell.has-note .dot{display:block;}
   .cell.click{cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;}
   .cell.click:hover,.cell.click:focus-visible{transform:translateY(-2px);box-shadow:0 4px 12px rgba(35,42,46,.14);outline:none;}
   .cell.click:focus-visible{box-shadow:0 0 0 2px var(--ink);}
@@ -67,23 +81,34 @@
   .legend span{display:inline-flex;align-items:center;gap:.4rem;}
   .sw{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.12);}
 
-  /* Itinerary cards */
-  .day{display:grid;grid-template-columns:92px 1fr;gap:1.2rem;padding:1.15rem 0;border-top:1px solid var(--line);cursor:pointer;}
+  /* Cards */
+  .day{display:grid;grid-template-columns:92px 1fr;gap:1.2rem;padding:1.15rem 0;border-top:1px solid var(--line);}
   .day:first-of-type{border-top:none;}
-  .day:hover .body h4{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;}
+  .day .date{cursor:pointer;border-radius:8px;transition:background .12s ease;padding:.2rem;margin:-.2rem;}
+  .day .date:hover,.day .date:focus-visible{background:var(--card);outline:none;}
+  .day .date:focus-visible{box-shadow:0 0 0 2px var(--ink);}
   .day .date .wd{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;}
   .day .date .dd{font-family:"Fraunces",serif;font-size:1.9rem;font-weight:500;line-height:1;margin-top:.1rem;}
   .day .date .mo{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .day .date .see{font-size:.62rem;color:var(--edinburgh);font-weight:600;margin-top:.35rem;opacity:.85;}
   .day .body h4{font-family:"Fraunces",serif;font-weight:500;font-size:1.18rem;margin-bottom:.15rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
   .pill{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;padding:.16rem .5rem;border-radius:20px;font-family:"Inter",sans-serif;}
   .pill.p-london{background:var(--london);} .pill.p-bath{background:var(--bath);}
   .pill.p-edinburgh{background:var(--edinburgh);} .pill.p-palermo{background:var(--palermo);} .pill.p-travel{background:var(--travel);}
   .costchip{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .day .body p{font-size:.92rem;color:#3a4247;margin-top:.35rem;}
   .day .body .plan{list-style:none;margin-top:.5rem;display:grid;gap:.35rem;}
   .day .body .plan li{font-size:.9rem;padding-left:1.15rem;position:relative;color:#333b40;}
   .day .body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
+
+  /* Editable note fields */
+  .note-wrap{margin-top:.7rem;}
+  .note-wrap label{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.3rem;}
+  textarea.note{width:100%;min-height:2.4rem;font-family:"Inter",sans-serif;font-size:.9rem;color:var(--ink);line-height:1.5;
+    background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:.55rem .7rem;resize:vertical;transition:border-color .15s ease, background .15s ease;}
+  textarea.note::placeholder{color:#b3aea2;}
+  textarea.note:focus{outline:none;border-style:solid;border-color:var(--edinburgh);background:#fff;}
+  textarea.note.ideas{min-height:8rem;}
 
   /* Cost summary */
   .summary{display:grid;grid-template-columns:1.1fr 1fr;gap:1.6rem;align-items:start;}
@@ -100,10 +125,8 @@
   .breakdown .cat{color:#3a4247;}
   .swingnote{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.8rem;}
 
-  /* Notes */
   .notes{margin-top:2.6rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.5rem;}
   .notes h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;margin-bottom:.7rem;}
-  .notes h3+ .notes-sub{margin-top:0;}
   .notes ul{list-style:none;display:grid;gap:.6rem;}
   .notes li{font-size:.9rem;padding-left:1.4rem;position:relative;color:#3a4247;}
   .notes li strong{color:var(--ink);}
@@ -136,8 +159,10 @@
 
   @media print{
     body{background:#fff;padding:0;font-size:11px;}
+    .toolbar,.howto{display:none!important;}
     .notes,.day,.summary,.bigtotal{break-inside:avoid;}
     .backdrop{display:none!important;}
+    textarea.note{border:1px solid var(--line);}
     .cell,.pill,.leg,.sw,.bigtotal,.ribbon,.costchip{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .section-head .hint{display:none;}
   }
@@ -159,40 +184,44 @@
       <span><b>Home</b> Sun, June 6, 2027</span>
       <span class="total"><b>≈ $12,200</b> all-in</span>
     </div>
-
-    <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
-      <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
-      <div class="leg l-bath"><div class="n">Leg 2</div><div class="place">Bath</div><div class="nights">2 nights</div></div>
-      <div class="leg l-edinburgh"><div class="n">Leg 3</div><div class="place">Edinburgh</div><div class="nights">6 nights</div></div>
-      <div class="leg l-palermo"><div class="n">Leg 4</div><div class="place">Palermo</div><div class="nights">4 nights</div></div>
-      <div class="leg l-home"><div class="n">Leg 5</div><div class="place">London → home</div><div class="nights">1 night</div></div>
-    </div>
-    <p class="ribbon-caption">Colour tracks the trip — cool slate in the north, warming to terracotta in Sicily.</p>
   </header>
+
+  <!-- COLLAB TOOLBAR -->
+  <div class="toolbar">
+    <span class="tb-title">Shared planner</span>
+    <span class="saved" id="saved">Saved ✓</span>
+    <div class="tb-actions">
+      <button class="btn" id="exportBtn">Export notes</button>
+      <button class="btn ghost" id="importBtn">Import</button>
+      <button class="btn ghost" id="copyBtn">Copy all</button>
+      <button class="btn ghost danger" id="clearBtn">Clear mine</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+  </div>
+  <p class="howto">Notes you type save to <b>your own browser</b>. To share ideas with the group, hit <b>Export notes</b> and attach the file to a GitHub issue or pull request — anyone can <b>Import</b> a contributed file to merge it in. Use <b>Copy all</b> to paste everything into a message. <em>(For live shared comments, wire up GitHub Discussions with a widget like giscus.)</em></p>
+
+  <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
+    <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
+    <div class="leg l-bath"><div class="n">Leg 2</div><div class="place">Bath</div><div class="nights">2 nights</div></div>
+    <div class="leg l-edinburgh"><div class="n">Leg 3</div><div class="place">Edinburgh</div><div class="nights">6 nights</div></div>
+    <div class="leg l-palermo"><div class="n">Leg 4</div><div class="place">Palermo</div><div class="nights">4 nights</div></div>
+    <div class="leg l-home"><div class="n">Leg 5</div><div class="place">London → home</div><div class="nights">1 night</div></div>
+  </div>
+  <p class="ribbon-caption">Colour tracks the trip — cool slate in the north, warming to terracotta in Sicily.</p>
 
   <!-- CALENDAR -->
   <div class="section-head">
     <h2>Calendar</h2>
-    <span class="hint">tap any date for the plan &amp; cost · ✈ flight · 🚆 train</span>
+    <span class="hint">tap a date for plan, cost &amp; notes<br>✈ flight · 🚆 train · • has a note</span>
   </div>
-
   <div class="cal-grid">
-    <div class="month">
-      <h3>May 2027</h3>
-      <table class="cal">
-        <thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
-        <tbody id="may-body"></tbody>
-      </table>
+    <div class="month"><h3>May 2027</h3>
+      <table class="cal"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody id="may-body"></tbody></table>
     </div>
-    <div class="month">
-      <h3>June 2027</h3>
-      <table class="cal">
-        <thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
-        <tbody id="jun-body"></tbody>
-      </table>
+    <div class="month"><h3>June 2027</h3>
+      <table class="cal"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody id="jun-body"></tbody></table>
     </div>
   </div>
-
   <div class="legend">
     <span><i class="sw" style="background:var(--london-tint);border-color:var(--london);"></i> London</span>
     <span><i class="sw" style="background:var(--bath-tint);border-color:var(--bath);"></i> Bath</span>
@@ -203,11 +232,15 @@
   </div>
 
   <!-- DAY BY DAY -->
-  <div class="section-head">
-    <h2>Day by Day</h2>
-    <span class="hint">tap a day for cost detail</span>
-  </div>
+  <div class="section-head"><h2>Day by Day</h2><span class="hint">add notes under any day</span></div>
   <div id="daylist"></div>
+
+  <!-- OPEN IDEAS -->
+  <div class="section-head"><h2>Open ideas</h2><span class="hint">not tied to a day</span></div>
+  <div class="note-wrap">
+    <label>Group parking lot</label>
+    <textarea class="note ideas" data-note="_ideas" placeholder="A restaurant someone loved · a museum to consider · packing reminders · budget tweaks · flight-day to confirm · anything…"></textarea>
+  </div>
 
   <!-- COST SUMMARY -->
   <div class="section-head"><h2>What it costs</h2><span class="hint">family of 4, USD</span></div>
@@ -238,179 +271,168 @@
   <div class="notes">
     <h3>Before you lock it in</h3>
     <ul>
-      <li><strong>The Palermo flight day is the pivot point.</strong> The direct Edinburgh → Palermo flight runs only ~2 days a week (morning departure). If June 1 isn't one of them, shift your Edinburgh checkout by a day or take a connecting flight — confirm this before booking anything else.</li>
-      <li><strong>You're travelling over UK half-term.</strong> The last week of May is a school holiday (bank holiday Mon May 31), so UK lodging and castle tickets run busier and pricier — book early. Starting in <em>early</em> May instead would dodge this and save a few hundred dollars.</li>
+      <li><strong>The Palermo flight day is the pivot point.</strong> The direct Edinburgh → Palermo flight runs only ~2 days a week (morning departure). If June 1 isn't one of them, shift your Edinburgh checkout by a day or take a connecting flight — confirm before booking anything else.</li>
+      <li><strong>You're travelling over UK half-term.</strong> The last week of May is a school holiday (bank holiday Mon May 31), so UK lodging and castle tickets run busier and pricier — book early. Starting in <em>early</em> May would dodge this and save a few hundred dollars.</li>
       <li><strong>Entry paperwork.</strong> Everyone needs a UK ETA (~£20 each, kids included), and Italy will likely require ETIAS by 2027 (~€20, adults only). Both are quick online forms — apply about a month out.</li>
       <li><strong>Two long Edinburgh day-trips to skip with little ones:</strong> Loch Ness and the West Highland line are ~3.5 hrs each way. The Kelpies and Stirling deliver the big-Scotland feeling much closer to base.</li>
     </ul>
     <div class="divide"></div>
     <h3>Two ways to save</h3>
     <ul>
-      <li><strong>Fly Bath → Edinburgh instead of the train.</strong> Bristol airport is ~45 min from Bath; budget fares run £40–60/person for a ~1h15 flight, versus a 6.5–7 hr train day. Faster and often cheaper.</li>
-      <li><strong>Book UK trains ~12 weeks out</strong> (around early March 2027) — that's when the cheap Advance fares release. Same logic on the Boston flights: 2–3 months ahead is the sweet spot.</li>
+      <li><strong>Fly Bath → Edinburgh instead of the train.</strong> Bristol airport is ~45 min from Bath; budget fares run £40–60/person for a ~1h15 flight, versus a 6.5–7 hr train day.</li>
+      <li><strong>Book UK trains ~12 weeks out</strong> (around early March 2027) — that's when the cheap Advance fares release. Same logic on the Boston flights.</li>
     </ul>
   </div>
 
-  <footer>Boston · London · Bath · Edinburgh · Palermo — May 21 to June 6, 2027 · tap any date for details</footer>
+  <footer>Boston · London · Bath · Edinburgh · Palermo — May 21 to June 6, 2027</footer>
 </div>
 
 <!-- MODAL -->
 <div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="m-title">
   <div class="modal">
     <button class="closebtn" id="closebtn" aria-label="Close">✕</button>
-    <div class="modal-top">
-      <div class="mdate" id="m-date"></div>
-      <h3 id="m-title"></h3>
-    </div>
+    <div class="modal-top"><div class="mdate" id="m-date"></div><h3 id="m-title"></h3></div>
     <div class="modal-body" id="m-body"></div>
   </div>
 </div>
 
 <script>
-/* ---------- Trip data: plan + cost per day ---------- */
+/* ---------- Trip data ---------- */
 const DAYS = {
   "may-21":{wd:"Fri",dd:"21",mo:"May",date:"Friday, May 21",loc:"Travel",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly out",
     title:"Boston → London",
     plan:["<span class='whenlbl'>Evening:</span> overnight flight from Boston Logan to London Heathrow. Sleep as much as the kids allow — you land into Saturday morning."],
     costs:[["Transatlantic flight, outbound (×4)","$1,600"],["Airport meals","$40"]],total:"$1,640"},
-
   "may-22":{wd:"Sat",dd:"22",mo:"May",date:"Saturday, May 22",loc:"London",pill:"london",fill:"d-london",tag:"London",
     title:"London — arrival & easy day",
-    plan:["<span class='whenlbl'>Morning:</span> land Heathrow, get to the hotel, drop bags.","<span class='whenlbl'>Afternoon:</span> Hyde Park & Kensington Gardens — the free Diana Memorial pirate-ship playground burns off travel energy. Walk past Buckingham Palace.","<span class='whenlbl'>Evening:</span> early dinner, early bed to beat jet lag."],
+    plan:["<span class='whenlbl'>Morning:</span> land Heathrow, get to the hotel, drop bags.","<span class='whenlbl'>Afternoon:</span> Hyde Park & Kensington Gardens — the free Diana Memorial pirate-ship playground. Walk past Buckingham Palace.","<span class='whenlbl'>Evening:</span> early dinner, early bed to beat jet lag."],
     costs:[["Hotel — London, night 1","$260"],["Meals","$200"],["Parks & playground","free"]],total:"$460"},
-
   "may-23":{wd:"Sun",dd:"23",mo:"May",date:"Sunday, May 23",loc:"London",pill:"london",fill:"d-london",tag:"London",
     title:"London — the big day",
     plan:["<span class='whenlbl'>Morning:</span> Natural History Museum (dinosaurs, blue whale — free) or London Zoo.","<span class='whenlbl'>Afternoon:</span> a short Thames cruise past the London Eye, Big Ben and Tower Bridge.","<span class='whenlbl'>Evening:</span> dinner near the river."],
     costs:[["Hotel — London, night 2","$260"],["Zoo / museum + river cruise","$200"],["Meals","$200"]],total:"$660"},
-
   "may-24":{wd:"Mon",dd:"24",mo:"May",date:"Monday, May 24",loc:"Bath",pill:"bath",fill:"d-bath",ico:"🚆",tag:"→ Bath",
     title:"London → Bath",
     plan:["<span class='whenlbl'>Morning:</span> train from London Paddington to Bath Spa (~1h 25m).","<span class='whenlbl'>Afternoon:</span> the Roman Baths, then Pulteney Bridge and the Royal Crescent.","<span class='whenlbl'>Late day:</span> Royal Victoria Park — a superb free playground."],
     costs:[["Train, London→Bath (2 adult + 2 child)","$110"],["Hotel — Bath, night 1","$200"],["Roman Baths (family)","$95"],["Meals","$200"]],total:"$605"},
-
   "may-25":{wd:"Tue",dd:"25",mo:"May",date:"Tuesday, May 25",loc:"Bath",pill:"bath",fill:"d-bath",tag:"Bath",
     title:"Bath — day trip",
     plan:["Longleat Safari Park (~1 hr) — drive-through lions and monkeys plus a hedge maze, a sure hit with 5-year-olds. Swap in Stonehenge if you'd rather the icon."],
     costs:[["Hotel — Bath, night 2","$200"],["Longleat Safari (family)","$190"],["Meals","$200"]],total:"$590"},
-
   "may-26":{wd:"Wed",dd:"26",mo:"May",date:"Wednesday, May 26",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",ico:"🚆",tag:"→ Edin",
     title:"Bath → Edinburgh",
     plan:["<span class='whenlbl'>The long haul:</span> train Bath → Edinburgh (~6.5–7 hrs, one change). Pack snacks, download shows.","<span class='whenlbl'>Faster option:</span> fly Bristol → Edinburgh (~1h15).","<span class='whenlbl'>Evening:</span> arrive, check in, easy dinner near the Royal Mile."],
     costs:[["Train, Bath→Edinburgh","$280"],["Lodging — Edinburgh, night 1","$210"],["Meals (travel day)","$150"]],total:"$640",
     note:"The Bristol→Edinburgh flight can come in cheaper than the train and saves most of a day."},
-
   "may-27":{wd:"Thu",dd:"27",mo:"May",date:"Thursday, May 27",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
     title:"Edinburgh Castle & the Royal Mile",
     plan:["Edinburgh Castle up on its volcanic rock (book a timed entry), then walk the Royal Mile downhill toward Holyrood."],
     costs:[["Lodging — Edinburgh","$210"],["Edinburgh Castle (family)","$100"],["Meals","$200"]],total:"$510"},
-
   "may-28":{wd:"Fri",dd:"28",mo:"May",date:"Friday, May 28",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
     title:"Museums & illusions",
     plan:["<span class='whenlbl'>Morning:</span> National Museum of Scotland — free, enormous, hands-on.","<span class='whenlbl'>Afternoon:</span> Camera Obscura & World of Illusions — mirror mazes and optical tricks."],
     costs:[["Lodging — Edinburgh","$210"],["Camera Obscura (museum is free)","$75"],["Meals","$200"]],total:"$485"},
-
   "may-29":{wd:"Sat",dd:"29",mo:"May",date:"Saturday, May 29",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
     title:"Edinburgh — day trip",
     plan:["The Kelpies & Falkirk Wheel — giant steel horse-heads plus a rotating boat lift, both close and magic for young kids. Stirling Castle is an easy alternative."],
     costs:[["Lodging — Edinburgh","$210"],["Kelpies day trip (transport + entry)","$120"],["Meals","$200"]],total:"$530"},
-
   "may-30":{wd:"Sun",dd:"30",mo:"May",date:"Sunday, May 30",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
     title:"Science & a hill",
     plan:["<span class='whenlbl'>Morning:</span> Dynamic Earth — hands-on planet-and-science exhibits near Holyrood.","<span class='whenlbl'>Afternoon:</span> an easy climb up Arthur's Seat for city views, or Edinburgh Zoo for the penguins."],
     costs:[["Lodging — Edinburgh","$210"],["Dynamic Earth (Arthur's Seat is free)","$75"],["Meals","$200"]],total:"$485"},
-
   "may-31":{wd:"Mon",dd:"31",mo:"May",date:"Monday, May 31 · UK bank holiday",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin ·BH",
     title:"Britannia & the beach",
     plan:["The Royal Yacht Britannia (self-guided, kids' audio guide), then Portobello Beach if the weather cooperates."],
     costs:[["Lodging — Edinburgh","$210"],["Royal Yacht Britannia (family)","$95"],["Meals","$200"]],total:"$505",
     note:"Bank holiday — expect bigger crowds at the main sights."},
-
   "jun-1":{wd:"Tue",dd:"1",mo:"Jun",date:"Tuesday, June 1",loc:"Palermo",pill:"palermo",fill:"d-palermo",ico:"✈",tag:"→ Palermo",
     title:"Edinburgh → Palermo",
     plan:["<span class='whenlbl'>Morning:</span> flight to Palermo (aim for the direct Ryanair — verify the day).","<span class='whenlbl'>Afternoon:</span> land around midday, check in, a first gentle wander through the old town and the first gelato."],
     costs:[["Flight, Edinburgh→Palermo (×4)","$450"],["Lodging — Palermo, night 1","$140"],["Meals","$130"]],total:"$720",
     note:"The direct flight runs only ~2 days/week. Confirm it operates on your date before booking the rest."},
-
   "jun-2":{wd:"Wed",dd:"2",mo:"Jun",date:"Wednesday, June 2",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
     title:"Palermo old town",
     plan:["The Cathedral and the Palatine Chapel (dazzling gold mosaics), then the buzz of the Ballarò and Vucciria markets. Street-food lunch — arancini, panelle, cannoli."],
     costs:[["Lodging — Palermo","$140"],["Cathedral + Palatine Chapel","$40"],["Meals","$150"]],total:"$330"},
-
   "jun-3":{wd:"Thu",dd:"3",mo:"Jun",date:"Thursday, June 3",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
     title:"Beach or Cefalù",
     plan:["Mondello Beach (~20 min) — calm, shallow water made for 5-year-olds. Or take the train ~1 hr to Cefalù, a gorgeous beach-and-cathedral town."],
     costs:[["Lodging — Palermo","$140"],["Beach free / Cefalù train","$40"],["Meals","$150"]],total:"$330"},
-
   "jun-4":{wd:"Fri",dd:"4",mo:"Jun",date:"Friday, June 4",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
     title:"Monreale & the puppets",
     plan:["<span class='whenlbl'>Morning:</span> Monreale — the hilltop cathedral with breathtaking mosaics (~20 min from town).","<span class='whenlbl'>Evening:</span> Opera dei Pupi, the Sicilian puppet theatre — a delight for kids — then a last Sicilian dinner."],
     costs:[["Lodging — Palermo","$140"],["Monreale + puppet theatre","$70"],["Meals","$150"]],total:"$360"},
-
   "jun-5":{wd:"Sat",dd:"5",mo:"Jun",date:"Saturday, June 5",loc:"London",pill:"london",fill:"d-london",ico:"✈",tag:"→ London",
     title:"Palermo → London",
     plan:["Fly back to London and check in for the night. Keep it low-key — this buffer night is your insurance against a delayed Sicily flight so you never risk the trip home."],
     costs:[["Flight, Palermo→London (×4)","$280"],["Hotel — London buffer night","$260"],["Meals","$130"]],total:"$670"},
-
   "jun-6":{wd:"Sun",dd:"6",mo:"Jun",date:"Sunday, June 6",loc:"Home",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly home",
     title:"London → Boston",
     plan:["Morning flight London → Boston. Home by evening, with two very well-travelled 5-year-olds."],
     costs:[["Transatlantic flight, return (×4)","$1,600"],["Airport meals","$60"]],total:"$1,660"}
 };
 
-/* Calendar layouts: null = blank cell, string = day key */
 const MAY = [
-  [null,null,null,null,null,null,"blank-1"],
-  ["blank-2","blank-3","blank-4","blank-5","blank-6","blank-7","blank-8"],
-  ["blank-9","blank-10","blank-11","blank-12","blank-13","blank-14","blank-15"],
-  ["blank-16","blank-17","blank-18","blank-19","blank-20","may-21","may-22"],
+  [null,null,null,null,null,null,"b-1"],
+  ["b-2","b-3","b-4","b-5","b-6","b-7","b-8"],
+  ["b-9","b-10","b-11","b-12","b-13","b-14","b-15"],
+  ["b-16","b-17","b-18","b-19","b-20","may-21","may-22"],
   ["may-23","may-24","may-25","may-26","may-27","may-28","may-29"],
   ["may-30","may-31",null,null,null,null,null]
 ];
 const JUN = [
   [null,null,"jun-1","jun-2","jun-3","jun-4","jun-5"],
-  ["jun-6","blank-7j","blank-8j","blank-9j","blank-10j","blank-11j","blank-12j"],
-  ["blank-13j","blank-14j","blank-15j","blank-16j","blank-17j","blank-18j","blank-19j"]
+  ["jun-6","bj-7","bj-8","bj-9","bj-10","bj-11","bj-12"],
+  ["bj-13","bj-14","bj-15","bj-16","bj-17","bj-18","bj-19"]
 ];
 
+/* ---------- Notes state ---------- */
+const STORE_KEY="longwaysouth-notes-v1";
+const NOTES={};
+function load(){try{const r=localStorage.getItem(STORE_KEY);if(r)Object.assign(NOTES,JSON.parse(r));}catch(e){}}
+let savedT;
+function flashSaved(){const s=document.getElementById("saved");if(!s)return;s.classList.add("show");clearTimeout(savedT);savedT=setTimeout(()=>s.classList.remove("show"),1200);}
+function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(NOTES));}catch(e){}flashSaved();}
+function applyNotesToDOM(){
+  document.querySelectorAll("[data-note]").forEach(el=>{const k=el.getAttribute("data-note");if(el.value!==(NOTES[k]||""))el.value=NOTES[k]||"";});
+  updateNoteDots();
+}
+function updateNoteDots(){
+  document.querySelectorAll('.cell.click').forEach(c=>{
+    const k=c.getAttribute("data-day");
+    c.classList.toggle("has-note", !!(NOTES[k] && NOTES[k].trim()));
+  });
+}
+load();
+
+/* ---------- Render calendar ---------- */
 function cellHTML(key){
   if(key===null) return '<td><div class="cell empty"></div></td>';
-  if(key.startsWith("blank-")){
-    const n=key.split("-")[1].replace("j","");
-    return '<td><div class="cell"><span class="dnum">'+n+'</span></div></td>';
-  }
-  const d=DAYS[key];
-  const ico=d.ico?'<span class="ico">'+d.ico+'</span>':'';
-  return '<td><div class="cell click '+d.fill+'" role="button" tabindex="0" data-day="'+key+'" '+
-    'aria-label="'+d.date+' — '+d.title+'">'+ico+
-    '<span class="dnum">'+d.dd+'</span><span class="tag">'+d.tag+'</span></div></td>';
+  if(key.charAt(0)==="b"){ const n=key.split("-")[1]; return '<td><div class="cell"><span class="dnum">'+n+'</span></div></td>'; }
+  const d=DAYS[key], ico=d.ico?'<span class="ico">'+d.ico+'</span>':'';
+  return '<td><div class="cell click '+d.fill+'" role="button" tabindex="0" data-day="'+key+'" aria-label="'+d.date+' — '+d.title+'">'+
+    ico+'<span class="dnum">'+d.dd+'</span><span class="tag">'+d.tag+'</span><span class="dot"></span></div></td>';
 }
-function renderMonth(rows,id){
-  document.getElementById(id).innerHTML =
-    rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');
-}
-renderMonth(MAY,"may-body");
-renderMonth(JUN,"jun-body");
+function renderMonth(rows,id){document.getElementById(id).innerHTML=rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');}
+renderMonth(MAY,"may-body"); renderMonth(JUN,"jun-body");
 
-/* Day-by-day cards */
+/* ---------- Render day cards ---------- */
 function cardHTML(key){
-  const d=DAYS[key];
-  const plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
-  return '<div class="day" role="button" tabindex="0" data-day="'+key+'">'+
-    '<div class="date"><div class="wd">'+d.wd+'</div><div class="dd">'+d.dd+'</div><div class="mo">'+d.mo+'</div></div>'+
-    '<div class="body"><h4>'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span>'+
-    '<span class="costchip">'+d.total+'</span></h4>'+
-    '<ul class="plan">'+plan+'</ul></div></div>';
+  const d=DAYS[key], plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
+  return '<div class="day">'+
+    '<div class="date" role="button" tabindex="0" data-day="'+key+'"><div class="wd">'+d.wd+'</div><div class="dd">'+d.dd+'</div><div class="mo">'+d.mo+'</div><div class="see">plan &amp; cost →</div></div>'+
+    '<div class="body"><h4>'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span><span class="costchip">'+d.total+'</span></h4>'+
+    '<ul class="plan">'+plan+'</ul>'+
+    '<div class="note-wrap"><label>Notes &amp; ideas</label><textarea class="note" data-note="'+key+'" placeholder="Add a note or idea…" rows="2"></textarea></div>'+
+    '</div></div>';
 }
-document.getElementById("daylist").innerHTML = Object.keys(DAYS).map(cardHTML).join('');
+document.getElementById("daylist").innerHTML=Object.keys(DAYS).map(cardHTML).join('');
+applyNotesToDOM();
 
-/* Modal */
+/* ---------- Modal ---------- */
 const backdrop=document.getElementById("backdrop");
-const mDate=document.getElementById("m-date");
-const mTitle=document.getElementById("m-title");
-const mBody=document.getElementById("m-body");
+const mDate=document.getElementById("m-date"), mTitle=document.getElementById("m-title"), mBody=document.getElementById("m-body");
 let lastFocus=null;
-
 function openDay(key){
   const d=DAYS[key]; if(!d) return;
   lastFocus=document.activeElement;
@@ -422,28 +444,79 @@ function openDay(key){
     '<div class="sect">Estimated cost — family of 4</div>'+
     '<table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
   if(d.note) html+='<div class="mnote">'+d.note+'</div>';
+  html+='<div class="sect">Notes &amp; ideas</div><textarea class="note" data-note="'+key+'" placeholder="Add a note or idea…" rows="3"></textarea>';
   mBody.innerHTML=html;
+  applyNotesToDOM();
   backdrop.classList.add("open");
   document.getElementById("closebtn").focus();
   document.body.style.overflow="hidden";
 }
-function closeModal(){
-  backdrop.classList.remove("open");
-  document.body.style.overflow="";
-  if(lastFocus) lastFocus.focus();
-}
+function closeModal(){backdrop.classList.remove("open");document.body.style.overflow="";if(lastFocus)lastFocus.focus();}
 
+/* ---------- Events ---------- */
 document.addEventListener("click",e=>{
+  if(e.target.closest("textarea,input,button,.toolbar,.note-wrap")) return;
   const t=e.target.closest("[data-day]");
-  if(t){ openDay(t.getAttribute("data-day")); return; }
+  if(t) openDay(t.getAttribute("data-day"));
 });
 document.addEventListener("keydown",e=>{
+  if(e.target.matches("textarea,input")) { if(e.key==="Escape"&&backdrop.classList.contains("open"))closeModal(); return; }
   const t=e.target.closest && e.target.closest("[data-day]");
-  if(t && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); openDay(t.getAttribute("data-day")); }
-  if(e.key==="Escape" && backdrop.classList.contains("open")) closeModal();
+  if(t && (e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
+  if(e.key==="Escape"&&backdrop.classList.contains("open")) closeModal();
 });
 document.getElementById("closebtn").addEventListener("click",closeModal);
-backdrop.addEventListener("click",e=>{ if(e.target===backdrop) closeModal(); });
+backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal();});
+
+/* Note typing — single source of truth, sync every field for the same day */
+document.addEventListener("input",e=>{
+  const el=e.target.closest("[data-note]"); if(!el) return;
+  const k=el.getAttribute("data-note");
+  NOTES[k]=el.value;
+  document.querySelectorAll('[data-note="'+k+'"]').forEach(o=>{if(o!==el&&o.value!==el.value)o.value=el.value;});
+  updateNoteDots();
+  persist();
+});
+
+/* ---------- Export / Import / Copy / Clear ---------- */
+function cleanNotes(){const o={};Object.keys(NOTES).forEach(k=>{const v=(NOTES[k]||"").trim();if(v)o[k]=NOTES[k];});return o;}
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(cleanNotes(),null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url; a.download="trip-notes.json"; a.click(); URL.revokeObjectURL(url);
+});
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const inc=JSON.parse(rd.result);
+      Object.keys(inc).forEach(k=>{
+        const v=(inc[k]||"").trim(); if(!v) return;
+        if(NOTES[k] && NOTES[k].trim()){ if(NOTES[k].indexOf(v)===-1) NOTES[k]=NOTES[k].trim()+"\n\n— added —\n"+v; }
+        else NOTES[k]=v;
+      });
+      applyNotesToDOM(); persist();
+      alert("Ideas merged in. Nothing was overwritten — imported notes were appended.");
+    }catch(err){ alert("Couldn't read that file. Make sure it's a trip-notes.json export."); }
+  };
+  rd.readAsText(f); e.target.value="";
+});
+document.getElementById("copyBtn").addEventListener("click",()=>{
+  let out="The Long Way South — trip notes\n\n";
+  Object.keys(DAYS).forEach(k=>{const n=(NOTES[k]||"").trim();if(n)out+="• "+DAYS[k].date+" — "+DAYS[k].title+"\n"+n+"\n\n";});
+  const ideas=(NOTES["_ideas"]||"").trim(); if(ideas) out+="• Open ideas\n"+ideas+"\n";
+  if(out.trim()==="The Long Way South — trip notes"){ alert("No notes yet — add a few first."); return; }
+  const done=()=>{const b=document.getElementById("copyBtn");const t=b.textContent;b.textContent="Copied ✓";setTimeout(()=>b.textContent=t,1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(out).then(done).catch(()=>fallbackCopy(out,done));}
+  else fallbackCopy(out,done);
+});
+function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){alert("Copy failed — select the Open ideas box and copy manually.");}document.body.removeChild(ta);}
+document.getElementById("clearBtn").addEventListener("click",()=>{
+  if(!confirm("Clear all notes saved in your browser? This can't be undone (export first if you want a copy).")) return;
+  Object.keys(NOTES).forEach(k=>delete NOTES[k]); applyNotesToDOM(); persist();
+});
 </script>
 </body>
 </html>
