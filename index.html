@@ -26,7 +26,6 @@
   .meta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;font-size:.9rem;}
   .meta b{font-weight:600;} .meta span{color:var(--muted);} .meta .total{color:var(--palermo);font-weight:600;}
 
-  /* Toolbar */
   .toolbar{position:sticky;top:0;z-index:40;margin:1.4rem 0 .6rem;display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;
     background:rgba(244,243,238,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;}
   .tb-title{font-weight:600;font-size:.92rem;}
@@ -41,7 +40,6 @@
   .howto{font-size:.82rem;color:var(--muted);margin:.4rem 0 0;line-height:1.55;}
   .howto b{color:#3a4247;}
 
-  /* Ribbon */
   .ribbon{margin:1.8rem 0 .6rem;display:grid;grid-template-columns:repeat(5,1fr);border-radius:10px;overflow:hidden;box-shadow:0 1px 0 var(--line);}
   .leg{padding:.85rem .9rem 1rem;color:#fff;min-height:78px;}
   .leg .n{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
@@ -55,7 +53,6 @@
   .section-head h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.65rem;letter-spacing:-.01em;}
   .section-head .hint{font-size:.85rem;color:var(--muted);margin-left:auto;text-align:right;}
 
-  /* Calendar */
   .cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;}
   @media(max-width:640px){.cal-grid{grid-template-columns:1fr;}}
   .month h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem;margin-bottom:.6rem;}
@@ -67,7 +64,7 @@
   .cell .dnum{font-size:.78rem;font-weight:600;font-variant-numeric:tabular-nums;}
   .cell .tag{display:block;font-size:.56rem;line-height:1.15;margin-top:2px;text-transform:uppercase;letter-spacing:.03em;font-weight:600;}
   .cell .ico{position:absolute;top:3px;right:5px;font-size:.72rem;}
-  .cell .dot{position:absolute;bottom:4px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--edinburgh);display:none;}
+  .cell .dot{position:absolute;bottom:4px;right:5px;min-width:14px;height:14px;padding:0 3px;border-radius:8px;background:var(--edinburgh);color:#fff;font-size:.58rem;font-weight:700;line-height:14px;text-align:center;display:none;}
   .cell.has-note .dot{display:block;}
   .cell.click{cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;}
   .cell.click:hover,.cell.click:focus-visible{transform:translateY(-2px);box-shadow:0 4px 12px rgba(35,42,46,.14);outline:none;}
@@ -81,7 +78,6 @@
   .legend span{display:inline-flex;align-items:center;gap:.4rem;}
   .sw{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.12);}
 
-  /* Cards */
   .day{display:grid;grid-template-columns:92px 1fr;gap:1.2rem;padding:1.15rem 0;border-top:1px solid var(--line);}
   .day:first-of-type{border-top:none;}
   .day .date{cursor:pointer;border-radius:8px;transition:background .12s ease;padding:.2rem;margin:-.2rem;}
@@ -101,16 +97,29 @@
   .day .body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
 
-  /* Editable note fields */
-  .note-wrap{margin-top:.7rem;}
-  .note-wrap label{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.3rem;}
-  textarea.note{width:100%;min-height:2.4rem;font-family:"Inter",sans-serif;font-size:.9rem;color:var(--ink);line-height:1.5;
-    background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:.55rem .7rem;resize:vertical;transition:border-color .15s ease, background .15s ease;}
-  textarea.note::placeholder{color:#b3aea2;}
-  textarea.note:focus{outline:none;border-style:solid;border-color:var(--edinburgh);background:#fff;}
-  textarea.note.ideas{min-height:8rem;}
+  /* Multi-entry note blocks */
+  .entries{display:grid;gap:.55rem;margin-top:.7rem;}
+  .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.6rem .65rem;display:grid;gap:.45rem;}
+  .entry textarea.ent-note{width:100%;border:none;background:transparent;font-family:"Inter",sans-serif;font-size:.9rem;line-height:1.5;resize:vertical;min-height:1.7rem;color:var(--ink);}
+  .entry textarea.ent-note:focus{outline:none;}
+  .entry textarea.ent-note::placeholder{color:#b3aea2;}
+  .entry-row{display:flex;gap:.4rem;align-items:center;}
+  .entry input{font-family:"Inter",sans-serif;font-size:.82rem;padding:.4rem .55rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);}
+  .entry input::placeholder{color:#b3aea2;}
+  .entry input:focus{outline:none;border-color:var(--edinburgh);background:#fff;}
+  .ent-link{flex:1 1 auto;min-width:0;}
+  .ent-cost{flex:0 0 auto;width:92px;text-align:right;font-variant-numeric:tabular-nums;}
+  .ent-del{flex:0 0 auto;width:30px;height:30px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-radius:6px;font-size:.85rem;}
+  .ent-del:hover{background:#f0dbd2;color:var(--palermo);}
+  .ent-visit{font-size:.78rem;color:var(--london);text-decoration:none;font-weight:600;width:max-content;}
+  .ent-visit:hover{text-decoration:underline;}
+  .ent-visit.hidden{display:none;}
+  .addrow{margin-top:.55rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+  .addbtn{font-family:"Inter",sans-serif;font-size:.8rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px dashed var(--edinburgh);border-radius:8px;padding:.4rem .75rem;cursor:pointer;}
+  .addbtn:hover{background:#efeaf3;}
+  .added-sum{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .added-sum b{color:var(--palermo);}
 
-  /* Cost summary */
   .summary{display:grid;grid-template-columns:1.1fr 1fr;gap:1.6rem;align-items:start;}
   @media(max-width:640px){.summary{grid-template-columns:1fr;}}
   .bigtotal{background:var(--ink);color:#fff;border-radius:14px;padding:1.6rem 1.5rem;}
@@ -132,10 +141,8 @@
   .notes li strong{color:var(--ink);}
   .notes li::before{content:"→";position:absolute;left:0;color:var(--palermo);font-weight:600;}
   .notes .divide{height:1px;background:var(--line);margin:1.2rem 0;}
-
   footer{margin-top:2.2rem;font-size:.78rem;color:var(--muted);text-align:center;}
 
-  /* Modal */
   .backdrop{position:fixed;inset:0;background:rgba(20,25,28,.55);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:50;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease;}
   .backdrop.open{opacity:1;visibility:visible;}
   .modal{background:var(--card);border-radius:16px;max-width:470px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 60px rgba(20,25,28,.35);transform:translateY(12px) scale(.98);transition:transform .2s ease;position:relative;}
@@ -153,16 +160,20 @@
   .costtbl td{padding:.42rem .1rem;border-bottom:1px solid var(--line);}
   .costtbl td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
   .costtbl tr:last-child td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600;}
+  .mentries{list-style:none;display:grid;gap:.5rem;}
+  .mentries li{font-size:.9rem;color:#333b40;padding:.55rem .65rem;background:var(--paper);border-radius:8px;}
+  .mentries .mcost{color:var(--palermo);font-weight:600;}
+  .mentries a{color:var(--london);word-break:break-all;}
+  .mhint{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.7rem;}
   .mnote{margin-top:1rem;font-size:.85rem;color:var(--muted);font-style:italic;background:var(--paper);border-radius:8px;padding:.7rem .8rem;}
   .closebtn{position:absolute;top:.9rem;right:1rem;width:32px;height:32px;border-radius:50%;border:none;background:var(--paper);color:var(--ink);font-size:1.1rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;z-index:2;}
   .closebtn:hover{background:var(--line);}
 
   @media print{
     body{background:#fff;padding:0;font-size:11px;}
-    .toolbar,.howto{display:none!important;}
+    .toolbar,.howto,.addrow,.ent-del{display:none!important;}
     .notes,.day,.summary,.bigtotal{break-inside:avoid;}
     .backdrop{display:none!important;}
-    textarea.note{border:1px solid var(--line);}
     .cell,.pill,.leg,.sw,.bigtotal,.ribbon,.costchip{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .section-head .hint{display:none;}
   }
@@ -186,19 +197,18 @@
     </div>
   </header>
 
-  <!-- COLLAB TOOLBAR -->
   <div class="toolbar">
     <span class="tb-title">Shared planner</span>
     <span class="saved" id="saved">Saved ✓</span>
     <div class="tb-actions">
-      <button class="btn" id="exportBtn">Export notes</button>
+      <button class="btn" id="exportBtn">Export</button>
       <button class="btn ghost" id="importBtn">Import</button>
       <button class="btn ghost" id="copyBtn">Copy all</button>
       <button class="btn ghost danger" id="clearBtn">Clear mine</button>
     </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </div>
-  <p class="howto">Notes you type save to <b>your own browser</b>. To share ideas with the group, hit <b>Export notes</b> and attach the file to a GitHub issue or pull request — anyone can <b>Import</b> a contributed file to merge it in. Use <b>Copy all</b> to paste everything into a message. <em>(For live shared comments, wire up GitHub Discussions with a widget like giscus.)</em></p>
+  <p class="howto">Each day holds as many entries as you like — every entry has a <b>note</b>, a <b>link</b>, and a <b>cost</b>. Entries save to <b>your own browser</b>. To share with the group, hit <b>Export</b> and attach the file to a GitHub issue or PR; anyone can <b>Import</b> to merge ideas in (nothing gets overwritten). <em>(For live shared comments, add giscus + GitHub Discussions.)</em></p>
 
   <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
     <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
@@ -209,10 +219,9 @@
   </div>
   <p class="ribbon-caption">Colour tracks the trip — cool slate in the north, warming to terracotta in Sicily.</p>
 
-  <!-- CALENDAR -->
   <div class="section-head">
     <h2>Calendar</h2>
-    <span class="hint">tap a date for plan, cost &amp; notes<br>✈ flight · 🚆 train · • has a note</span>
+    <span class="hint">tap a date for plan &amp; cost<br>✈ flight · 🚆 train · badge = entries</span>
   </div>
   <div class="cal-grid">
     <div class="month"><h3>May 2027</h3>
@@ -231,18 +240,13 @@
     <span>BH = UK bank holiday (May 31)</span>
   </div>
 
-  <!-- DAY BY DAY -->
-  <div class="section-head"><h2>Day by Day</h2><span class="hint">add notes under any day</span></div>
+  <div class="section-head"><h2>Day by Day</h2><span class="hint">add notes, links &amp; costs under any day</span></div>
   <div id="daylist"></div>
 
-  <!-- OPEN IDEAS -->
   <div class="section-head"><h2>Open ideas</h2><span class="hint">not tied to a day</span></div>
-  <div class="note-wrap">
-    <label>Group parking lot</label>
-    <textarea class="note ideas" data-note="_ideas" placeholder="A restaurant someone loved · a museum to consider · packing reminders · budget tweaks · flight-day to confirm · anything…"></textarea>
-  </div>
+  <div class="entries" data-day-entries="_ideas"></div>
+  <div class="addrow"><button class="addbtn" data-add="_ideas">+ Add idea</button><span class="added-sum" data-sum="_ideas"></span></div>
 
-  <!-- COST SUMMARY -->
   <div class="section-head"><h2>What it costs</h2><span class="hint">family of 4, USD</span></div>
   <div class="summary">
     <div class="bigtotal">
@@ -267,7 +271,6 @@
     </div>
   </div>
 
-  <!-- NOTES -->
   <div class="notes">
     <h3>Before you lock it in</h3>
     <ul>
@@ -287,7 +290,6 @@
   <footer>Boston · London · Bath · Edinburgh · Palermo — May 21 to June 6, 2027</footer>
 </div>
 
-<!-- MODAL -->
 <div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="m-title">
   <div class="modal">
     <button class="closebtn" id="closebtn" aria-label="Close">✕</button>
@@ -299,116 +301,128 @@
 <script>
 /* ---------- Trip data ---------- */
 const DAYS = {
-  "may-21":{wd:"Fri",dd:"21",mo:"May",date:"Friday, May 21",loc:"Travel",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly out",
-    title:"Boston → London",
+  "may-21":{wd:"Fri",dd:"21",mo:"May",date:"Friday, May 21",loc:"Travel",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly out",title:"Boston → London",
     plan:["<span class='whenlbl'>Evening:</span> overnight flight from Boston Logan to London Heathrow. Sleep as much as the kids allow — you land into Saturday morning."],
     costs:[["Transatlantic flight, outbound (×4)","$1,600"],["Airport meals","$40"]],total:"$1,640"},
-  "may-22":{wd:"Sat",dd:"22",mo:"May",date:"Saturday, May 22",loc:"London",pill:"london",fill:"d-london",tag:"London",
-    title:"London — arrival & easy day",
+  "may-22":{wd:"Sat",dd:"22",mo:"May",date:"Saturday, May 22",loc:"London",pill:"london",fill:"d-london",tag:"London",title:"London — arrival & easy day",
     plan:["<span class='whenlbl'>Morning:</span> land Heathrow, get to the hotel, drop bags.","<span class='whenlbl'>Afternoon:</span> Hyde Park & Kensington Gardens — the free Diana Memorial pirate-ship playground. Walk past Buckingham Palace.","<span class='whenlbl'>Evening:</span> early dinner, early bed to beat jet lag."],
     costs:[["Hotel — London, night 1","$260"],["Meals","$200"],["Parks & playground","free"]],total:"$460"},
-  "may-23":{wd:"Sun",dd:"23",mo:"May",date:"Sunday, May 23",loc:"London",pill:"london",fill:"d-london",tag:"London",
-    title:"London — the big day",
+  "may-23":{wd:"Sun",dd:"23",mo:"May",date:"Sunday, May 23",loc:"London",pill:"london",fill:"d-london",tag:"London",title:"London — the big day",
     plan:["<span class='whenlbl'>Morning:</span> Natural History Museum (dinosaurs, blue whale — free) or London Zoo.","<span class='whenlbl'>Afternoon:</span> a short Thames cruise past the London Eye, Big Ben and Tower Bridge.","<span class='whenlbl'>Evening:</span> dinner near the river."],
     costs:[["Hotel — London, night 2","$260"],["Zoo / museum + river cruise","$200"],["Meals","$200"]],total:"$660"},
-  "may-24":{wd:"Mon",dd:"24",mo:"May",date:"Monday, May 24",loc:"Bath",pill:"bath",fill:"d-bath",ico:"🚆",tag:"→ Bath",
-    title:"London → Bath",
+  "may-24":{wd:"Mon",dd:"24",mo:"May",date:"Monday, May 24",loc:"Bath",pill:"bath",fill:"d-bath",ico:"🚆",tag:"→ Bath",title:"London → Bath",
     plan:["<span class='whenlbl'>Morning:</span> train from London Paddington to Bath Spa (~1h 25m).","<span class='whenlbl'>Afternoon:</span> the Roman Baths, then Pulteney Bridge and the Royal Crescent.","<span class='whenlbl'>Late day:</span> Royal Victoria Park — a superb free playground."],
     costs:[["Train, London→Bath (2 adult + 2 child)","$110"],["Hotel — Bath, night 1","$200"],["Roman Baths (family)","$95"],["Meals","$200"]],total:"$605"},
-  "may-25":{wd:"Tue",dd:"25",mo:"May",date:"Tuesday, May 25",loc:"Bath",pill:"bath",fill:"d-bath",tag:"Bath",
-    title:"Bath — day trip",
+  "may-25":{wd:"Tue",dd:"25",mo:"May",date:"Tuesday, May 25",loc:"Bath",pill:"bath",fill:"d-bath",tag:"Bath",title:"Bath — day trip",
     plan:["Longleat Safari Park (~1 hr) — drive-through lions and monkeys plus a hedge maze, a sure hit with 5-year-olds. Swap in Stonehenge if you'd rather the icon."],
     costs:[["Hotel — Bath, night 2","$200"],["Longleat Safari (family)","$190"],["Meals","$200"]],total:"$590"},
-  "may-26":{wd:"Wed",dd:"26",mo:"May",date:"Wednesday, May 26",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",ico:"🚆",tag:"→ Edin",
-    title:"Bath → Edinburgh",
+  "may-26":{wd:"Wed",dd:"26",mo:"May",date:"Wednesday, May 26",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",ico:"🚆",tag:"→ Edin",title:"Bath → Edinburgh",
     plan:["<span class='whenlbl'>The long haul:</span> train Bath → Edinburgh (~6.5–7 hrs, one change). Pack snacks, download shows.","<span class='whenlbl'>Faster option:</span> fly Bristol → Edinburgh (~1h15).","<span class='whenlbl'>Evening:</span> arrive, check in, easy dinner near the Royal Mile."],
-    costs:[["Train, Bath→Edinburgh","$280"],["Lodging — Edinburgh, night 1","$210"],["Meals (travel day)","$150"]],total:"$640",
-    note:"The Bristol→Edinburgh flight can come in cheaper than the train and saves most of a day."},
-  "may-27":{wd:"Thu",dd:"27",mo:"May",date:"Thursday, May 27",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
-    title:"Edinburgh Castle & the Royal Mile",
+    costs:[["Train, Bath→Edinburgh","$280"],["Lodging — Edinburgh, night 1","$210"],["Meals (travel day)","$150"]],total:"$640",note:"The Bristol→Edinburgh flight can come in cheaper than the train and saves most of a day."},
+  "may-27":{wd:"Thu",dd:"27",mo:"May",date:"Thursday, May 27",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Edinburgh Castle & the Royal Mile",
     plan:["Edinburgh Castle up on its volcanic rock (book a timed entry), then walk the Royal Mile downhill toward Holyrood."],
     costs:[["Lodging — Edinburgh","$210"],["Edinburgh Castle (family)","$100"],["Meals","$200"]],total:"$510"},
-  "may-28":{wd:"Fri",dd:"28",mo:"May",date:"Friday, May 28",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
-    title:"Museums & illusions",
+  "may-28":{wd:"Fri",dd:"28",mo:"May",date:"Friday, May 28",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Museums & illusions",
     plan:["<span class='whenlbl'>Morning:</span> National Museum of Scotland — free, enormous, hands-on.","<span class='whenlbl'>Afternoon:</span> Camera Obscura & World of Illusions — mirror mazes and optical tricks."],
     costs:[["Lodging — Edinburgh","$210"],["Camera Obscura (museum is free)","$75"],["Meals","$200"]],total:"$485"},
-  "may-29":{wd:"Sat",dd:"29",mo:"May",date:"Saturday, May 29",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
-    title:"Edinburgh — day trip",
+  "may-29":{wd:"Sat",dd:"29",mo:"May",date:"Saturday, May 29",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Edinburgh — day trip",
     plan:["The Kelpies & Falkirk Wheel — giant steel horse-heads plus a rotating boat lift, both close and magic for young kids. Stirling Castle is an easy alternative."],
     costs:[["Lodging — Edinburgh","$210"],["Kelpies day trip (transport + entry)","$120"],["Meals","$200"]],total:"$530"},
-  "may-30":{wd:"Sun",dd:"30",mo:"May",date:"Sunday, May 30",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
-    title:"Science & a hill",
+  "may-30":{wd:"Sun",dd:"30",mo:"May",date:"Sunday, May 30",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Science & a hill",
     plan:["<span class='whenlbl'>Morning:</span> Dynamic Earth — hands-on planet-and-science exhibits near Holyrood.","<span class='whenlbl'>Afternoon:</span> an easy climb up Arthur's Seat for city views, or Edinburgh Zoo for the penguins."],
     costs:[["Lodging — Edinburgh","$210"],["Dynamic Earth (Arthur's Seat is free)","$75"],["Meals","$200"]],total:"$485"},
-  "may-31":{wd:"Mon",dd:"31",mo:"May",date:"Monday, May 31 · UK bank holiday",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin ·BH",
-    title:"Britannia & the beach",
+  "may-31":{wd:"Mon",dd:"31",mo:"May",date:"Monday, May 31 · UK bank holiday",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin ·BH",title:"Britannia & the beach",
     plan:["The Royal Yacht Britannia (self-guided, kids' audio guide), then Portobello Beach if the weather cooperates."],
-    costs:[["Lodging — Edinburgh","$210"],["Royal Yacht Britannia (family)","$95"],["Meals","$200"]],total:"$505",
-    note:"Bank holiday — expect bigger crowds at the main sights."},
-  "jun-1":{wd:"Tue",dd:"1",mo:"Jun",date:"Tuesday, June 1",loc:"Palermo",pill:"palermo",fill:"d-palermo",ico:"✈",tag:"→ Palermo",
-    title:"Edinburgh → Palermo",
+    costs:[["Lodging — Edinburgh","$210"],["Royal Yacht Britannia (family)","$95"],["Meals","$200"]],total:"$505",note:"Bank holiday — expect bigger crowds at the main sights."},
+  "jun-1":{wd:"Tue",dd:"1",mo:"Jun",date:"Tuesday, June 1",loc:"Palermo",pill:"palermo",fill:"d-palermo",ico:"✈",tag:"→ Palermo",title:"Edinburgh → Palermo",
     plan:["<span class='whenlbl'>Morning:</span> flight to Palermo (aim for the direct Ryanair — verify the day).","<span class='whenlbl'>Afternoon:</span> land around midday, check in, a first gentle wander through the old town and the first gelato."],
-    costs:[["Flight, Edinburgh→Palermo (×4)","$450"],["Lodging — Palermo, night 1","$140"],["Meals","$130"]],total:"$720",
-    note:"The direct flight runs only ~2 days/week. Confirm it operates on your date before booking the rest."},
-  "jun-2":{wd:"Wed",dd:"2",mo:"Jun",date:"Wednesday, June 2",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
-    title:"Palermo old town",
+    costs:[["Flight, Edinburgh→Palermo (×4)","$450"],["Lodging — Palermo, night 1","$140"],["Meals","$130"]],total:"$720",note:"The direct flight runs only ~2 days/week. Confirm it operates on your date before booking the rest."},
+  "jun-2":{wd:"Wed",dd:"2",mo:"Jun",date:"Wednesday, June 2",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",title:"Palermo old town",
     plan:["The Cathedral and the Palatine Chapel (dazzling gold mosaics), then the buzz of the Ballarò and Vucciria markets. Street-food lunch — arancini, panelle, cannoli."],
     costs:[["Lodging — Palermo","$140"],["Cathedral + Palatine Chapel","$40"],["Meals","$150"]],total:"$330"},
-  "jun-3":{wd:"Thu",dd:"3",mo:"Jun",date:"Thursday, June 3",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
-    title:"Beach or Cefalù",
+  "jun-3":{wd:"Thu",dd:"3",mo:"Jun",date:"Thursday, June 3",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",title:"Beach or Cefalù",
     plan:["Mondello Beach (~20 min) — calm, shallow water made for 5-year-olds. Or take the train ~1 hr to Cefalù, a gorgeous beach-and-cathedral town."],
     costs:[["Lodging — Palermo","$140"],["Beach free / Cefalù train","$40"],["Meals","$150"]],total:"$330"},
-  "jun-4":{wd:"Fri",dd:"4",mo:"Jun",date:"Friday, June 4",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
-    title:"Monreale & the puppets",
+  "jun-4":{wd:"Fri",dd:"4",mo:"Jun",date:"Friday, June 4",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",title:"Monreale & the puppets",
     plan:["<span class='whenlbl'>Morning:</span> Monreale — the hilltop cathedral with breathtaking mosaics (~20 min from town).","<span class='whenlbl'>Evening:</span> Opera dei Pupi, the Sicilian puppet theatre — a delight for kids — then a last Sicilian dinner."],
     costs:[["Lodging — Palermo","$140"],["Monreale + puppet theatre","$70"],["Meals","$150"]],total:"$360"},
-  "jun-5":{wd:"Sat",dd:"5",mo:"Jun",date:"Saturday, June 5",loc:"London",pill:"london",fill:"d-london",ico:"✈",tag:"→ London",
-    title:"Palermo → London",
+  "jun-5":{wd:"Sat",dd:"5",mo:"Jun",date:"Saturday, June 5",loc:"London",pill:"london",fill:"d-london",ico:"✈",tag:"→ London",title:"Palermo → London",
     plan:["Fly back to London and check in for the night. Keep it low-key — this buffer night is your insurance against a delayed Sicily flight so you never risk the trip home."],
     costs:[["Flight, Palermo→London (×4)","$280"],["Hotel — London buffer night","$260"],["Meals","$130"]],total:"$670"},
-  "jun-6":{wd:"Sun",dd:"6",mo:"Jun",date:"Sunday, June 6",loc:"Home",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly home",
-    title:"London → Boston",
+  "jun-6":{wd:"Sun",dd:"6",mo:"Jun",date:"Sunday, June 6",loc:"Home",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly home",title:"London → Boston",
     plan:["Morning flight London → Boston. Home by evening, with two very well-travelled 5-year-olds."],
     costs:[["Transatlantic flight, return (×4)","$1,600"],["Airport meals","$60"]],total:"$1,660"}
 };
 
 const MAY = [
-  [null,null,null,null,null,null,"b-1"],
-  ["b-2","b-3","b-4","b-5","b-6","b-7","b-8"],
-  ["b-9","b-10","b-11","b-12","b-13","b-14","b-15"],
-  ["b-16","b-17","b-18","b-19","b-20","may-21","may-22"],
-  ["may-23","may-24","may-25","may-26","may-27","may-28","may-29"],
-  ["may-30","may-31",null,null,null,null,null]
+  [null,null,null,null,null,null,"b-1"],["b-2","b-3","b-4","b-5","b-6","b-7","b-8"],
+  ["b-9","b-10","b-11","b-12","b-13","b-14","b-15"],["b-16","b-17","b-18","b-19","b-20","may-21","may-22"],
+  ["may-23","may-24","may-25","may-26","may-27","may-28","may-29"],["may-30","may-31",null,null,null,null,null]
 ];
 const JUN = [
-  [null,null,"jun-1","jun-2","jun-3","jun-4","jun-5"],
-  ["jun-6","bj-7","bj-8","bj-9","bj-10","bj-11","bj-12"],
+  [null,null,"jun-1","jun-2","jun-3","jun-4","jun-5"],["jun-6","bj-7","bj-8","bj-9","bj-10","bj-11","bj-12"],
   ["bj-13","bj-14","bj-15","bj-16","bj-17","bj-18","bj-19"]
 ];
 
-/* ---------- Notes state ---------- */
-const STORE_KEY="longwaysouth-notes-v1";
-const NOTES={};
-function load(){try{const r=localStorage.getItem(STORE_KEY);if(r)Object.assign(NOTES,JSON.parse(r));}catch(e){}}
+/* ---------- Entry state ---------- */
+const STORE_KEY="longwaysouth-entries-v2";
+const ENTRIES={};
+function esc(s){return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function normUrl(u){u=(u||"").trim();if(!u)return"#";if(!/^https?:\/\//i.test(u))u="https://"+u;return u;}
+function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||(e.cost||"").trim());}
+function arr(k){if(!ENTRIES[k])ENTRIES[k]=[];return ENTRIES[k];}
+function sumCost(k){return (ENTRIES[k]||[]).reduce((s,e)=>{const n=parseFloat((e.cost||"").replace(/[^0-9.]/g,""));return s+(isNaN(n)?0:n);},0);}
+
+function migrate(){
+  try{
+    const v2=localStorage.getItem(STORE_KEY);
+    if(v2){Object.assign(ENTRIES,JSON.parse(v2));return;}
+    const v1=localStorage.getItem("longwaysouth-notes-v1");
+    if(v1){const old=JSON.parse(v1);Object.keys(old).forEach(k=>{const s=(old[k]||"").trim();if(s)ENTRIES[k]=[{note:old[k],link:"",cost:""}];});}
+  }catch(e){}
+}
+function cleanEntries(){const o={};Object.keys(ENTRIES).forEach(k=>{const a=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(a.length)o[k]=a;});return o;}
 let savedT;
 function flashSaved(){const s=document.getElementById("saved");if(!s)return;s.classList.add("show");clearTimeout(savedT);savedT=setTimeout(()=>s.classList.remove("show"),1200);}
-function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(NOTES));}catch(e){}flashSaved();}
-function applyNotesToDOM(){
-  document.querySelectorAll("[data-note]").forEach(el=>{const k=el.getAttribute("data-note");if(el.value!==(NOTES[k]||""))el.value=NOTES[k]||"";});
-  updateNoteDots();
-}
-function updateNoteDots(){
-  document.querySelectorAll('.cell.click').forEach(c=>{
-    const k=c.getAttribute("data-day");
-    c.classList.toggle("has-note", !!(NOTES[k] && NOTES[k].trim()));
-  });
-}
-load();
+function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(cleanEntries()));}catch(e){}flashSaved();}
+let pT;function persistSoon(){clearTimeout(pT);pT=setTimeout(persist,250);}
+migrate();
 
-/* ---------- Render calendar ---------- */
+/* ---------- Render entries ---------- */
+function entryHTML(k,i,e){
+  const link=(e.link||"").trim();
+  return '<div class="entry" data-key="'+k+'" data-idx="'+i+'">'+
+    '<textarea class="ent-note" rows="2" placeholder="Note or idea…">'+esc(e.note||"")+'</textarea>'+
+    '<a class="ent-visit'+(link?"":" hidden")+'" href="'+esc(normUrl(link))+'" target="_blank" rel="noopener noreferrer">open link ↗</a>'+
+    '<div class="entry-row">'+
+      '<input class="ent-link" type="url" placeholder="Paste a link (optional)" value="'+esc(e.link||"")+'">'+
+      '<input class="ent-cost" type="text" inputmode="decimal" placeholder="$ cost" value="'+esc(e.cost||"")+'">'+
+      '<button class="ent-del" title="Remove" aria-label="Remove entry">✕</button>'+
+    '</div>'+
+  '</div>';
+}
+function renderEntries(k){
+  const wrap=document.querySelector('[data-day-entries="'+k+'"]');
+  if(wrap) wrap.innerHTML=(ENTRIES[k]||[]).map((e,i)=>entryHTML(k,i,e)).join('');
+  updateSum(k); updateDot(k);
+}
+function updateSum(k){
+  const span=document.querySelector('[data-sum="'+k+'"]'); if(!span)return;
+  const s=sumCost(k);
+  span.innerHTML = s>0 ? 'added ideas: <b>$'+s.toLocaleString(undefined,{maximumFractionDigits:0})+'</b>' : '';
+}
+function updateDot(k){
+  const cell=document.querySelector('.cell.click[data-day="'+k+'"]'); if(!cell)return;
+  const n=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e)).length;
+  cell.classList.toggle("has-note",n>0);
+  const dot=cell.querySelector(".dot"); if(dot)dot.textContent=n>0?n:"";
+}
+function renderAllEntries(){Object.keys(DAYS).forEach(renderEntries);renderEntries("_ideas");}
+
+/* ---------- Calendar ---------- */
 function cellHTML(key){
   if(key===null) return '<td><div class="cell empty"></div></td>';
-  if(key.charAt(0)==="b"){ const n=key.split("-")[1]; return '<td><div class="cell"><span class="dnum">'+n+'</span></div></td>'; }
+  if(key.charAt(0)==="b"){const n=key.split("-")[1];return '<td><div class="cell"><span class="dnum">'+n+'</span></div></td>';}
   const d=DAYS[key], ico=d.ico?'<span class="ico">'+d.ico+'</span>':'';
   return '<td><div class="cell click '+d.fill+'" role="button" tabindex="0" data-day="'+key+'" aria-label="'+d.date+' — '+d.title+'">'+
     ico+'<span class="dnum">'+d.dd+'</span><span class="tag">'+d.tag+'</span><span class="dot"></span></div></td>';
@@ -416,18 +430,19 @@ function cellHTML(key){
 function renderMonth(rows,id){document.getElementById(id).innerHTML=rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');}
 renderMonth(MAY,"may-body"); renderMonth(JUN,"jun-body");
 
-/* ---------- Render day cards ---------- */
+/* ---------- Day cards ---------- */
 function cardHTML(key){
   const d=DAYS[key], plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
   return '<div class="day">'+
     '<div class="date" role="button" tabindex="0" data-day="'+key+'"><div class="wd">'+d.wd+'</div><div class="dd">'+d.dd+'</div><div class="mo">'+d.mo+'</div><div class="see">plan &amp; cost →</div></div>'+
     '<div class="body"><h4>'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span><span class="costchip">'+d.total+'</span></h4>'+
     '<ul class="plan">'+plan+'</ul>'+
-    '<div class="note-wrap"><label>Notes &amp; ideas</label><textarea class="note" data-note="'+key+'" placeholder="Add a note or idea…" rows="2"></textarea></div>'+
+    '<div class="entries" data-day-entries="'+key+'"></div>'+
+    '<div class="addrow"><button class="addbtn" data-add="'+key+'">+ Add note</button><span class="added-sum" data-sum="'+key+'"></span></div>'+
     '</div></div>';
 }
 document.getElementById("daylist").innerHTML=Object.keys(DAYS).map(cardHTML).join('');
-applyNotesToDOM();
+renderAllEntries();
 
 /* ---------- Modal ---------- */
 const backdrop=document.getElementById("backdrop");
@@ -441,26 +456,40 @@ function openDay(key){
   const plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
   const costs=d.costs.map(c=>'<tr><td>'+c[0]+'</td><td>'+c[1]+'</td></tr>').join('');
   let html='<div class="sect">The plan</div><ul class="mplan">'+plan+'</ul>'+
-    '<div class="sect">Estimated cost — family of 4</div>'+
-    '<table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
+    '<div class="sect">Estimated cost — family of 4</div><table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
   if(d.note) html+='<div class="mnote">'+d.note+'</div>';
-  html+='<div class="sect">Notes &amp; ideas</div><textarea class="note" data-note="'+key+'" placeholder="Add a note or idea…" rows="3"></textarea>';
+  const es=(ENTRIES[key]||[]).filter(e=>!emptyEntry(e));
+  if(es.length){
+    html+='<div class="sect">Added notes &amp; ideas ('+es.length+')</div><ul class="mentries">'+
+      es.map(e=>{let li='<li>';if((e.note||"").trim())li+=esc(e.note.trim());if((e.cost||"").trim())li+=' <span class="mcost">'+esc(e.cost.trim())+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';return li+'</li>';}).join('')+'</ul>';
+  }
+  html+='<p class="mhint">Add or edit entries under this day in the list below.</p>';
   mBody.innerHTML=html;
-  applyNotesToDOM();
   backdrop.classList.add("open");
   document.getElementById("closebtn").focus();
   document.body.style.overflow="hidden";
 }
 function closeModal(){backdrop.classList.remove("open");document.body.style.overflow="";if(lastFocus)lastFocus.focus();}
 
+/* ---------- Add / remove entries ---------- */
+function addEntry(k){
+  arr(k).push({note:"",link:"",cost:""});
+  renderEntries(k);
+  const wrap=document.querySelector('[data-day-entries="'+k+'"]');
+  if(wrap){const nt=wrap.querySelector(".entry:last-child .ent-note");if(nt)nt.focus();}
+  persist();
+}
+function removeEntry(k,idx){ if(ENTRIES[k]){ENTRIES[k].splice(idx,1);renderEntries(k);persist();} }
+
 /* ---------- Events ---------- */
 document.addEventListener("click",e=>{
-  if(e.target.closest("textarea,input,button,.toolbar,.note-wrap")) return;
-  const t=e.target.closest("[data-day]");
-  if(t) openDay(t.getAttribute("data-day"));
+  const add=e.target.closest("[data-add]"); if(add){addEntry(add.getAttribute("data-add"));return;}
+  const del=e.target.closest(".ent-del"); if(del){const en=del.closest(".entry");removeEntry(en.getAttribute("data-key"),+en.getAttribute("data-idx"));return;}
+  if(e.target.closest("textarea,input,button,a,.entries,.addrow,.toolbar")) return;
+  const t=e.target.closest("[data-day]"); if(t) openDay(t.getAttribute("data-day"));
 });
 document.addEventListener("keydown",e=>{
-  if(e.target.matches("textarea,input")) { if(e.key==="Escape"&&backdrop.classList.contains("open"))closeModal(); return; }
+  if(e.target.matches("textarea,input")){ if(e.key==="Escape"&&backdrop.classList.contains("open"))closeModal(); return; }
   const t=e.target.closest && e.target.closest("[data-day]");
   if(t && (e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
   if(e.key==="Escape"&&backdrop.classList.contains("open")) closeModal();
@@ -468,20 +497,22 @@ document.addEventListener("keydown",e=>{
 document.getElementById("closebtn").addEventListener("click",closeModal);
 backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal();});
 
-/* Note typing — single source of truth, sync every field for the same day */
 document.addEventListener("input",e=>{
-  const el=e.target.closest("[data-note]"); if(!el) return;
-  const k=el.getAttribute("data-note");
-  NOTES[k]=el.value;
-  document.querySelectorAll('[data-note="'+k+'"]').forEach(o=>{if(o!==el&&o.value!==el.value)o.value=el.value;});
-  updateNoteDots();
-  persist();
+  const en=e.target.closest(".entry"); if(!en) return;
+  const k=en.getAttribute("data-key"), i=+en.getAttribute("data-idx"); arr(k); if(!ENTRIES[k][i])ENTRIES[k][i]={note:"",link:"",cost:""};
+  if(e.target.classList.contains("ent-note")) ENTRIES[k][i].note=e.target.value;
+  else if(e.target.classList.contains("ent-link")){
+    ENTRIES[k][i].link=e.target.value;
+    const v=en.querySelector(".ent-visit"); const val=e.target.value.trim();
+    if(v){ v.href=normUrl(val); v.classList.toggle("hidden",!val); }
+  }
+  else if(e.target.classList.contains("ent-cost")){ ENTRIES[k][i].cost=e.target.value; updateSum(k); }
+  updateDot(k); persistSoon();
 });
 
 /* ---------- Export / Import / Copy / Clear ---------- */
-function cleanNotes(){const o={};Object.keys(NOTES).forEach(k=>{const v=(NOTES[k]||"").trim();if(v)o[k]=NOTES[k];});return o;}
 document.getElementById("exportBtn").addEventListener("click",()=>{
-  const blob=new Blob([JSON.stringify(cleanNotes(),null,2)],{type:"application/json"});
+  const blob=new Blob([JSON.stringify(cleanEntries(),null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob), a=document.createElement("a");
   a.href=url; a.download="trip-notes.json"; a.click(); URL.revokeObjectURL(url);
 });
@@ -491,31 +522,39 @@ document.getElementById("importFile").addEventListener("change",e=>{
   const rd=new FileReader();
   rd.onload=()=>{
     try{
-      const inc=JSON.parse(rd.result);
+      const inc=JSON.parse(rd.result); let added=0;
       Object.keys(inc).forEach(k=>{
-        const v=(inc[k]||"").trim(); if(!v) return;
-        if(NOTES[k] && NOTES[k].trim()){ if(NOTES[k].indexOf(v)===-1) NOTES[k]=NOTES[k].trim()+"\n\n— added —\n"+v; }
-        else NOTES[k]=v;
+        let items=inc[k];
+        if(typeof items==="string") items=[{note:items,link:"",cost:""}];
+        if(!Array.isArray(items)) return;
+        arr(k);
+        items.forEach(it=>{
+          const e=(typeof it==="string")?{note:it,link:"",cost:""}:{note:it.note||"",link:it.link||"",cost:it.cost||""};
+          if(emptyEntry(e)) return;
+          const dup=ENTRIES[k].some(x=>(x.note||"")===e.note&&(x.link||"")===e.link&&(x.cost||"")===e.cost);
+          if(!dup){ENTRIES[k].push(e);added++;}
+        });
       });
-      applyNotesToDOM(); persist();
-      alert("Ideas merged in. Nothing was overwritten — imported notes were appended.");
+      renderAllEntries(); persist();
+      alert(added+" new "+(added===1?"entry":"entries")+" merged in. Nothing was overwritten.");
     }catch(err){ alert("Couldn't read that file. Make sure it's a trip-notes.json export."); }
   };
   rd.readAsText(f); e.target.value="";
 });
 document.getElementById("copyBtn").addEventListener("click",()=>{
   let out="The Long Way South — trip notes\n\n";
-  Object.keys(DAYS).forEach(k=>{const n=(NOTES[k]||"").trim();if(n)out+="• "+DAYS[k].date+" — "+DAYS[k].title+"\n"+n+"\n\n";});
-  const ideas=(NOTES["_ideas"]||"").trim(); if(ideas) out+="• Open ideas\n"+ideas+"\n";
-  if(out.trim()==="The Long Way South — trip notes"){ alert("No notes yet — add a few first."); return; }
+  const dump=(k,label)=>{const es=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ";if((e.note||"").trim())l+=e.note.trim();if((e.cost||"").trim())l+=" ("+e.cost.trim()+")";if((e.link||"").trim())l+=" "+e.link.trim();out+=l+"\n";});out+="\n";};
+  Object.keys(DAYS).forEach(k=>dump(k,DAYS[k].date+" — "+DAYS[k].title));
+  dump("_ideas","Open ideas");
+  if(out.trim()==="The Long Way South — trip notes"){alert("No entries yet — add a few first.");return;}
   const done=()=>{const b=document.getElementById("copyBtn");const t=b.textContent;b.textContent="Copied ✓";setTimeout(()=>b.textContent=t,1400);};
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(out).then(done).catch(()=>fallbackCopy(out,done));}
   else fallbackCopy(out,done);
 });
-function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){alert("Copy failed — select the Open ideas box and copy manually.");}document.body.removeChild(ta);}
+function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){alert("Copy failed — please copy manually.");}document.body.removeChild(ta);}
 document.getElementById("clearBtn").addEventListener("click",()=>{
-  if(!confirm("Clear all notes saved in your browser? This can't be undone (export first if you want a copy).")) return;
-  Object.keys(NOTES).forEach(k=>delete NOTES[k]); applyNotesToDOM(); persist();
+  if(!confirm("Clear all entries saved in your browser? This can't be undone (export first if you want a copy).")) return;
+  Object.keys(ENTRIES).forEach(k=>delete ENTRIES[k]); renderAllEntries(); persist();
 });
 </script>
 </body>
