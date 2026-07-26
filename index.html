@@ -50,7 +50,7 @@
   .leg.l-edinburgh{background:var(--edinburgh);} .leg.l-palermo{background:var(--palermo);} .leg.l-home{background:var(--travel);}
   .ribbon-caption{font-size:.78rem;color:var(--muted);font-style:italic;}
 
-  .section-head{display:flex;align-items:baseline;gap:.9rem;margin:2.8rem 0 1.2rem;padding-bottom:.6rem;border-bottom:1.5px solid var(--ink);}
+  .section-head{display:flex;align-items:baseline;gap:.9rem;margin:2rem 0 1rem;padding-bottom:.6rem;border-bottom:1.5px solid var(--ink);}
   .section-head h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.65rem;letter-spacing:-.01em;}
   .section-head .hint{font-size:.85rem;color:var(--muted);margin-left:auto;text-align:right;}
 
@@ -79,27 +79,36 @@
   .legend span{display:inline-flex;align-items:center;gap:.4rem;}
   .sw{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.12);}
 
-  .day{display:grid;grid-template-columns:92px 1fr;gap:1.2rem;padding:1.15rem 0;border-top:1px solid var(--line);}
+  .day{border-top:1px solid var(--line);padding:.35rem 0;}
   .day:first-of-type{border-top:none;}
-  .day .date{cursor:pointer;border-radius:8px;transition:background .12s ease;padding:.2rem;margin:-.2rem;}
-  .day .date:hover,.day .date:focus-visible{background:var(--card);outline:none;}
-  .day .date:focus-visible{box-shadow:0 0 0 2px var(--ink);}
-  .day .date .wd{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;}
-  .day .date .dd{font-family:"Fraunces",serif;font-size:1.9rem;font-weight:500;line-height:1;margin-top:.1rem;}
-  .day .date .mo{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-  .day .date .see{font-size:.62rem;color:var(--edinburgh);font-weight:600;margin-top:.35rem;opacity:.85;}
-  .day .body h4{font-family:"Fraunces",serif;font-weight:500;font-size:1.18rem;margin-bottom:.15rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+  .day-head{display:flex;align-items:center;gap:.7rem;cursor:pointer;padding:.5rem .35rem;border-radius:9px;transition:background .12s ease;}
+  .day-head:hover{background:var(--card);}
+  .day-head:focus-visible{outline:none;box-shadow:0 0 0 2px var(--ink);}
+  .chev{flex:0 0 auto;font-size:.8rem;color:var(--muted);transition:transform .15s ease;width:1rem;text-align:center;}
+  .day.collapsed .chev{transform:rotate(-90deg);}
+  .dh-text{flex:1 1 auto;min-width:0;}
+  .dh-date{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;}
+  .dh-title{font-family:"Fraunces",serif;font-weight:500;font-size:1.12rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.05rem;}
+  .dh-right{display:flex;align-items:center;gap:.9rem;flex:0 0 auto;}
+  .daymeta{font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;}
+  .daymeta b{color:var(--palermo);}
+  .daycost{font-family:"Fraunces",serif;font-size:1.02rem;color:var(--muted);cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .daycost:hover{color:var(--ink);text-decoration:underline;}
+  .day-body{padding:.1rem .35rem .5rem 1.7rem;}
+  .day.collapsed .day-body{display:none;}
   .pill{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;padding:.16rem .5rem;border-radius:20px;font-family:"Inter",sans-serif;}
   .pill.p-london{background:var(--london);} .pill.p-bath{background:var(--bath);}
   .pill.p-edinburgh{background:var(--edinburgh);} .pill.p-palermo{background:var(--palermo);} .pill.p-travel{background:var(--travel);}
   .costchip{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .day .body .plan{list-style:none;margin-top:.5rem;display:grid;gap:.35rem;}
-  .day .body .plan li{font-size:.9rem;padding-left:1.15rem;position:relative;color:#333b40;}
-  .day .body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
+  .day-body .plan{list-style:none;margin:.1rem 0 .5rem;display:grid;gap:.3rem;}
+  .day-body .plan li{font-size:.88rem;padding-left:1.15rem;position:relative;color:#333b40;}
+  .day-body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
+  .collapse-all{margin-left:auto;font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px solid var(--line);border-radius:8px;padding:.3rem .7rem;cursor:pointer;}
+  .collapse-all:hover{border-color:var(--edinburgh);}
 
   .entries{display:grid;gap:.55rem;margin-top:.7rem;}
-  .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.6rem .65rem;display:grid;gap:.45rem;}
+  .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.5rem .6rem;display:grid;gap:.4rem;}
   .entry.excluded{opacity:.72;}
   .ent-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
   .ent-inc{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;}
@@ -276,7 +285,7 @@
     <span>BH = UK bank holiday (May 31)</span>
   </div>
 
-  <div class="section-head"><h2>Day by Day</h2><span class="hint">add notes, links &amp; per-person costs</span></div>
+  <div class="section-head"><h2>Day by Day</h2><button class="collapse-all" id="collapseAll">Collapse all</button></div>
   <div id="daylist"></div>
 
   <div class="section-head"><h2>Open ideas</h2><span class="hint">not tied to a day</span></div>
@@ -548,6 +557,17 @@ function restoreFocus(f){
 }
 function saveEntry(id){ if(CLOUD){scheduleSave(id);} else {persistLocal();flashSaved();} }
 
+/* ---------- Collapse state (per-browser view preference) ---------- */
+const COLLAPSE_KEY="lococo-collapsed";
+let collapsed={};
+function loadCollapse(){try{const r=localStorage.getItem(COLLAPSE_KEY);if(r)collapsed=JSON.parse(r)||{};}catch(e){}}
+function saveCollapse(){try{localStorage.setItem(COLLAPSE_KEY,JSON.stringify(collapsed));}catch(e){}}
+function isCollapsed(k){return !!collapsed[k];}
+function toggleDay(k){collapsed[k]=!collapsed[k];saveCollapse();const c=document.querySelector('[data-day-card="'+k+'"]');if(c)c.classList.toggle('collapsed',collapsed[k]);updateCollapseAllLabel();}
+function setAllCollapsed(v){Object.keys(DAYS).forEach(k=>{collapsed[k]=v;const c=document.querySelector('[data-day-card="'+k+'"]');if(c)c.classList.toggle('collapsed',v);});saveCollapse();updateCollapseAllLabel();}
+function updateCollapseAllLabel(){const b=document.getElementById('collapseAll');if(!b)return;const anyOpen=Object.keys(DAYS).some(k=>!collapsed[k]);b.textContent=anyOpen?'Collapse all':'Expand all';}
+loadCollapse();
+
 /* ---------- Rendering ---------- */
 function calcLabel(e){if(n2(e.adult)<=0&&n2(e.child)<=0)return '';return '= '+money(entTotal(e))+' <span class="calc-sub">('+PARTY.adults+' ad + '+PARTY.kids+' ch)</span>';}
 function entryHTML(e){
@@ -583,13 +603,23 @@ function renderDay(day){
 }
 function renderAll(){Object.keys(DAYS).forEach(renderDay);renderDay("_ideas");renderDay("_docs");updateGrand();}
 function updateSum(day){
-  const span=document.querySelector('[data-sum="'+day+'"]'); if(!span)return;
+  const list=entriesForDay(day);
   let chosen=0,proposed=0;
-  entriesForDay(day).forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
-  let html="";
-  if(chosen>0) html+='chosen: <b>'+money(chosen)+'</b>';
-  if(proposed>0) html+=(html?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';
-  span.innerHTML=html;
+  list.forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
+  const span=document.querySelector('[data-sum="'+day+'"]');
+  if(span){
+    let html="";
+    if(chosen>0) html+='chosen: <b>'+money(chosen)+'</b>';
+    if(proposed>0) html+=(html?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';
+    span.innerHTML=html;
+  }
+  const meta=document.querySelector('[data-meta="'+day+'"]');
+  if(meta){
+    const cnt=list.filter(e=>!emptyEntry(e)).length;
+    let m=cnt?(cnt+(cnt===1?' note':' notes')):'';
+    if(chosen>0) m+=(m?' · ':'')+'chosen <b>'+money(chosen)+'</b>';
+    meta.innerHTML=m;
+  }
 }
 function updateDot(day){
   const cell=document.querySelector('.cell.click[data-day="'+day+'"]'); if(!cell)return;
@@ -615,12 +645,19 @@ function cellHTML(key){
 function renderMonth(rows,id){document.getElementById(id).innerHTML=rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');}
 function cardHTML(key){
   const d=DAYS[key], plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
-  return '<div class="day">'+
-    '<div class="date" role="button" tabindex="0" data-day="'+key+'"><div class="wd">'+d.wd+'</div><div class="dd">'+d.dd+'</div><div class="mo">'+d.mo+'</div><div class="see">plan &amp; cost →</div></div>'+
-    '<div class="body"><h4>'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span><span class="costchip">'+d.total+'</span></h4>'+
-    '<ul class="plan">'+plan+'</ul>'+
-    '<div class="entries" data-day-entries="'+key+'"></div>'+
-    '<div class="addrow"><button class="addbtn" data-add="'+key+'">+ Add note</button><span class="added-sum" data-sum="'+key+'"></span></div>'+
+  const col=isCollapsed(key)?' collapsed':'';
+  return '<div class="day'+col+'" data-day-card="'+key+'">'+
+    '<div class="day-head" data-day-toggle="'+key+'" role="button" tabindex="0" aria-label="Toggle '+d.date+'">'+
+      '<span class="chev">▾</span>'+
+      '<div class="dh-text"><div class="dh-date">'+d.wd+' '+d.dd+' '+d.mo+'</div>'+
+        '<h4 class="dh-title">'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span></h4></div>'+
+      '<div class="dh-right"><span class="daymeta" data-meta="'+key+'"></span>'+
+        '<span class="daycost" data-day="'+key+'" title="Base cost breakdown →">'+d.total+'</span></div>'+
+    '</div>'+
+    '<div class="day-body">'+
+      '<ul class="plan">'+plan+'</ul>'+
+      '<div class="entries" data-day-entries="'+key+'"></div>'+
+      '<div class="addrow"><button class="addbtn" data-add="'+key+'">+ Add note</button><span class="added-sum" data-sum="'+key+'"></span></div>'+
     '</div></div>';
 }
 
@@ -733,12 +770,16 @@ document.addEventListener("click",e=>{
   const mv=e.target.closest(".ent-move"); if(mv){openMove(mv.closest(".entry").getAttribute("data-id"));return;}
   const del=e.target.closest(".ent-del"); if(del){removeEntry(del.closest(".entry").getAttribute("data-id"));return;}
   const rmf=e.target.closest(".rmfile"); if(rmf){const en=rmf.closest(".entry");removeFile(en.getAttribute("data-id"),+rmf.getAttribute("data-fi"));return;}
+  const dc=e.target.closest(".daycost"); if(dc){openDay(dc.getAttribute("data-day"));return;}
+  const hd=e.target.closest("[data-day-toggle]"); if(hd){toggleDay(hd.getAttribute("data-day-toggle"));return;}
   if(e.target.closest("textarea,input,button,a,label,.entries,.addrow,.ent-files,.ent-attach,.toolbar")) return;
   const t=e.target.closest("[data-day]"); if(t) openDay(t.getAttribute("data-day"));
 });
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){if(movepick.classList.contains("open"))closeMove();if(backdrop.classList.contains("open"))closeModal();}
   if(e.target.matches("textarea,input")) return;
+  const hd=e.target.closest && e.target.closest("[data-day-toggle]");
+  if(hd && (e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDay(hd.getAttribute("data-day-toggle"));return;}
   const t=e.target.closest && e.target.closest("[data-day]");
   if(t && (e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
 });
@@ -823,6 +864,10 @@ document.getElementById("clearBtn").addEventListener("click",()=>{
   if(CLOUD)clearCloud();
   Object.keys(STATE).forEach(k=>delete STATE[k]); persistLocal(); renderAll(); flashSaved();
 });
+document.getElementById("collapseAll").addEventListener("click",()=>{
+  const anyOpen=Object.keys(DAYS).some(k=>!collapsed[k]);
+  setAllCollapsed(anyOpen);
+});
 
 /* ---------- Boot ---------- */
 renderMonth(MAY,"may-body"); renderMonth(JUN,"jun-body");
@@ -832,6 +877,7 @@ loadLocal();
 const cloudOK=initCloud();
 if(!cloudOK) setSync('local');
 renderAll();
+updateCollapseAllLabel();
 </script>
 </body>
 </html>
