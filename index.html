@@ -17,7 +17,6 @@
   html{-webkit-text-size-adjust:100%;}
   body{background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.5;padding:clamp(1rem,4vw,3.5rem) clamp(1rem,4vw,2rem);}
   .wrap{max-width:940px;margin:0 auto;}
-
   header{margin-bottom:1.6rem;}
   .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.9rem;}
   h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.3rem,7vw,4rem);line-height:1.02;letter-spacing:-.01em;}
@@ -29,6 +28,8 @@
   .toolbar{position:sticky;top:0;z-index:40;margin:1.4rem 0 .6rem;display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;
     background:rgba(244,243,238,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;}
   .tb-title{font-weight:600;font-size:.92rem;}
+  .sync{font-size:.76rem;font-weight:600;color:var(--muted);}
+  .sync.live{color:#3f7d54;} .sync.offline{color:var(--bath);} .sync.error{color:var(--palermo);}
   .saved{font-size:.78rem;color:var(--edinburgh);opacity:0;transition:opacity .2s ease;font-weight:600;}
   .saved.show{opacity:1;}
   .tb-actions{margin-left:auto;display:flex;flex-wrap:wrap;gap:.4rem;}
@@ -97,14 +98,12 @@
   .day .body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
 
-  /* Multi-entry blocks */
   .entries{display:grid;gap:.55rem;margin-top:.7rem;}
   .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.6rem .65rem;display:grid;gap:.45rem;}
   .entry.excluded{opacity:.72;}
   .ent-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
   .ent-inc{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;}
   .ent-inc input{width:15px;height:15px;accent-color:var(--edinburgh);cursor:pointer;}
-  .entry.excluded .ent-inc{color:var(--muted);}
   .entry:not(.excluded) .ent-inc{color:var(--edinburgh);}
   .ent-calc{font-size:.82rem;font-weight:600;color:var(--palermo);font-variant-numeric:tabular-nums;white-space:nowrap;}
   .entry.excluded .ent-calc{color:var(--muted);}
@@ -131,10 +130,20 @@
   .addbtn{font-family:"Inter",sans-serif;font-size:.8rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px dashed var(--edinburgh);border-radius:8px;padding:.4rem .75rem;cursor:pointer;}
   .addbtn:hover{background:#efeaf3;}
   .added-sum{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;}
-  .added-sum b{color:var(--palermo);}
-  .added-sum .prop{color:var(--muted);}
+  .added-sum b{color:var(--palermo);} .added-sum .prop{color:var(--muted);}
+  .ent-files{display:flex;flex-wrap:wrap;gap:.4rem;}
+  .ent-files:empty{display:none;}
+  .filechip{display:inline-flex;align-items:center;gap:.4rem;background:var(--london-tint);border:1px solid var(--london);border-radius:20px;padding:.2rem .3rem .2rem .6rem;font-size:.76rem;max-width:100%;}
+  .filechip a{color:var(--london);text-decoration:none;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+  .filechip a:hover{text-decoration:underline;}
+  .filechip .fsize{color:var(--muted);font-size:.68rem;font-variant-numeric:tabular-nums;}
+  .filechip .rmfile{border:none;background:transparent;color:var(--london);cursor:pointer;width:18px;height:18px;border-radius:50%;font-size:.7rem;line-height:1;}
+  .filechip .rmfile:hover{background:#fff;color:var(--palermo);}
+  .ent-attach{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;}
+  .attachbtn{font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px dashed var(--line);border-radius:8px;padding:.35rem .65rem;cursor:pointer;}
+  .attachbtn:hover{border-color:var(--edinburgh);background:#efeaf3;}
+  .ent-upstatus{font-size:.76rem;color:var(--palermo);font-weight:600;font-variant-numeric:tabular-nums;}
 
-  /* Move picker */
   .movegrid{display:grid;gap:.4rem;}
   .moveopt{display:flex;align-items:center;gap:.65rem;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:.55rem .7rem;cursor:pointer;font-family:"Inter",sans-serif;font-size:.9rem;color:var(--ink);}
   .moveopt:hover{border-color:var(--ink);}
@@ -197,7 +206,7 @@
 
   @media print{
     body{background:#fff;padding:0;font-size:11px;}
-    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input{display:none!important;}
+    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input,.ent-attach,.rmfile{display:none!important;}
     .notes,.day,.summary,.bigtotal{break-inside:avoid;}
     .backdrop{display:none!important;}
     .cell,.pill,.leg,.sw,.bigtotal,.ribbon,.costchip{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -225,16 +234,17 @@
 
   <div class="toolbar">
     <span class="tb-title">Shared planner</span>
+    <span class="sync" id="sync">○ connecting…</span>
     <span class="saved" id="saved">Saved ✓</span>
     <div class="tb-actions">
       <button class="btn" id="exportBtn">Export</button>
       <button class="btn ghost" id="importBtn">Import</button>
       <button class="btn ghost" id="copyBtn">Copy all</button>
-      <button class="btn ghost danger" id="clearBtn">Clear mine</button>
+      <button class="btn ghost danger" id="clearBtn">Clear</button>
     </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </div>
-  <p class="howto">Every entry has a <b>note</b>, a <b>link</b>, and <b>per-person costs</b> (adult + child) — the total is figured for <b>2 adults + 2 kids</b> automatically. Tick <b>count in total</b> on the ones you actually plan to do; only ticked entries roll into your add-ons total below. Entries save to <b>your own browser</b> — use <b>Export / Import</b> to share and merge ideas on GitHub.</p>
+  <p class="howto">Every entry has a <b>note</b>, a <b>link</b>, <b>per-person costs</b> (adult + child), and you can <b>📎 attach a PDF or image</b> (e.g. a receipt) to any note or to the Documents section. Tick <b>count in total</b> on the ones you'll do. Everything <b>syncs live for everyone</b> via Firestore + Storage — the badge shows ● Live when connected.</p>
 
   <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
     <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
@@ -272,6 +282,10 @@
   <div class="section-head"><h2>Open ideas</h2><span class="hint">not tied to a day</span></div>
   <div class="entries" data-day-entries="_ideas"></div>
   <div class="addrow"><button class="addbtn" data-add="_ideas">+ Add idea</button><span class="added-sum" data-sum="_ideas"></span></div>
+
+  <div class="section-head"><h2>Documents &amp; receipts</h2><span class="hint">general attachments</span></div>
+  <div class="entries" data-day-entries="_docs"></div>
+  <div class="addrow"><button class="addbtn" data-add="_docs">+ Add document</button><span class="added-sum" data-sum="_docs"></span></div>
 
   <div class="section-head"><h2>What it costs</h2><span class="hint">family of 4, USD</span></div>
   <div class="summary">
@@ -324,7 +338,6 @@
     <div class="modal-body" id="m-body"></div>
   </div>
 </div>
-
 <div class="backdrop" id="movepick" role="dialog" aria-modal="true" aria-labelledby="move-h">
   <div class="modal">
     <button class="closebtn" id="moveclose" aria-label="Close">✕</button>
@@ -333,8 +346,43 @@
   </div>
 </div>
 
+<!-- Firebase SDK (compat build so it works in this classic script) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
 <script>
-/* ---------- Config ---------- */
+/* =======================================================================
+   CLOUD FIRESTORE — live sync (dedicated project "lococo-vacation").
+   Firebase console setup (one time):
+     1. Build → Firestore Database → Create database (Production mode).
+     2. Build → Authentication → Sign-in method → enable Anonymous.
+     3. Firestore → Rules → paste, then Publish:
+          rules_version = '2';
+          service cloud.firestore {
+            match /databases/{database}/documents {
+              match /trips/{trip}/{document=**} {
+                allow read, write: if request.auth != null;
+              }
+            }
+          }
+   Everyone opens the SAME published URL; TRIP_ID is the shared room.
+   The web config below is safe to publish. NEVER embed a service-account
+   / Admin private key. Last write wins on the same field.
+   ======================================================================= */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDC7cIycE6CTdDJkxbm0p92a0gUdnJlrOE",
+  authDomain: "lococo-vacation.firebaseapp.com",
+  projectId: "lococo-vacation",
+  storageBucket: "lococo-vacation.firebasestorage.app",
+  messagingSenderId: "927366124961",
+  appId: "1:927366124961:web:a7473a7344b607fe79a7e0",
+  measurementId: "G-MVMJQSRWRZ"
+};
+const TRIP_ID = "lococo-2027";   // shared room id — keep the same for everyone
+
+/* ---------- Config / party ---------- */
 const PARTY={adults:2,kids:2};
 const BASE=12182;
 
@@ -403,43 +451,108 @@ const JUN = [
   ["bj-13","bj-14","bj-15","bj-16","bj-17","bj-18","bj-19"]
 ];
 
-/* ---------- Entry state ---------- */
-const STORE_KEY="longwaysouth-entries-v3";
-const ENTRIES={};
+/* ---------- State: id -> entry ---------- */
+const STATE={};
+const LOCAL_KEY="lococo-2027-v4";
+function uid(){return 'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function esc(s){return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function normUrl(u){u=(u||"").trim();if(!u)return"#";if(!/^https?:\/\//i.test(u))u="https://"+u;return u;}
-function num(v){const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isNaN(n)?0:n;}
-function money(n){const r=Math.round(n*100)/100;return "$"+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2));}
-function entTotal(e){return PARTY.adults*num(e.adult)+PARTY.kids*num(e.child);}
-function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||String(e.adult||"").trim()||String(e.child||"").trim());}
-function arr(k){if(!ENTRIES[k])ENTRIES[k]=[];return ENTRIES[k];}
+function n2(v){const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isNaN(n)?0:n;}
+function money(x){const r=Math.round(x*100)/100;return "$"+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2));}
+function entTotal(e){return PARTY.adults*n2(e.adult)+PARTY.kids*n2(e.child);}
+function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||String(e.adult||"").trim()||String(e.child||"").trim()||(Array.isArray(e.files)&&e.files.length));}
+function entriesForDay(day){return Object.keys(STATE).filter(id=>STATE[id].day===day).map(id=>Object.assign({id},STATE[id])).sort((a,b)=>(a.order||0)-(b.order||0));}
 
-function migrate(){
+/* ---------- Persistence: cloud (Firestore) or local ---------- */
+let CLOUD=false, db=null, entriesCol=null, storage=null, seeded=false;
+function persistLocal(){try{localStorage.setItem(LOCAL_KEY,JSON.stringify(STATE));}catch(e){}}
+function loadLocal(){try{const r=localStorage.getItem(LOCAL_KEY);if(r)Object.assign(STATE,JSON.parse(r));}catch(e){}migrateOld();}
+function migrateOld(){
+  if(Object.keys(STATE).length) return;
   try{
-    const v3=localStorage.getItem(STORE_KEY);
-    if(v3){Object.assign(ENTRIES,JSON.parse(v3));return;}
-    const v2=localStorage.getItem("longwaysouth-entries-v2");
-    if(v2){const o=JSON.parse(v2);Object.keys(o).forEach(k=>{ENTRIES[k]=(o[k]||[]).map(e=>({note:e.note||"",link:e.link||"",adult:e.cost||"",child:"",include:false}));});return;}
-    const v1=localStorage.getItem("longwaysouth-notes-v1");
-    if(v1){const o=JSON.parse(v1);Object.keys(o).forEach(k=>{const s=(o[k]||"").trim();if(s)ENTRIES[k]=[{note:o[k],link:"",adult:"",child:"",include:false}];});}
+    const v3=localStorage.getItem("longwaysouth-entries-v3");
+    if(v3){const o=JSON.parse(v3);let ord=Date.now();Object.keys(o).forEach(day=>{(o[day]||[]).forEach(e=>{STATE[uid()]={day,note:e.note||"",link:e.link||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:ord++};});});}
   }catch(e){}
 }
-function cleanEntries(){const o={};Object.keys(ENTRIES).forEach(k=>{const a=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(a.length)o[k]=a;});return o;}
 let savedT;
 function flashSaved(){const s=document.getElementById("saved");if(!s)return;s.classList.add("show");clearTimeout(savedT);savedT=setTimeout(()=>s.classList.remove("show"),1200);}
-function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(cleanEntries()));}catch(e){}flashSaved();}
-let pT;function persistSoon(){clearTimeout(pT);pT=setTimeout(persist,250);}
-migrate();
+function setSync(mode){const el=document.getElementById("sync");if(!el)return;el.classList.remove("live","offline","error");
+  if(mode==='live'){el.textContent="● Live · synced";el.classList.add("live");}
+  else if(mode==='offline'){el.textContent="○ Offline — will resync";el.classList.add("offline");}
+  else if(mode==='error'){el.textContent="⚠ Setup — enable Anonymous auth & check rules";el.classList.add("error");}
+  else if(mode==='connecting'){el.textContent="○ connecting…";}
+  else{el.textContent="○ Local only";}}
 
-/* ---------- Render entries ---------- */
-function calcLabel(e){
-  const t=entTotal(e);
-  if(num(e.adult)<=0&&num(e.child)<=0) return '';
-  return '= '+money(t)+' <span class="calc-sub">('+PARTY.adults+' ad + '+PARTY.kids+' ch)</span>';
+const dirty=new Set(); let saveT;
+function sanitize(e){return {day:e.day,note:e.note||"",link:e.link||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
+function scheduleSave(id){dirty.add(id);clearTimeout(saveT);saveT=setTimeout(flush,250);}
+function flush(){
+  if(CLOUD){dirty.forEach(id=>{if(STATE[id])entriesCol.doc(id).set(sanitize(STATE[id]));});}
+  else persistLocal();
+  dirty.clear();flashSaved();
 }
-function entryHTML(k,i,e){
+function writeNow(id){ if(CLOUD){if(STATE[id])entriesCol.doc(id).set(sanitize(STATE[id]));flashSaved();} else {persistLocal();flashSaved();} }
+function deleteRemote(id){ if(CLOUD){entriesCol.doc(id).delete();flashSaved();} else {persistLocal();flashSaved();} }
+function clearCloud(){ if(!entriesCol||!db)return; entriesCol.get().then(s=>{const batch=db.batch();s.forEach(d=>batch.delete(d.ref));return batch.commit();}).catch(e=>console.warn('clear failed',e)); }
+
+/* ---------- Firebase (Firestore) ---------- */
+function initCloud(){
+  if(!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf("PASTE")===-1)) return false;
+  if(typeof firebase==="undefined"){console.warn('Firebase SDK not loaded — running local only.');return false;}
+  try{
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db=firebase.firestore();
+    try{storage=firebase.storage();}catch(e){console.warn('Storage unavailable',e);}
+    entriesCol=db.collection('trips').doc(TRIP_ID).collection('entries');
+    setSync('connecting');
+    firebase.auth().signInAnonymously().catch(err=>{console.warn('anon auth failed — enable Anonymous sign-in',err);setSync('error');});
+    let live=false;
+    entriesCol.onSnapshot(
+      snap=>{ if(!live){live=true;setSync('live');} const val={}; snap.forEach(doc=>{val[doc.id]=doc.data();}); applyRemote(val); },
+      err=>{ console.warn('Firestore listen error — check rules / anon auth',err); setSync('error'); }
+    );
+    window.addEventListener('offline',()=>{if(CLOUD)setSync('offline');});
+    window.addEventListener('online',()=>{if(CLOUD)setSync('live');});
+    CLOUD=true; return true;
+  }catch(e){console.warn('Firebase init failed — running local only.',e);return false;}
+}
+function canon(o){return Object.keys(o).sort().map(id=>{const e=o[id];return id+'|'+e.day+'|'+e.note+'|'+e.link+'|'+e.adult+'|'+e.child+'|'+(e.include?1:0)+'|'+((e.files||[]).map(f=>f.path).join(','));}).join('§');}
+function applyRemote(val){
+  const incoming={};
+  Object.keys(val).forEach(id=>{const e=val[id]||{};incoming[id]={day:e.day||"_ideas",note:e.note||"",link:e.link||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};});
+  if(!seeded){
+    seeded=true;
+    if(Object.keys(incoming).length===0 && Object.keys(STATE).length>0){
+      Object.keys(STATE).forEach(id=>entriesCol.doc(id).set(sanitize(STATE[id])));
+      return; // our seed echoes back
+    }
+  }
+  if(canon(incoming)===canon(STATE)) return; // ignore echo of our own writes
+  const foc=captureFocus();
+  Object.keys(STATE).forEach(k=>delete STATE[k]); Object.assign(STATE,incoming);
+  renderAll();
+  restoreFocus(foc);
+}
+function captureFocus(){
+  const el=document.activeElement; if(!el||!el.closest)return null;
+  const en=el.closest(".entry"); if(!en)return null;
+  const m=(el.className||"").match(/ent-(note|link|adult|child)/); if(!m)return null;
+  return {id:en.getAttribute("data-id"),cls:m[0],val:el.value,start:el.selectionStart,end:el.selectionEnd};
+}
+function restoreFocus(f){
+  if(!f)return;
+  const el=document.querySelector('.entry[data-id="'+f.id+'"] .'+f.cls); if(!el)return;
+  el.value=f.val;
+  if(STATE[f.id]) STATE[f.id][f.cls.replace('ent-','')]=f.val;
+  try{el.focus();if(f.start!=null)el.setSelectionRange(f.start,f.end);}catch(e){}
+}
+function saveEntry(id){ if(CLOUD){scheduleSave(id);} else {persistLocal();flashSaved();} }
+
+/* ---------- Rendering ---------- */
+function calcLabel(e){if(n2(e.adult)<=0&&n2(e.child)<=0)return '';return '= '+money(entTotal(e))+' <span class="calc-sub">('+PARTY.adults+' ad + '+PARTY.kids+' ch)</span>';}
+function entryHTML(e){
   const link=(e.link||"").trim();
-  return '<div class="entry'+(e.include?'':' excluded')+'" data-key="'+k+'" data-idx="'+i+'">'+
+  return '<div class="entry'+(e.include?'':' excluded')+'" data-id="'+e.id+'" data-key="'+e.day+'">'+
     '<div class="ent-top">'+
       '<label class="ent-inc"><input type="checkbox" class="ent-check"'+(e.include?' checked':'')+'> <span>count in total</span></label>'+
       '<span class="ent-calc">'+calcLabel(e)+'</span>'+
@@ -454,48 +567,52 @@ function entryHTML(k,i,e){
       '<button class="ent-move" title="Move to another day" aria-label="Move to another day">⤴</button>'+
       '<button class="ent-del" title="Remove" aria-label="Remove entry">✕</button>'+
     '</div>'+
+    '<div class="ent-files">'+filesHTML(e)+'</div>'+
+    '<div class="ent-attach"><label class="attachbtn">📎 Attach PDF / image<input type="file" class="ent-file" accept="application/pdf,image/*" hidden></label><span class="ent-upstatus"></span></div>'+
   '</div>';
 }
-function renderEntries(k){
-  const wrap=document.querySelector('[data-day-entries="'+k+'"]');
-  if(wrap) wrap.innerHTML=(ENTRIES[k]||[]).map((e,i)=>entryHTML(k,i,e)).join('');
-  updateSum(k); updateDot(k); updateGrand();
+function fmtSize(b){b=+b||0;if(b<1024)return b+' B';if(b<1048576)return Math.round(b/1024)+' KB';return (b/1048576).toFixed(1)+' MB';}
+function filesHTML(e){
+  const fs=e.files||[]; if(!fs.length) return '';
+  return fs.map((f,fi)=>'<span class="filechip"><a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer" title="'+esc(f.name)+'">📄 '+esc(f.name)+'</a><span class="fsize">'+fmtSize(f.size)+'</span><button class="rmfile" data-fi="'+fi+'" title="Remove file" aria-label="Remove file">✕</button></span>').join('');
 }
-function updateSum(k){
-  const span=document.querySelector('[data-sum="'+k+'"]'); if(!span)return;
+function renderDay(day){
+  const wrap=document.querySelector('[data-day-entries="'+day+'"]');
+  if(wrap) wrap.innerHTML=entriesForDay(day).map(entryHTML).join('');
+  updateSum(day); updateDot(day);
+}
+function renderAll(){Object.keys(DAYS).forEach(renderDay);renderDay("_ideas");renderDay("_docs");updateGrand();}
+function updateSum(day){
+  const span=document.querySelector('[data-sum="'+day+'"]'); if(!span)return;
   let chosen=0,proposed=0;
-  (ENTRIES[k]||[]).forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
+  entriesForDay(day).forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
   let html="";
   if(chosen>0) html+='chosen: <b>'+money(chosen)+'</b>';
   if(proposed>0) html+=(html?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';
   span.innerHTML=html;
 }
-function updateDot(k){
-  const cell=document.querySelector('.cell.click[data-day="'+k+'"]'); if(!cell)return;
-  const n=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e)).length;
-  cell.classList.toggle("has-note",n>0);
-  const dot=cell.querySelector(".dot"); if(dot)dot.textContent=n>0?n:"";
+function updateDot(day){
+  const cell=document.querySelector('.cell.click[data-day="'+day+'"]'); if(!cell)return;
+  const c=entriesForDay(day).filter(e=>!emptyEntry(e)).length;
+  cell.classList.toggle("has-note",c>0);
+  const dot=cell.querySelector(".dot"); if(dot)dot.textContent=c>0?c:"";
 }
 function updateGrand(){
   let g=0,count=0;
-  Object.keys(ENTRIES).forEach(k=>{(ENTRIES[k]||[]).forEach(e=>{if(e.include){g+=entTotal(e);if(!emptyEntry(e))count++;}});});
+  Object.keys(STATE).forEach(id=>{const e=STATE[id];if(e.include){g+=entTotal(e);if(!emptyEntry(e))count++;}});
   const el=document.getElementById("addonLine"); if(!el)return;
   el.innerHTML='Your chosen add-ons ('+count+'): <b>'+money(g)+'</b><br>Grand total incl. picks: <b>'+money(BASE+g)+'</b>';
 }
-function renderAllEntries(){Object.keys(DAYS).forEach(renderEntries);renderEntries("_ideas");}
 
-/* ---------- Calendar ---------- */
+/* ---------- Calendar & cards ---------- */
 function cellHTML(key){
   if(key===null) return '<td><div class="cell empty"></div></td>';
-  if(key.charAt(0)==="b"){const n=key.split("-")[1];return '<td><div class="cell"><span class="dnum">'+n+'</span></div></td>';}
+  if(key.charAt(0)==="b"){const nn=key.split("-")[1];return '<td><div class="cell"><span class="dnum">'+nn+'</span></div></td>';}
   const d=DAYS[key], ico=d.ico?'<span class="ico">'+d.ico+'</span>':'';
   return '<td><div class="cell click '+d.fill+'" role="button" tabindex="0" data-day="'+key+'" aria-label="'+d.date+' — '+d.title+'">'+
     ico+'<span class="dnum">'+d.dd+'</span><span class="tag">'+d.tag+'</span><span class="dot"></span></div></td>';
 }
 function renderMonth(rows,id){document.getElementById(id).innerHTML=rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');}
-renderMonth(MAY,"may-body"); renderMonth(JUN,"jun-body");
-
-/* ---------- Day cards ---------- */
 function cardHTML(key){
   const d=DAYS[key], plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
   return '<div class="day">'+
@@ -506,8 +623,6 @@ function cardHTML(key){
     '<div class="addrow"><button class="addbtn" data-add="'+key+'">+ Add note</button><span class="added-sum" data-sum="'+key+'"></span></div>'+
     '</div></div>';
 }
-document.getElementById("daylist").innerHTML=Object.keys(DAYS).map(cardHTML).join('');
-renderAllEntries();
 
 /* ---------- Modal ---------- */
 const backdrop=document.getElementById("backdrop");
@@ -523,10 +638,10 @@ function openDay(key){
   let html='<div class="sect">The plan</div><ul class="mplan">'+plan+'</ul>'+
     '<div class="sect">Base estimate — family of 4</div><table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
   if(d.note) html+='<div class="mnote">'+d.note+'</div>';
-  const es=(ENTRIES[key]||[]).filter(e=>!emptyEntry(e));
+  const es=entriesForDay(key).filter(e=>!emptyEntry(e));
   if(es.length){
     html+='<div class="sect">Added notes &amp; ideas ('+es.length+')</div><ul class="mentries">'+
-      es.map(e=>{let li='<li>';if((e.note||"").trim())li+=esc(e.note.trim());const t=entTotal(e);if(t>0)li+=' <span class="mcost">'+money(t)+(e.include?' ✓':' (not counted)')+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';return li+'</li>';}).join('')+'</ul>';
+      es.map(e=>{let li='<li>';if((e.note||"").trim())li+=esc(e.note.trim());const t=entTotal(e);if(t>0)li+=' <span class="mcost">'+money(t)+(e.include?' ✓':' (not counted)')+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';if(e.files&&e.files.length)li+='<br>'+e.files.map(f=>'📄 <a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer">'+esc(f.name)+'</a>').join('<br>');return li+'</li>';}).join('')+'</ul>';
   }
   html+='<p class="mhint">Add or edit entries under this day in the list below.</p>';
   mBody.innerHTML=html;
@@ -537,45 +652,75 @@ function openDay(key){
 function closeModal(){backdrop.classList.remove("open");document.body.style.overflow="";if(lastFocus)lastFocus.focus();}
 
 /* ---------- Add / remove ---------- */
-function addEntry(k){
-  arr(k).push({note:"",link:"",adult:"",child:"",include:false});
-  renderEntries(k);
-  const wrap=document.querySelector('[data-day-entries="'+k+'"]');
-  if(wrap){const nt=wrap.querySelector(".entry:last-child .ent-note");if(nt)nt.focus();}
-  persist();
+function addEntry(day){
+  const id=uid();
+  STATE[id]={day,note:"",link:"",adult:"",child:"",include:false,order:Date.now(),files:[]};
+  writeNow(id);
+  renderDay(day); updateGrand();
+  const nt=document.querySelector('[data-day-entries="'+day+'"] .entry[data-id="'+id+'"] .ent-note'); if(nt)nt.focus();
 }
-function removeEntry(k,idx){ if(ENTRIES[k]){ENTRIES[k].splice(idx,1);renderEntries(k);persist();} }
+function removeEntry(id){
+  const rec=STATE[id]; const day=rec&&rec.day;
+  if(rec&&storage&&Array.isArray(rec.files)){rec.files.forEach(f=>{if(f.path)storage.ref(f.path).delete().catch(()=>{});});}
+  delete STATE[id];
+  deleteRemote(id);
+  if(day)renderDay(day); updateGrand();
+}
+
+/* ---------- File attachments (Firebase Storage) ---------- */
+function safeName(n){return String(n||'file').replace(/[^\w.\- ]+/g,'_').slice(0,80);}
+function uploadFile(id,file){
+  if(!CLOUD||!storage){alert("Attachments need Firebase Storage. Enable Storage (Blaze plan) in the console — or paste a Drive/Dropbox share link in the link field instead.");return;}
+  if(file.size>25*1048576){alert("That file is over 25 MB — please attach a smaller PDF.");return;}
+  const rec=STATE[id]; if(!rec)return;
+  const path='trips/'+TRIP_ID+'/files/'+id+'/'+Date.now()+'_'+safeName(file.name);
+  const ref=storage.ref(path);
+  const status=document.querySelector('.entry[data-id="'+id+'"] .ent-upstatus');
+  const task=ref.put(file,{contentType:file.type||'application/octet-stream'});
+  task.on('state_changed',
+    s=>{ if(status)status.textContent='Uploading… '+Math.round(s.bytesTransferred/s.totalBytes*100)+'%'; },
+    err=>{ console.warn('upload failed',err); if(status)status.textContent=''; alert("Upload failed ("+((err&&err.code)||err)+").\nCheck that Storage is enabled and its rules allow authenticated writes."); },
+    ()=>{ ref.getDownloadURL().then(url=>{ if(!Array.isArray(rec.files))rec.files=[]; rec.files.push({name:file.name,url:url,path:path,size:file.size,type:file.type||''}); if(status)status.textContent=''; writeNow(id); renderDay(rec.day); }); }
+  );
+}
+function removeFile(id,fi){
+  const rec=STATE[id]; if(!rec||!Array.isArray(rec.files)||!rec.files[fi])return;
+  const f=rec.files[fi];
+  if(!confirm('Remove "'+f.name+'"?'))return;
+  if(storage&&f.path){storage.ref(f.path).delete().catch(e=>console.warn('storage delete failed (metadata removed anyway)',e));}
+  rec.files.splice(fi,1); writeNow(id); renderDay(rec.day);
+}
 
 /* ---------- Move ---------- */
 const movepick=document.getElementById("movepick");
-let moveCtx={key:null,idx:null};
+let moveCtx={id:null};
 function buildMoveGrid(){
   let html=Object.keys(DAYS).map(k=>{const d=DAYS[k];
-    return '<button class="moveopt" data-move-to="'+k+'"><span class="mvdot p-'+d.pill+'"></span>'+
-      '<span class="mvlabel"><b>'+d.wd+' '+d.dd+' '+d.mo+'</b> · '+d.loc+'</span></button>';}).join('');
+    return '<button class="moveopt" data-move-to="'+k+'"><span class="mvdot p-'+d.pill+'"></span><span class="mvlabel"><b>'+d.wd+' '+d.dd+' '+d.mo+'</b> · '+d.loc+'</span></button>';}).join('');
   html+='<button class="moveopt" data-move-to="_ideas"><span class="mvdot"></span><span class="mvlabel"><b>Open ideas</b> · parking lot</span></button>';
   document.getElementById("movegrid").innerHTML=html;
 }
-buildMoveGrid();
-function openMove(key,idx){
-  moveCtx={key,idx};
-  const e=(ENTRIES[key]||[])[idx]||{}; const n=(e.note||"").trim();
-  document.getElementById("move-h").textContent = n ? ('“'+n.slice(0,60)+(n.length>60?'…':'')+'”') : "(empty note)";
+function openMove(id){
+  moveCtx={id};
+  const e=STATE[id]||{}; const nt=(e.note||"").trim();
+  document.getElementById("move-h").textContent = nt ? ('“'+nt.slice(0,60)+(nt.length>60?'…':'')+'”') : "(empty note)";
+  const cur=e.day;
   document.querySelectorAll("#movegrid .moveopt").forEach(b=>{
-    const cur=b.getAttribute("data-move-to")===key;
-    b.classList.toggle("current",cur); b.disabled=cur;
+    const isCur=b.getAttribute("data-move-to")===cur;
+    b.classList.toggle("current",isCur); b.disabled=isCur;
     let tag=b.querySelector(".cur-tag");
-    if(cur&&!tag){tag=document.createElement("span");tag.className="cur-tag";tag.textContent="current";b.appendChild(tag);}
-    else if(!cur&&tag){tag.remove();}
+    if(isCur&&!tag){tag=document.createElement("span");tag.className="cur-tag";tag.textContent="current";b.appendChild(tag);}
+    else if(!isCur&&tag){tag.remove();}
   });
   movepick.classList.add("open"); document.body.style.overflow="hidden";
 }
-function closeMove(){movepick.classList.remove("open");document.body.style.overflow="";moveCtx={key:null,idx:null};}
-function doMove(toKey){
-  const {key,idx}=moveCtx;
-  if(key==null||toKey===key){closeMove();return;}
-  const src=ENTRIES[key];
-  if(src&&src[idx]!=null){const item=src.splice(idx,1)[0];arr(toKey).push(item);renderEntries(key);renderEntries(toKey);persist();}
+function closeMove(){movepick.classList.remove("open");document.body.style.overflow="";moveCtx={id:null};}
+function doMove(toDay){
+  const id=moveCtx.id; if(!id||!STATE[id]){closeMove();return;}
+  const from=STATE[id].day; if(toDay===from){closeMove();return;}
+  STATE[id].day=toDay; STATE[id].order=Date.now();
+  writeNow(id);
+  renderDay(from); renderDay(toDay); updateGrand();
   closeMove();
 }
 document.getElementById("moveclose").addEventListener("click",closeMove);
@@ -585,13 +730,14 @@ movepick.addEventListener("click",e=>{if(e.target===movepick)closeMove();});
 document.addEventListener("click",e=>{
   const dest=e.target.closest("[data-move-to]"); if(dest){doMove(dest.getAttribute("data-move-to"));return;}
   const add=e.target.closest("[data-add]"); if(add){addEntry(add.getAttribute("data-add"));return;}
-  const mv=e.target.closest(".ent-move"); if(mv){const en=mv.closest(".entry");openMove(en.getAttribute("data-key"),+en.getAttribute("data-idx"));return;}
-  const del=e.target.closest(".ent-del"); if(del){const en=del.closest(".entry");removeEntry(en.getAttribute("data-key"),+en.getAttribute("data-idx"));return;}
-  if(e.target.closest("textarea,input,button,a,label,.entries,.addrow,.toolbar")) return;
+  const mv=e.target.closest(".ent-move"); if(mv){openMove(mv.closest(".entry").getAttribute("data-id"));return;}
+  const del=e.target.closest(".ent-del"); if(del){removeEntry(del.closest(".entry").getAttribute("data-id"));return;}
+  const rmf=e.target.closest(".rmfile"); if(rmf){const en=rmf.closest(".entry");removeFile(en.getAttribute("data-id"),+rmf.getAttribute("data-fi"));return;}
+  if(e.target.closest("textarea,input,button,a,label,.entries,.addrow,.ent-files,.ent-attach,.toolbar")) return;
   const t=e.target.closest("[data-day]"); if(t) openDay(t.getAttribute("data-day"));
 });
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){ if(movepick.classList.contains("open"))closeMove(); if(backdrop.classList.contains("open"))closeModal(); }
+  if(e.key==="Escape"){if(movepick.classList.contains("open"))closeMove();if(backdrop.classList.contains("open"))closeModal();}
   if(e.target.matches("textarea,input")) return;
   const t=e.target.closest && e.target.closest("[data-day]");
   if(t && (e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
@@ -599,11 +745,9 @@ document.addEventListener("keydown",e=>{
 document.getElementById("closebtn").addEventListener("click",closeModal);
 backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal();});
 
-/* Text/number inputs */
 document.addEventListener("input",e=>{
   const en=e.target.closest(".entry"); if(!en) return;
-  const k=en.getAttribute("data-key"), i=+en.getAttribute("data-idx"); arr(k); if(!ENTRIES[k][i])ENTRIES[k][i]={note:"",link:"",adult:"",child:"",include:false};
-  const rec=ENTRIES[k][i];
+  const id=en.getAttribute("data-id"); const rec=STATE[id]; if(!rec) return;
   if(e.target.classList.contains("ent-note")) rec.note=e.target.value;
   else if(e.target.classList.contains("ent-link")){
     rec.link=e.target.value;
@@ -613,25 +757,31 @@ document.addEventListener("input",e=>{
   else if(e.target.classList.contains("ent-adult")||e.target.classList.contains("ent-child")){
     if(e.target.classList.contains("ent-adult")) rec.adult=e.target.value; else rec.child=e.target.value;
     const c=en.querySelector(".ent-calc"); if(c)c.innerHTML=calcLabel(rec);
-    updateSum(k); updateGrand();
-  }
-  updateDot(k); persistSoon();
+    updateSum(rec.day); updateGrand();
+  } else return;
+  saveEntry(id);
 });
-/* Include checkbox */
 document.addEventListener("change",e=>{
+  if(e.target.classList.contains("ent-file")){
+    const en=e.target.closest(".entry"); const id=en.getAttribute("data-id");
+    const file=e.target.files&&e.target.files[0];
+    if(file&&STATE[id]) uploadFile(id,file);
+    e.target.value="";
+    return;
+  }
   if(!e.target.classList.contains("ent-check")) return;
-  const en=e.target.closest(".entry"); const k=en.getAttribute("data-key"), i=+en.getAttribute("data-idx");
-  arr(k); if(!ENTRIES[k][i])return;
-  ENTRIES[k][i].include=e.target.checked;
+  const en=e.target.closest(".entry"); const id=en.getAttribute("data-id"); if(!STATE[id])return;
+  STATE[id].include=e.target.checked;
   en.classList.toggle("excluded",!e.target.checked);
-  updateSum(k); updateGrand(); persist();
+  updateSum(STATE[id].day); updateGrand();
+  writeNow(id);
 });
 
 /* ---------- Export / Import / Copy / Clear ---------- */
+function cleanExport(){const o={};[...Object.keys(DAYS),"_ideas","_docs"].forEach(day=>{const a=entriesForDay(day).filter(e=>!emptyEntry(e)||(e.files&&e.files.length)).map(e=>({note:e.note,link:e.link,adult:e.adult,child:e.child,include:e.include,files:e.files||[]}));if(a.length)o[day]=a;});return o;}
 document.getElementById("exportBtn").addEventListener("click",()=>{
-  const blob=new Blob([JSON.stringify(cleanEntries(),null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob), a=document.createElement("a");
-  a.href=url; a.download="trip-notes.json"; a.click(); URL.revokeObjectURL(url);
+  const blob=new Blob([JSON.stringify(cleanExport(),null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob), a=document.createElement("a"); a.href=url; a.download="trip-notes.json"; a.click(); URL.revokeObjectURL(url);
 });
 document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
 document.getElementById("importFile").addEventListener("change",e=>{
@@ -640,20 +790,18 @@ document.getElementById("importFile").addEventListener("change",e=>{
   rd.onload=()=>{
     try{
       const inc=JSON.parse(rd.result); let added=0;
-      Object.keys(inc).forEach(k=>{
-        let items=inc[k];
-        if(typeof items==="string") items=[{note:items}];
-        if(!Array.isArray(items)) return;
-        arr(k);
+      Object.keys(inc).forEach(day=>{
+        let items=inc[day]; if(typeof items==="string")items=[{note:items}]; if(!Array.isArray(items))return;
         items.forEach(it=>{
           const e=(typeof it==="string")?{note:it}:it;
-          const rec={note:e.note||"",link:e.link||"",adult:(e.adult!=null?e.adult:(e.cost||"")),child:e.child||"",include:!!e.include};
+          const rec={day,note:e.note||"",link:e.link||"",adult:(e.adult!=null?e.adult:(e.cost||"")),child:e.child||"",include:!!e.include,order:Date.now()+added,files:Array.isArray(e.files)?e.files:[]};
           if(emptyEntry(rec)) return;
-          const dup=ENTRIES[k].some(x=>(x.note||"")===rec.note&&(x.link||"")===rec.link&&String(x.adult||"")===String(rec.adult)&&String(x.child||"")===String(rec.child));
-          if(!dup){ENTRIES[k].push(rec);added++;}
+          const dup=Object.keys(STATE).some(id=>{const x=STATE[id];return x.day===day&&(x.note||"")===rec.note&&(x.link||"")===rec.link&&String(x.adult||"")===String(rec.adult)&&String(x.child||"")===String(rec.child);});
+          if(!dup){const id=uid();STATE[id]=rec;if(CLOUD)entriesCol.doc(id).set(sanitize(rec));added++;}
         });
       });
-      renderAllEntries(); persist();
+      if(!CLOUD)persistLocal();
+      renderAll();
       alert(added+" new "+(added===1?"entry":"entries")+" merged in. Nothing was overwritten.");
     }catch(err){ alert("Couldn't read that file. Make sure it's a trip-notes.json export."); }
   };
@@ -661,9 +809,8 @@ document.getElementById("importFile").addEventListener("change",e=>{
 });
 document.getElementById("copyBtn").addEventListener("click",()=>{
   let out="2027 LoCoco Vacation — trip notes\n\n";
-  const dump=(k,label)=>{const es=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ";if((e.note||"").trim())l+=e.note.trim();const t=entTotal(e);if(t>0)l+=" [adult $"+num(e.adult)+" / child $"+num(e.child)+" → "+money(t)+" for 2+2"+(e.include?", CHOSEN":"")+"]";if((e.link||"").trim())l+=" "+e.link.trim();out+=l+"\n";});out+="\n";};
-  Object.keys(DAYS).forEach(k=>dump(k,DAYS[k].date+" — "+DAYS[k].title));
-  dump("_ideas","Open ideas");
+  const dump=(k,label)=>{const es=entriesForDay(k).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ";if((e.note||"").trim())l+=e.note.trim();const t=entTotal(e);if(t>0)l+=" [adult $"+n2(e.adult)+" / child $"+n2(e.child)+" → "+money(t)+" for 2+2"+(e.include?", CHOSEN":"")+"]";if((e.link||"").trim())l+=" "+e.link.trim();if(e.files&&e.files.length)l+=" 📄 "+e.files.map(f=>f.name).join(", ");out+=l+"\n";});out+="\n";};
+  Object.keys(DAYS).forEach(k=>dump(k,DAYS[k].date+" — "+DAYS[k].title)); dump("_ideas","Open ideas"); dump("_docs","Documents & receipts");
   if(out.trim()==="2027 LoCoco Vacation — trip notes"){alert("No entries yet — add a few first.");return;}
   const done=()=>{const b=document.getElementById("copyBtn");const t=b.textContent;b.textContent="Copied ✓";setTimeout(()=>b.textContent=t,1400);};
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(out).then(done).catch(()=>fallbackCopy(out,done));}
@@ -671,9 +818,20 @@ document.getElementById("copyBtn").addEventListener("click",()=>{
 });
 function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){alert("Copy failed — please copy manually.");}document.body.removeChild(ta);}
 document.getElementById("clearBtn").addEventListener("click",()=>{
-  if(!confirm("Clear all entries saved in your browser? This can't be undone (export first if you want a copy).")) return;
-  Object.keys(ENTRIES).forEach(k=>delete ENTRIES[k]); renderAllEntries(); persist();
+  const msg=CLOUD?"Clear ALL shared entries — for everyone? This can't be undone (Export first if you want a backup).":"Clear all entries saved in your browser? This can't be undone.";
+  if(!confirm(msg)) return;
+  if(CLOUD)clearCloud();
+  Object.keys(STATE).forEach(k=>delete STATE[k]); persistLocal(); renderAll(); flashSaved();
 });
+
+/* ---------- Boot ---------- */
+renderMonth(MAY,"may-body"); renderMonth(JUN,"jun-body");
+document.getElementById("daylist").innerHTML=Object.keys(DAYS).map(cardHTML).join('');
+buildMoveGrid();
+loadLocal();
+const cloudOK=initCloud();
+if(!cloudOK) setSync('local');
+renderAll();
 </script>
 </body>
 </html>
