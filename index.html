@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Long Way South — Boston to Sicily, May 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F3EE; --card:#FBFAF6; --ink:#232A2E; --muted:#6E7378; --line:#E2DDD1;
+    --london:#46687F; --bath:#B98436; --edinburgh:#6A5A79; --palermo:#C25E3A; --travel:#9A948A;
+    --london-tint:#E7ECF0; --bath-tint:#F4E9D6; --edinburgh-tint:#EAE5EF; --palermo-tint:#F5E1D7; --travel-tint:#EAE7E0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.5;padding:clamp(1rem,4vw,3.5rem) clamp(1rem,4vw,2rem);}
+  .wrap{max-width:940px;margin:0 auto;}
+
+  /* Header */
+  header{margin-bottom:2.4rem;}
+  .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.9rem;}
+  h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.3rem,7vw,4rem);line-height:1.02;letter-spacing:-.01em;}
+  h1 em{font-style:italic;color:var(--palermo);}
+  .subhead{margin-top:1rem;font-size:clamp(1rem,2.4vw,1.15rem);color:var(--muted);max-width:40ch;}
+  .meta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;font-size:.9rem;}
+  .meta b{font-weight:600;} .meta span{color:var(--muted);}
+  .meta .total{color:var(--palermo);font-weight:600;}
+
+  /* Journey ribbon */
+  .ribbon{margin:2.2rem 0 .6rem;display:grid;grid-template-columns:repeat(5,1fr);border-radius:10px;overflow:hidden;box-shadow:0 1px 0 var(--line);}
+  .leg{padding:.85rem .9rem 1rem;color:#fff;min-height:78px;}
+  .leg .n{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
+  .leg .place{font-family:"Fraunces",serif;font-size:1.12rem;font-weight:500;margin-top:.15rem;}
+  .leg .nights{font-size:.74rem;opacity:.85;margin-top:.1rem;}
+  .leg.l-london{background:var(--london);} .leg.l-bath{background:var(--bath);}
+  .leg.l-edinburgh{background:var(--edinburgh);} .leg.l-palermo{background:var(--palermo);} .leg.l-home{background:var(--travel);}
+  .ribbon-caption{font-size:.78rem;color:var(--muted);font-style:italic;}
+
+  /* Section heads */
+  .section-head{display:flex;align-items:baseline;gap:.9rem;margin:3rem 0 1.2rem;padding-bottom:.6rem;border-bottom:1.5px solid var(--ink);}
+  .section-head h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.65rem;letter-spacing:-.01em;}
+  .section-head .hint{font-size:.85rem;color:var(--muted);margin-left:auto;}
+
+  /* Calendar */
+  .cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;}
+  @media(max-width:640px){.cal-grid{grid-template-columns:1fr;}}
+  .month h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem;margin-bottom:.6rem;}
+  table.cal{width:100%;border-collapse:collapse;table-layout:fixed;}
+  table.cal th{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-bottom:.35rem;}
+  table.cal td{height:52px;vertical-align:top;padding:3px;}
+  .cell{height:100%;border-radius:7px;padding:4px 5px;position:relative;border:1px solid var(--line);background:transparent;}
+  .cell.empty{border:none;}
+  .cell .dnum{font-size:.78rem;font-weight:600;font-variant-numeric:tabular-nums;}
+  .cell .tag{display:block;font-size:.56rem;line-height:1.15;margin-top:2px;text-transform:uppercase;letter-spacing:.03em;font-weight:600;}
+  .cell .ico{position:absolute;top:3px;right:5px;font-size:.72rem;}
+  .cell.click{cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;}
+  .cell.click:hover,.cell.click:focus-visible{transform:translateY(-2px);box-shadow:0 4px 12px rgba(35,42,46,.14);outline:none;}
+  .cell.click:focus-visible{box-shadow:0 0 0 2px var(--ink);}
+  .d-london{background:var(--london-tint);border-color:var(--london);} .d-london .dnum,.d-london .tag{color:var(--london);}
+  .d-bath{background:var(--bath-tint);border-color:var(--bath);} .d-bath .dnum,.d-bath .tag{color:#8a6220;}
+  .d-edinburgh{background:var(--edinburgh-tint);border-color:var(--edinburgh);} .d-edinburgh .dnum,.d-edinburgh .tag{color:var(--edinburgh);}
+  .d-palermo{background:var(--palermo-tint);border-color:var(--palermo);} .d-palermo .dnum,.d-palermo .tag{color:var(--palermo);}
+  .d-travel{background:var(--travel-tint);border-color:var(--travel);border-style:dashed;} .d-travel .dnum,.d-travel .tag{color:#6f6a60;}
+  .legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;margin-top:1.1rem;font-size:.78rem;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:.4rem;}
+  .sw{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.12);}
+
+  /* Itinerary cards */
+  .day{display:grid;grid-template-columns:92px 1fr;gap:1.2rem;padding:1.15rem 0;border-top:1px solid var(--line);cursor:pointer;}
+  .day:first-of-type{border-top:none;}
+  .day:hover .body h4{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;}
+  .day .date .wd{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;}
+  .day .date .dd{font-family:"Fraunces",serif;font-size:1.9rem;font-weight:500;line-height:1;margin-top:.1rem;}
+  .day .date .mo{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .day .body h4{font-family:"Fraunces",serif;font-weight:500;font-size:1.18rem;margin-bottom:.15rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+  .pill{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;padding:.16rem .5rem;border-radius:20px;font-family:"Inter",sans-serif;}
+  .pill.p-london{background:var(--london);} .pill.p-bath{background:var(--bath);}
+  .pill.p-edinburgh{background:var(--edinburgh);} .pill.p-palermo{background:var(--palermo);} .pill.p-travel{background:var(--travel);}
+  .costchip{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .day .body p{font-size:.92rem;color:#3a4247;margin-top:.35rem;}
+  .day .body .plan{list-style:none;margin-top:.5rem;display:grid;gap:.35rem;}
+  .day .body .plan li{font-size:.9rem;padding-left:1.15rem;position:relative;color:#333b40;}
+  .day .body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
+  .whenlbl{font-weight:600;color:var(--ink);}
+
+  /* Cost summary */
+  .summary{display:grid;grid-template-columns:1.1fr 1fr;gap:1.6rem;align-items:start;}
+  @media(max-width:640px){.summary{grid-template-columns:1fr;}}
+  .bigtotal{background:var(--ink);color:#fff;border-radius:14px;padding:1.6rem 1.5rem;}
+  .bigtotal .lbl{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;}
+  .bigtotal .amt{font-family:"Fraunces",serif;font-size:3rem;font-weight:500;line-height:1;margin:.4rem 0 .2rem;}
+  .bigtotal .sub{font-size:.85rem;opacity:.82;}
+  .bigtotal .range{margin-top:1rem;font-size:.82rem;opacity:.9;border-top:1px solid rgba(255,255,255,.18);padding-top:.9rem;}
+  .breakdown{width:100%;border-collapse:collapse;font-size:.9rem;}
+  .breakdown td{padding:.5rem .2rem;border-bottom:1px solid var(--line);}
+  .breakdown td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
+  .breakdown tr:last-child td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600;}
+  .breakdown .cat{color:#3a4247;}
+  .swingnote{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.8rem;}
+
+  /* Notes */
+  .notes{margin-top:2.6rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.5rem;}
+  .notes h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;margin-bottom:.7rem;}
+  .notes h3+ .notes-sub{margin-top:0;}
+  .notes ul{list-style:none;display:grid;gap:.6rem;}
+  .notes li{font-size:.9rem;padding-left:1.4rem;position:relative;color:#3a4247;}
+  .notes li strong{color:var(--ink);}
+  .notes li::before{content:"→";position:absolute;left:0;color:var(--palermo);font-weight:600;}
+  .notes .divide{height:1px;background:var(--line);margin:1.2rem 0;}
+
+  footer{margin-top:2.2rem;font-size:.78rem;color:var(--muted);text-align:center;}
+
+  /* Modal */
+  .backdrop{position:fixed;inset:0;background:rgba(20,25,28,.55);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:50;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease;}
+  .backdrop.open{opacity:1;visibility:visible;}
+  .modal{background:var(--card);border-radius:16px;max-width:470px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 60px rgba(20,25,28,.35);transform:translateY(12px) scale(.98);transition:transform .2s ease;position:relative;}
+  .backdrop.open .modal{transform:none;}
+  .modal-top{padding:1.5rem 1.6rem 1.1rem;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);border-radius:16px 16px 0 0;}
+  .modal-top .mdate{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .modal-top h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.5rem;line-height:1.1;margin:.35rem 0 .5rem;}
+  .modal-body{padding:1.2rem 1.6rem 1.6rem;}
+  .modal-body .sect{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:1.2rem 0 .5rem;}
+  .modal-body .sect:first-child{margin-top:0;}
+  .mplan{list-style:none;display:grid;gap:.45rem;}
+  .mplan li{font-size:.92rem;padding-left:1.15rem;position:relative;color:#333b40;}
+  .mplan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
+  .costtbl{width:100%;border-collapse:collapse;font-size:.9rem;}
+  .costtbl td{padding:.42rem .1rem;border-bottom:1px solid var(--line);}
+  .costtbl td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .costtbl tr:last-child td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600;}
+  .mnote{margin-top:1rem;font-size:.85rem;color:var(--muted);font-style:italic;background:var(--paper);border-radius:8px;padding:.7rem .8rem;}
+  .closebtn{position:absolute;top:.9rem;right:1rem;width:32px;height:32px;border-radius:50%;border:none;background:var(--paper);color:var(--ink);font-size:1.1rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;z-index:2;}
+  .closebtn:hover{background:var(--line);}
+
+  @media print{
+    body{background:#fff;padding:0;font-size:11px;}
+    .notes,.day,.summary,.bigtotal{break-inside:avoid;}
+    .backdrop{display:none!important;}
+    .cell,.pill,.leg,.sw,.bigtotal,.ribbon,.costchip{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .section-head .hint{display:none;}
+  }
+  @media(prefers-reduced-motion:no-preference){
+    .wrap{animation:fade .5s ease both;}
+    @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Family Trip · 2 adults + 2 kids (age 5)</div>
+    <h1>The Long Way <em>South</em></h1>
+    <p class="subhead">Sixteen days from grey-stone Britain down to the Sicilian sun.</p>
+    <div class="meta">
+      <span><b>Depart</b> Fri, May 21, 2027 (overnight)</span>
+      <span><b>Home</b> Sun, June 6, 2027</span>
+      <span class="total"><b>≈ $12,200</b> all-in</span>
+    </div>
+
+    <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
+      <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
+      <div class="leg l-bath"><div class="n">Leg 2</div><div class="place">Bath</div><div class="nights">2 nights</div></div>
+      <div class="leg l-edinburgh"><div class="n">Leg 3</div><div class="place">Edinburgh</div><div class="nights">6 nights</div></div>
+      <div class="leg l-palermo"><div class="n">Leg 4</div><div class="place">Palermo</div><div class="nights">4 nights</div></div>
+      <div class="leg l-home"><div class="n">Leg 5</div><div class="place">London → home</div><div class="nights">1 night</div></div>
+    </div>
+    <p class="ribbon-caption">Colour tracks the trip — cool slate in the north, warming to terracotta in Sicily.</p>
+  </header>
+
+  <!-- CALENDAR -->
+  <div class="section-head">
+    <h2>Calendar</h2>
+    <span class="hint">tap any date for the plan &amp; cost · ✈ flight · 🚆 train</span>
+  </div>
+
+  <div class="cal-grid">
+    <div class="month">
+      <h3>May 2027</h3>
+      <table class="cal">
+        <thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+        <tbody id="may-body"></tbody>
+      </table>
+    </div>
+    <div class="month">
+      <h3>June 2027</h3>
+      <table class="cal">
+        <thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+        <tbody id="jun-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="sw" style="background:var(--london-tint);border-color:var(--london);"></i> London</span>
+    <span><i class="sw" style="background:var(--bath-tint);border-color:var(--bath);"></i> Bath</span>
+    <span><i class="sw" style="background:var(--edinburgh-tint);border-color:var(--edinburgh);"></i> Edinburgh</span>
+    <span><i class="sw" style="background:var(--palermo-tint);border-color:var(--palermo);"></i> Palermo</span>
+    <span><i class="sw" style="background:var(--travel-tint);border-color:var(--travel);"></i> In transit</span>
+    <span>BH = UK bank holiday (May 31)</span>
+  </div>
+
+  <!-- DAY BY DAY -->
+  <div class="section-head">
+    <h2>Day by Day</h2>
+    <span class="hint">tap a day for cost detail</span>
+  </div>
+  <div id="daylist"></div>
+
+  <!-- COST SUMMARY -->
+  <div class="section-head"><h2>What it costs</h2><span class="hint">family of 4, USD</span></div>
+  <div class="summary">
+    <div class="bigtotal">
+      <div class="lbl">Estimated all-in</div>
+      <div class="amt">$12,200</div>
+      <div class="sub">Late-May 2027 fares, booked ~2–3 months ahead.</div>
+      <div class="range">Realistic range <b>$11,000 – $15,000</b>, depending mostly on how much you eat out and how nice the hotels are.</div>
+    </div>
+    <div>
+      <table class="breakdown">
+        <tr><td class="cat">Flights — transatlantic + 2 Europe hops</td><td>$3,930</td></tr>
+        <tr><td class="cat">Trains — London→Bath, Bath→Edinburgh</td><td>$390</td></tr>
+        <tr><td class="cat">Lodging — 15 nights</td><td>$3,000</td></tr>
+        <tr><td class="cat">Activities &amp; attractions</td><td>$1,150</td></tr>
+        <tr><td class="cat">Food</td><td>$2,760</td></tr>
+        <tr><td class="cat">Local transport &amp; airport transfers</td><td>$500</td></tr>
+        <tr><td class="cat">Travel insurance</td><td>$300</td></tr>
+        <tr><td class="cat">Entry paperwork (UK ETA + ETIAS)</td><td>$152</td></tr>
+        <tr><td>Total</td><td>$12,182</td></tr>
+      </table>
+      <p class="swingnote">Food is the big swing. This assumes ~$185/day of mixed eating; all sit-down restaurants for four could roughly double it.</p>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes">
+    <h3>Before you lock it in</h3>
+    <ul>
+      <li><strong>The Palermo flight day is the pivot point.</strong> The direct Edinburgh → Palermo flight runs only ~2 days a week (morning departure). If June 1 isn't one of them, shift your Edinburgh checkout by a day or take a connecting flight — confirm this before booking anything else.</li>
+      <li><strong>You're travelling over UK half-term.</strong> The last week of May is a school holiday (bank holiday Mon May 31), so UK lodging and castle tickets run busier and pricier — book early. Starting in <em>early</em> May instead would dodge this and save a few hundred dollars.</li>
+      <li><strong>Entry paperwork.</strong> Everyone needs a UK ETA (~£20 each, kids included), and Italy will likely require ETIAS by 2027 (~€20, adults only). Both are quick online forms — apply about a month out.</li>
+      <li><strong>Two long Edinburgh day-trips to skip with little ones:</strong> Loch Ness and the West Highland line are ~3.5 hrs each way. The Kelpies and Stirling deliver the big-Scotland feeling much closer to base.</li>
+    </ul>
+    <div class="divide"></div>
+    <h3>Two ways to save</h3>
+    <ul>
+      <li><strong>Fly Bath → Edinburgh instead of the train.</strong> Bristol airport is ~45 min from Bath; budget fares run £40–60/person for a ~1h15 flight, versus a 6.5–7 hr train day. Faster and often cheaper.</li>
+      <li><strong>Book UK trains ~12 weeks out</strong> (around early March 2027) — that's when the cheap Advance fares release. Same logic on the Boston flights: 2–3 months ahead is the sweet spot.</li>
+    </ul>
+  </div>
+
+  <footer>Boston · London · Bath · Edinburgh · Palermo — May 21 to June 6, 2027 · tap any date for details</footer>
+</div>
+
+<!-- MODAL -->
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal">
+    <button class="closebtn" id="closebtn" aria-label="Close">✕</button>
+    <div class="modal-top">
+      <div class="mdate" id="m-date"></div>
+      <h3 id="m-title"></h3>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- Trip data: plan + cost per day ---------- */
+const DAYS = {
+  "may-21":{wd:"Fri",dd:"21",mo:"May",date:"Friday, May 21",loc:"Travel",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly out",
+    title:"Boston → London",
+    plan:["<span class='whenlbl'>Evening:</span> overnight flight from Boston Logan to London Heathrow. Sleep as much as the kids allow — you land into Saturday morning."],
+    costs:[["Transatlantic flight, outbound (×4)","$1,600"],["Airport meals","$40"]],total:"$1,640"},
+
+  "may-22":{wd:"Sat",dd:"22",mo:"May",date:"Saturday, May 22",loc:"London",pill:"london",fill:"d-london",tag:"London",
+    title:"London — arrival & easy day",
+    plan:["<span class='whenlbl'>Morning:</span> land Heathrow, get to the hotel, drop bags.","<span class='whenlbl'>Afternoon:</span> Hyde Park & Kensington Gardens — the free Diana Memorial pirate-ship playground burns off travel energy. Walk past Buckingham Palace.","<span class='whenlbl'>Evening:</span> early dinner, early bed to beat jet lag."],
+    costs:[["Hotel — London, night 1","$260"],["Meals","$200"],["Parks & playground","free"]],total:"$460"},
+
+  "may-23":{wd:"Sun",dd:"23",mo:"May",date:"Sunday, May 23",loc:"London",pill:"london",fill:"d-london",tag:"London",
+    title:"London — the big day",
+    plan:["<span class='whenlbl'>Morning:</span> Natural History Museum (dinosaurs, blue whale — free) or London Zoo.","<span class='whenlbl'>Afternoon:</span> a short Thames cruise past the London Eye, Big Ben and Tower Bridge.","<span class='whenlbl'>Evening:</span> dinner near the river."],
+    costs:[["Hotel — London, night 2","$260"],["Zoo / museum + river cruise","$200"],["Meals","$200"]],total:"$660"},
+
+  "may-24":{wd:"Mon",dd:"24",mo:"May",date:"Monday, May 24",loc:"Bath",pill:"bath",fill:"d-bath",ico:"🚆",tag:"→ Bath",
+    title:"London → Bath",
+    plan:["<span class='whenlbl'>Morning:</span> train from London Paddington to Bath Spa (~1h 25m).","<span class='whenlbl'>Afternoon:</span> the Roman Baths, then Pulteney Bridge and the Royal Crescent.","<span class='whenlbl'>Late day:</span> Royal Victoria Park — a superb free playground."],
+    costs:[["Train, London→Bath (2 adult + 2 child)","$110"],["Hotel — Bath, night 1","$200"],["Roman Baths (family)","$95"],["Meals","$200"]],total:"$605"},
+
+  "may-25":{wd:"Tue",dd:"25",mo:"May",date:"Tuesday, May 25",loc:"Bath",pill:"bath",fill:"d-bath",tag:"Bath",
+    title:"Bath — day trip",
+    plan:["Longleat Safari Park (~1 hr) — drive-through lions and monkeys plus a hedge maze, a sure hit with 5-year-olds. Swap in Stonehenge if you'd rather the icon."],
+    costs:[["Hotel — Bath, night 2","$200"],["Longleat Safari (family)","$190"],["Meals","$200"]],total:"$590"},
+
+  "may-26":{wd:"Wed",dd:"26",mo:"May",date:"Wednesday, May 26",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",ico:"🚆",tag:"→ Edin",
+    title:"Bath → Edinburgh",
+    plan:["<span class='whenlbl'>The long haul:</span> train Bath → Edinburgh (~6.5–7 hrs, one change). Pack snacks, download shows.","<span class='whenlbl'>Faster option:</span> fly Bristol → Edinburgh (~1h15).","<span class='whenlbl'>Evening:</span> arrive, check in, easy dinner near the Royal Mile."],
+    costs:[["Train, Bath→Edinburgh","$280"],["Lodging — Edinburgh, night 1","$210"],["Meals (travel day)","$150"]],total:"$640",
+    note:"The Bristol→Edinburgh flight can come in cheaper than the train and saves most of a day."},
+
+  "may-27":{wd:"Thu",dd:"27",mo:"May",date:"Thursday, May 27",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
+    title:"Edinburgh Castle & the Royal Mile",
+    plan:["Edinburgh Castle up on its volcanic rock (book a timed entry), then walk the Royal Mile downhill toward Holyrood."],
+    costs:[["Lodging — Edinburgh","$210"],["Edinburgh Castle (family)","$100"],["Meals","$200"]],total:"$510"},
+
+  "may-28":{wd:"Fri",dd:"28",mo:"May",date:"Friday, May 28",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
+    title:"Museums & illusions",
+    plan:["<span class='whenlbl'>Morning:</span> National Museum of Scotland — free, enormous, hands-on.","<span class='whenlbl'>Afternoon:</span> Camera Obscura & World of Illusions — mirror mazes and optical tricks."],
+    costs:[["Lodging — Edinburgh","$210"],["Camera Obscura (museum is free)","$75"],["Meals","$200"]],total:"$485"},
+
+  "may-29":{wd:"Sat",dd:"29",mo:"May",date:"Saturday, May 29",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
+    title:"Edinburgh — day trip",
+    plan:["The Kelpies & Falkirk Wheel — giant steel horse-heads plus a rotating boat lift, both close and magic for young kids. Stirling Castle is an easy alternative."],
+    costs:[["Lodging — Edinburgh","$210"],["Kelpies day trip (transport + entry)","$120"],["Meals","$200"]],total:"$530"},
+
+  "may-30":{wd:"Sun",dd:"30",mo:"May",date:"Sunday, May 30",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",
+    title:"Science & a hill",
+    plan:["<span class='whenlbl'>Morning:</span> Dynamic Earth — hands-on planet-and-science exhibits near Holyrood.","<span class='whenlbl'>Afternoon:</span> an easy climb up Arthur's Seat for city views, or Edinburgh Zoo for the penguins."],
+    costs:[["Lodging — Edinburgh","$210"],["Dynamic Earth (Arthur's Seat is free)","$75"],["Meals","$200"]],total:"$485"},
+
+  "may-31":{wd:"Mon",dd:"31",mo:"May",date:"Monday, May 31 · UK bank holiday",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin ·BH",
+    title:"Britannia & the beach",
+    plan:["The Royal Yacht Britannia (self-guided, kids' audio guide), then Portobello Beach if the weather cooperates."],
+    costs:[["Lodging — Edinburgh","$210"],["Royal Yacht Britannia (family)","$95"],["Meals","$200"]],total:"$505",
+    note:"Bank holiday — expect bigger crowds at the main sights."},
+
+  "jun-1":{wd:"Tue",dd:"1",mo:"Jun",date:"Tuesday, June 1",loc:"Palermo",pill:"palermo",fill:"d-palermo",ico:"✈",tag:"→ Palermo",
+    title:"Edinburgh → Palermo",
+    plan:["<span class='whenlbl'>Morning:</span> flight to Palermo (aim for the direct Ryanair — verify the day).","<span class='whenlbl'>Afternoon:</span> land around midday, check in, a first gentle wander through the old town and the first gelato."],
+    costs:[["Flight, Edinburgh→Palermo (×4)","$450"],["Lodging — Palermo, night 1","$140"],["Meals","$130"]],total:"$720",
+    note:"The direct flight runs only ~2 days/week. Confirm it operates on your date before booking the rest."},
+
+  "jun-2":{wd:"Wed",dd:"2",mo:"Jun",date:"Wednesday, June 2",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
+    title:"Palermo old town",
+    plan:["The Cathedral and the Palatine Chapel (dazzling gold mosaics), then the buzz of the Ballarò and Vucciria markets. Street-food lunch — arancini, panelle, cannoli."],
+    costs:[["Lodging — Palermo","$140"],["Cathedral + Palatine Chapel","$40"],["Meals","$150"]],total:"$330"},
+
+  "jun-3":{wd:"Thu",dd:"3",mo:"Jun",date:"Thursday, June 3",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
+    title:"Beach or Cefalù",
+    plan:["Mondello Beach (~20 min) — calm, shallow water made for 5-year-olds. Or take the train ~1 hr to Cefalù, a gorgeous beach-and-cathedral town."],
+    costs:[["Lodging — Palermo","$140"],["Beach free / Cefalù train","$40"],["Meals","$150"]],total:"$330"},
+
+  "jun-4":{wd:"Fri",dd:"4",mo:"Jun",date:"Friday, June 4",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",
+    title:"Monreale & the puppets",
+    plan:["<span class='whenlbl'>Morning:</span> Monreale — the hilltop cathedral with breathtaking mosaics (~20 min from town).","<span class='whenlbl'>Evening:</span> Opera dei Pupi, the Sicilian puppet theatre — a delight for kids — then a last Sicilian dinner."],
+    costs:[["Lodging — Palermo","$140"],["Monreale + puppet theatre","$70"],["Meals","$150"]],total:"$360"},
+
+  "jun-5":{wd:"Sat",dd:"5",mo:"Jun",date:"Saturday, June 5",loc:"London",pill:"london",fill:"d-london",ico:"✈",tag:"→ London",
+    title:"Palermo → London",
+    plan:["Fly back to London and check in for the night. Keep it low-key — this buffer night is your insurance against a delayed Sicily flight so you never risk the trip home."],
+    costs:[["Flight, Palermo→London (×4)","$280"],["Hotel — London buffer night","$260"],["Meals","$130"]],total:"$670"},
+
+  "jun-6":{wd:"Sun",dd:"6",mo:"Jun",date:"Sunday, June 6",loc:"Home",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly home",
+    title:"London → Boston",
+    plan:["Morning flight London → Boston. Home by evening, with two very well-travelled 5-year-olds."],
+    costs:[["Transatlantic flight, return (×4)","$1,600"],["Airport meals","$60"]],total:"$1,660"}
+};
+
+/* Calendar layouts: null = blank cell, string = day key */
+const MAY = [
+  [null,null,null,null,null,null,"blank-1"],
+  ["blank-2","blank-3","blank-4","blank-5","blank-6","blank-7","blank-8"],
+  ["blank-9","blank-10","blank-11","blank-12","blank-13","blank-14","blank-15"],
+  ["blank-16","blank-17","blank-18","blank-19","blank-20","may-21","may-22"],
+  ["may-23","may-24","may-25","may-26","may-27","may-28","may-29"],
+  ["may-30","may-31",null,null,null,null,null]
+];
+const JUN = [
+  [null,null,"jun-1","jun-2","jun-3","jun-4","jun-5"],
+  ["jun-6","blank-7j","blank-8j","blank-9j","blank-10j","blank-11j","blank-12j"],
+  ["blank-13j","blank-14j","blank-15j","blank-16j","blank-17j","blank-18j","blank-19j"]
+];
+
+function cellHTML(key){
+  if(key===null) return '<td><div class="cell empty"></div></td>';
+  if(key.startsWith("blank-")){
+    const n=key.split("-")[1].replace("j","");
+    return '<td><div class="cell"><span class="dnum">'+n+'</span></div></td>';
+  }
+  const d=DAYS[key];
+  const ico=d.ico?'<span class="ico">'+d.ico+'</span>':'';
+  return '<td><div class="cell click '+d.fill+'" role="button" tabindex="0" data-day="'+key+'" '+
+    'aria-label="'+d.date+' — '+d.title+'">'+ico+
+    '<span class="dnum">'+d.dd+'</span><span class="tag">'+d.tag+'</span></div></td>';
+}
+function renderMonth(rows,id){
+  document.getElementById(id).innerHTML =
+    rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');
+}
+renderMonth(MAY,"may-body");
+renderMonth(JUN,"jun-body");
+
+/* Day-by-day cards */
+function cardHTML(key){
+  const d=DAYS[key];
+  const plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
+  return '<div class="day" role="button" tabindex="0" data-day="'+key+'">'+
+    '<div class="date"><div class="wd">'+d.wd+'</div><div class="dd">'+d.dd+'</div><div class="mo">'+d.mo+'</div></div>'+
+    '<div class="body"><h4>'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span>'+
+    '<span class="costchip">'+d.total+'</span></h4>'+
+    '<ul class="plan">'+plan+'</ul></div></div>';
+}
+document.getElementById("daylist").innerHTML = Object.keys(DAYS).map(cardHTML).join('');
+
+/* Modal */
+const backdrop=document.getElementById("backdrop");
+const mDate=document.getElementById("m-date");
+const mTitle=document.getElementById("m-title");
+const mBody=document.getElementById("m-body");
+let lastFocus=null;
+
+function openDay(key){
+  const d=DAYS[key]; if(!d) return;
+  lastFocus=document.activeElement;
+  mDate.textContent=d.date;
+  mTitle.innerHTML=d.title+' <span class="pill p-'+d.pill+'" style="vertical-align:middle;">'+d.loc+'</span>';
+  const plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
+  const costs=d.costs.map(c=>'<tr><td>'+c[0]+'</td><td>'+c[1]+'</td></tr>').join('');
+  let html='<div class="sect">The plan</div><ul class="mplan">'+plan+'</ul>'+
+    '<div class="sect">Estimated cost — family of 4</div>'+
+    '<table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
+  if(d.note) html+='<div class="mnote">'+d.note+'</div>';
+  mBody.innerHTML=html;
+  backdrop.classList.add("open");
+  document.getElementById("closebtn").focus();
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  backdrop.classList.remove("open");
+  document.body.style.overflow="";
+  if(lastFocus) lastFocus.focus();
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-day]");
+  if(t){ openDay(t.getAttribute("data-day")); return; }
+});
+document.addEventListener("keydown",e=>{
+  const t=e.target.closest && e.target.closest("[data-day]");
+  if(t && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); openDay(t.getAttribute("data-day")); }
+  if(e.key==="Escape" && backdrop.classList.contains("open")) closeModal();
+});
+document.getElementById("closebtn").addEventListener("click",closeModal);
+backdrop.addEventListener("click",e=>{ if(e.target===backdrop) closeModal(); });
+</script>
+</body>
+</html>
