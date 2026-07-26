@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Long Way South — Boston to Sicily, May 2027</title>
+<title>2027 LoCoco Vacation — Boston to Sicily</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -97,20 +97,33 @@
   .day .body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
 
-  /* Multi-entry note blocks */
+  /* Multi-entry blocks */
   .entries{display:grid;gap:.55rem;margin-top:.7rem;}
   .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.6rem .65rem;display:grid;gap:.45rem;}
+  .entry.excluded{opacity:.72;}
+  .ent-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+  .ent-inc{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;}
+  .ent-inc input{width:15px;height:15px;accent-color:var(--edinburgh);cursor:pointer;}
+  .entry.excluded .ent-inc{color:var(--muted);}
+  .entry:not(.excluded) .ent-inc{color:var(--edinburgh);}
+  .ent-calc{font-size:.82rem;font-weight:600;color:var(--palermo);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .entry.excluded .ent-calc{color:var(--muted);}
+  .ent-calc .calc-sub{font-weight:400;color:var(--muted);font-size:.72rem;}
   .entry textarea.ent-note{width:100%;border:none;background:transparent;font-family:"Inter",sans-serif;font-size:.9rem;line-height:1.5;resize:vertical;min-height:1.7rem;color:var(--ink);}
   .entry textarea.ent-note:focus{outline:none;}
   .entry textarea.ent-note::placeholder{color:#b3aea2;}
-  .entry-row{display:flex;gap:.4rem;align-items:center;}
   .entry input{font-family:"Inter",sans-serif;font-size:.82rem;padding:.4rem .55rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);}
   .entry input::placeholder{color:#b3aea2;}
   .entry input:focus{outline:none;border-color:var(--edinburgh);background:#fff;}
-  .ent-link{flex:1 1 auto;min-width:0;}
-  .ent-cost{flex:0 0 auto;width:92px;text-align:right;font-variant-numeric:tabular-nums;}
-  .ent-del{flex:0 0 auto;width:30px;height:30px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-radius:6px;font-size:.85rem;}
+  .ent-link{width:100%;}
+  .entry-row{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;}
+  .cf{display:flex;align-items:center;gap:.3rem;font-size:.74rem;color:var(--muted);font-weight:600;}
+  .cf input{width:74px;text-align:right;font-variant-numeric:tabular-nums;}
+  .cf-spacer{flex:1 1 auto;}
+  .ent-del,.ent-move{flex:0 0 auto;width:30px;height:30px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-radius:6px;}
+  .ent-del{font-size:.85rem;} .ent-move{font-size:1rem;}
   .ent-del:hover{background:#f0dbd2;color:var(--palermo);}
+  .ent-move:hover{background:#e4ebef;color:var(--london);}
   .ent-visit{font-size:.78rem;color:var(--london);text-decoration:none;font-weight:600;width:max-content;}
   .ent-visit:hover{text-decoration:underline;}
   .ent-visit.hidden{display:none;}
@@ -119,6 +132,17 @@
   .addbtn:hover{background:#efeaf3;}
   .added-sum{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;}
   .added-sum b{color:var(--palermo);}
+  .added-sum .prop{color:var(--muted);}
+
+  /* Move picker */
+  .movegrid{display:grid;gap:.4rem;}
+  .moveopt{display:flex;align-items:center;gap:.65rem;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:.55rem .7rem;cursor:pointer;font-family:"Inter",sans-serif;font-size:.9rem;color:var(--ink);}
+  .moveopt:hover{border-color:var(--ink);}
+  .moveopt.current{opacity:.45;cursor:default;}
+  .moveopt .mvdot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;background:var(--muted);}
+  .moveopt .mvdot.p-london{background:var(--london);} .moveopt .mvdot.p-bath{background:var(--bath);}
+  .moveopt .mvdot.p-edinburgh{background:var(--edinburgh);} .moveopt .mvdot.p-palermo{background:var(--palermo);} .moveopt .mvdot.p-travel{background:var(--travel);}
+  .moveopt .cur-tag{margin-left:auto;font-size:.7rem;color:var(--muted);font-weight:600;}
 
   .summary{display:grid;grid-template-columns:1.1fr 1fr;gap:1.6rem;align-items:start;}
   @media(max-width:640px){.summary{grid-template-columns:1fr;}}
@@ -133,6 +157,8 @@
   .breakdown tr:last-child td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600;}
   .breakdown .cat{color:#3a4247;}
   .swingnote{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.8rem;}
+  .addon-line{margin-top:1rem;padding-top:.9rem;border-top:1.5px solid var(--ink);font-size:.92rem;line-height:1.7;}
+  .addon-line b{color:var(--palermo);font-variant-numeric:tabular-nums;}
 
   .notes{margin-top:2.6rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.5rem;}
   .notes h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;margin-bottom:.7rem;}
@@ -171,7 +197,7 @@
 
   @media print{
     body{background:#fff;padding:0;font-size:11px;}
-    .toolbar,.howto,.addrow,.ent-del{display:none!important;}
+    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input{display:none!important;}
     .notes,.day,.summary,.bigtotal{break-inside:avoid;}
     .backdrop{display:none!important;}
     .cell,.pill,.leg,.sw,.bigtotal,.ribbon,.costchip{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -188,12 +214,12 @@
 
   <header>
     <div class="eyebrow">Family Trip · 2 adults + 2 kids (age 5)</div>
-    <h1>The Long Way <em>South</em></h1>
+    <h1>2027 <em>LoCoco</em> Vacation</h1>
     <p class="subhead">Sixteen days from grey-stone Britain down to the Sicilian sun.</p>
     <div class="meta">
       <span><b>Depart</b> Fri, May 21, 2027 (overnight)</span>
       <span><b>Home</b> Sun, June 6, 2027</span>
-      <span class="total"><b>≈ $12,200</b> all-in</span>
+      <span class="total"><b>≈ $12,200</b> base</span>
     </div>
   </header>
 
@@ -208,7 +234,7 @@
     </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </div>
-  <p class="howto">Each day holds as many entries as you like — every entry has a <b>note</b>, a <b>link</b>, and a <b>cost</b>. Entries save to <b>your own browser</b>. To share with the group, hit <b>Export</b> and attach the file to a GitHub issue or PR; anyone can <b>Import</b> to merge ideas in (nothing gets overwritten). <em>(For live shared comments, add giscus + GitHub Discussions.)</em></p>
+  <p class="howto">Every entry has a <b>note</b>, a <b>link</b>, and <b>per-person costs</b> (adult + child) — the total is figured for <b>2 adults + 2 kids</b> automatically. Tick <b>count in total</b> on the ones you actually plan to do; only ticked entries roll into your add-ons total below. Entries save to <b>your own browser</b> — use <b>Export / Import</b> to share and merge ideas on GitHub.</p>
 
   <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
     <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
@@ -240,7 +266,7 @@
     <span>BH = UK bank holiday (May 31)</span>
   </div>
 
-  <div class="section-head"><h2>Day by Day</h2><span class="hint">add notes, links &amp; costs under any day</span></div>
+  <div class="section-head"><h2>Day by Day</h2><span class="hint">add notes, links &amp; per-person costs</span></div>
   <div id="daylist"></div>
 
   <div class="section-head"><h2>Open ideas</h2><span class="hint">not tied to a day</span></div>
@@ -250,10 +276,10 @@
   <div class="section-head"><h2>What it costs</h2><span class="hint">family of 4, USD</span></div>
   <div class="summary">
     <div class="bigtotal">
-      <div class="lbl">Estimated all-in</div>
+      <div class="lbl">Base estimate</div>
       <div class="amt">$12,200</div>
       <div class="sub">Late-May 2027 fares, booked ~2–3 months ahead.</div>
-      <div class="range">Realistic range <b>$11,000 – $15,000</b>, depending mostly on how much you eat out and how nice the hotels are.</div>
+      <div class="range">Realistic range <b>$11,000 – $15,000</b>, depending mostly on how much you eat out and how nice the hotels are. Your ticked add-ons stack on top.</div>
     </div>
     <div>
       <table class="breakdown">
@@ -265,9 +291,10 @@
         <tr><td class="cat">Local transport &amp; airport transfers</td><td>$500</td></tr>
         <tr><td class="cat">Travel insurance</td><td>$300</td></tr>
         <tr><td class="cat">Entry paperwork (UK ETA + ETIAS)</td><td>$152</td></tr>
-        <tr><td>Total</td><td>$12,182</td></tr>
+        <tr><td>Base total</td><td>$12,182</td></tr>
       </table>
       <p class="swingnote">Food is the big swing. This assumes ~$185/day of mixed eating; all sit-down restaurants for four could roughly double it.</p>
+      <div class="addon-line" id="addonLine"></div>
     </div>
   </div>
 
@@ -298,7 +325,19 @@
   </div>
 </div>
 
+<div class="backdrop" id="movepick" role="dialog" aria-modal="true" aria-labelledby="move-h">
+  <div class="modal">
+    <button class="closebtn" id="moveclose" aria-label="Close">✕</button>
+    <div class="modal-top"><div class="mdate">Move entry to…</div><h3 id="move-h"></h3></div>
+    <div class="modal-body"><div class="movegrid" id="movegrid"></div></div>
+  </div>
+</div>
+
 <script>
+/* ---------- Config ---------- */
+const PARTY={adults:2,kids:2};
+const BASE=12182;
+
 /* ---------- Trip data ---------- */
 const DAYS = {
   "may-21":{wd:"Fri",dd:"21",mo:"May",date:"Friday, May 21",loc:"Travel",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly out",title:"Boston → London",
@@ -365,20 +404,24 @@ const JUN = [
 ];
 
 /* ---------- Entry state ---------- */
-const STORE_KEY="longwaysouth-entries-v2";
+const STORE_KEY="longwaysouth-entries-v3";
 const ENTRIES={};
 function esc(s){return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function normUrl(u){u=(u||"").trim();if(!u)return"#";if(!/^https?:\/\//i.test(u))u="https://"+u;return u;}
-function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||(e.cost||"").trim());}
+function num(v){const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isNaN(n)?0:n;}
+function money(n){const r=Math.round(n*100)/100;return "$"+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2));}
+function entTotal(e){return PARTY.adults*num(e.adult)+PARTY.kids*num(e.child);}
+function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||String(e.adult||"").trim()||String(e.child||"").trim());}
 function arr(k){if(!ENTRIES[k])ENTRIES[k]=[];return ENTRIES[k];}
-function sumCost(k){return (ENTRIES[k]||[]).reduce((s,e)=>{const n=parseFloat((e.cost||"").replace(/[^0-9.]/g,""));return s+(isNaN(n)?0:n);},0);}
 
 function migrate(){
   try{
-    const v2=localStorage.getItem(STORE_KEY);
-    if(v2){Object.assign(ENTRIES,JSON.parse(v2));return;}
+    const v3=localStorage.getItem(STORE_KEY);
+    if(v3){Object.assign(ENTRIES,JSON.parse(v3));return;}
+    const v2=localStorage.getItem("longwaysouth-entries-v2");
+    if(v2){const o=JSON.parse(v2);Object.keys(o).forEach(k=>{ENTRIES[k]=(o[k]||[]).map(e=>({note:e.note||"",link:e.link||"",adult:e.cost||"",child:"",include:false}));});return;}
     const v1=localStorage.getItem("longwaysouth-notes-v1");
-    if(v1){const old=JSON.parse(v1);Object.keys(old).forEach(k=>{const s=(old[k]||"").trim();if(s)ENTRIES[k]=[{note:old[k],link:"",cost:""}];});}
+    if(v1){const o=JSON.parse(v1);Object.keys(o).forEach(k=>{const s=(o[k]||"").trim();if(s)ENTRIES[k]=[{note:o[k],link:"",adult:"",child:"",include:false}];});}
   }catch(e){}
 }
 function cleanEntries(){const o={};Object.keys(ENTRIES).forEach(k=>{const a=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(a.length)o[k]=a;});return o;}
@@ -389,14 +432,26 @@ let pT;function persistSoon(){clearTimeout(pT);pT=setTimeout(persist,250);}
 migrate();
 
 /* ---------- Render entries ---------- */
+function calcLabel(e){
+  const t=entTotal(e);
+  if(num(e.adult)<=0&&num(e.child)<=0) return '';
+  return '= '+money(t)+' <span class="calc-sub">('+PARTY.adults+' ad + '+PARTY.kids+' ch)</span>';
+}
 function entryHTML(k,i,e){
   const link=(e.link||"").trim();
-  return '<div class="entry" data-key="'+k+'" data-idx="'+i+'">'+
+  return '<div class="entry'+(e.include?'':' excluded')+'" data-key="'+k+'" data-idx="'+i+'">'+
+    '<div class="ent-top">'+
+      '<label class="ent-inc"><input type="checkbox" class="ent-check"'+(e.include?' checked':'')+'> <span>count in total</span></label>'+
+      '<span class="ent-calc">'+calcLabel(e)+'</span>'+
+    '</div>'+
     '<textarea class="ent-note" rows="2" placeholder="Note or idea…">'+esc(e.note||"")+'</textarea>'+
     '<a class="ent-visit'+(link?"":" hidden")+'" href="'+esc(normUrl(link))+'" target="_blank" rel="noopener noreferrer">open link ↗</a>'+
+    '<input class="ent-link" type="url" placeholder="Paste a link (optional)" value="'+esc(e.link||"")+'">'+
     '<div class="entry-row">'+
-      '<input class="ent-link" type="url" placeholder="Paste a link (optional)" value="'+esc(e.link||"")+'">'+
-      '<input class="ent-cost" type="text" inputmode="decimal" placeholder="$ cost" value="'+esc(e.cost||"")+'">'+
+      '<label class="cf">Adult $<input class="ent-adult" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.adult||"")+'"></label>'+
+      '<label class="cf">Child $<input class="ent-child" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.child||"")+'"></label>'+
+      '<span class="cf-spacer"></span>'+
+      '<button class="ent-move" title="Move to another day" aria-label="Move to another day">⤴</button>'+
       '<button class="ent-del" title="Remove" aria-label="Remove entry">✕</button>'+
     '</div>'+
   '</div>';
@@ -404,18 +459,28 @@ function entryHTML(k,i,e){
 function renderEntries(k){
   const wrap=document.querySelector('[data-day-entries="'+k+'"]');
   if(wrap) wrap.innerHTML=(ENTRIES[k]||[]).map((e,i)=>entryHTML(k,i,e)).join('');
-  updateSum(k); updateDot(k);
+  updateSum(k); updateDot(k); updateGrand();
 }
 function updateSum(k){
   const span=document.querySelector('[data-sum="'+k+'"]'); if(!span)return;
-  const s=sumCost(k);
-  span.innerHTML = s>0 ? 'added ideas: <b>$'+s.toLocaleString(undefined,{maximumFractionDigits:0})+'</b>' : '';
+  let chosen=0,proposed=0;
+  (ENTRIES[k]||[]).forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
+  let html="";
+  if(chosen>0) html+='chosen: <b>'+money(chosen)+'</b>';
+  if(proposed>0) html+=(html?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';
+  span.innerHTML=html;
 }
 function updateDot(k){
   const cell=document.querySelector('.cell.click[data-day="'+k+'"]'); if(!cell)return;
   const n=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e)).length;
   cell.classList.toggle("has-note",n>0);
   const dot=cell.querySelector(".dot"); if(dot)dot.textContent=n>0?n:"";
+}
+function updateGrand(){
+  let g=0,count=0;
+  Object.keys(ENTRIES).forEach(k=>{(ENTRIES[k]||[]).forEach(e=>{if(e.include){g+=entTotal(e);if(!emptyEntry(e))count++;}});});
+  const el=document.getElementById("addonLine"); if(!el)return;
+  el.innerHTML='Your chosen add-ons ('+count+'): <b>'+money(g)+'</b><br>Grand total incl. picks: <b>'+money(BASE+g)+'</b>';
 }
 function renderAllEntries(){Object.keys(DAYS).forEach(renderEntries);renderEntries("_ideas");}
 
@@ -456,12 +521,12 @@ function openDay(key){
   const plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
   const costs=d.costs.map(c=>'<tr><td>'+c[0]+'</td><td>'+c[1]+'</td></tr>').join('');
   let html='<div class="sect">The plan</div><ul class="mplan">'+plan+'</ul>'+
-    '<div class="sect">Estimated cost — family of 4</div><table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
+    '<div class="sect">Base estimate — family of 4</div><table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
   if(d.note) html+='<div class="mnote">'+d.note+'</div>';
   const es=(ENTRIES[key]||[]).filter(e=>!emptyEntry(e));
   if(es.length){
     html+='<div class="sect">Added notes &amp; ideas ('+es.length+')</div><ul class="mentries">'+
-      es.map(e=>{let li='<li>';if((e.note||"").trim())li+=esc(e.note.trim());if((e.cost||"").trim())li+=' <span class="mcost">'+esc(e.cost.trim())+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';return li+'</li>';}).join('')+'</ul>';
+      es.map(e=>{let li='<li>';if((e.note||"").trim())li+=esc(e.note.trim());const t=entTotal(e);if(t>0)li+=' <span class="mcost">'+money(t)+(e.include?' ✓':' (not counted)')+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';return li+'</li>';}).join('')+'</ul>';
   }
   html+='<p class="mhint">Add or edit entries under this day in the list below.</p>';
   mBody.innerHTML=html;
@@ -471,9 +536,9 @@ function openDay(key){
 }
 function closeModal(){backdrop.classList.remove("open");document.body.style.overflow="";if(lastFocus)lastFocus.focus();}
 
-/* ---------- Add / remove entries ---------- */
+/* ---------- Add / remove ---------- */
 function addEntry(k){
-  arr(k).push({note:"",link:"",cost:""});
+  arr(k).push({note:"",link:"",adult:"",child:"",include:false});
   renderEntries(k);
   const wrap=document.querySelector('[data-day-entries="'+k+'"]');
   if(wrap){const nt=wrap.querySelector(".entry:last-child .ent-note");if(nt)nt.focus();}
@@ -481,33 +546,85 @@ function addEntry(k){
 }
 function removeEntry(k,idx){ if(ENTRIES[k]){ENTRIES[k].splice(idx,1);renderEntries(k);persist();} }
 
+/* ---------- Move ---------- */
+const movepick=document.getElementById("movepick");
+let moveCtx={key:null,idx:null};
+function buildMoveGrid(){
+  let html=Object.keys(DAYS).map(k=>{const d=DAYS[k];
+    return '<button class="moveopt" data-move-to="'+k+'"><span class="mvdot p-'+d.pill+'"></span>'+
+      '<span class="mvlabel"><b>'+d.wd+' '+d.dd+' '+d.mo+'</b> · '+d.loc+'</span></button>';}).join('');
+  html+='<button class="moveopt" data-move-to="_ideas"><span class="mvdot"></span><span class="mvlabel"><b>Open ideas</b> · parking lot</span></button>';
+  document.getElementById("movegrid").innerHTML=html;
+}
+buildMoveGrid();
+function openMove(key,idx){
+  moveCtx={key,idx};
+  const e=(ENTRIES[key]||[])[idx]||{}; const n=(e.note||"").trim();
+  document.getElementById("move-h").textContent = n ? ('“'+n.slice(0,60)+(n.length>60?'…':'')+'”') : "(empty note)";
+  document.querySelectorAll("#movegrid .moveopt").forEach(b=>{
+    const cur=b.getAttribute("data-move-to")===key;
+    b.classList.toggle("current",cur); b.disabled=cur;
+    let tag=b.querySelector(".cur-tag");
+    if(cur&&!tag){tag=document.createElement("span");tag.className="cur-tag";tag.textContent="current";b.appendChild(tag);}
+    else if(!cur&&tag){tag.remove();}
+  });
+  movepick.classList.add("open"); document.body.style.overflow="hidden";
+}
+function closeMove(){movepick.classList.remove("open");document.body.style.overflow="";moveCtx={key:null,idx:null};}
+function doMove(toKey){
+  const {key,idx}=moveCtx;
+  if(key==null||toKey===key){closeMove();return;}
+  const src=ENTRIES[key];
+  if(src&&src[idx]!=null){const item=src.splice(idx,1)[0];arr(toKey).push(item);renderEntries(key);renderEntries(toKey);persist();}
+  closeMove();
+}
+document.getElementById("moveclose").addEventListener("click",closeMove);
+movepick.addEventListener("click",e=>{if(e.target===movepick)closeMove();});
+
 /* ---------- Events ---------- */
 document.addEventListener("click",e=>{
+  const dest=e.target.closest("[data-move-to]"); if(dest){doMove(dest.getAttribute("data-move-to"));return;}
   const add=e.target.closest("[data-add]"); if(add){addEntry(add.getAttribute("data-add"));return;}
+  const mv=e.target.closest(".ent-move"); if(mv){const en=mv.closest(".entry");openMove(en.getAttribute("data-key"),+en.getAttribute("data-idx"));return;}
   const del=e.target.closest(".ent-del"); if(del){const en=del.closest(".entry");removeEntry(en.getAttribute("data-key"),+en.getAttribute("data-idx"));return;}
-  if(e.target.closest("textarea,input,button,a,.entries,.addrow,.toolbar")) return;
+  if(e.target.closest("textarea,input,button,a,label,.entries,.addrow,.toolbar")) return;
   const t=e.target.closest("[data-day]"); if(t) openDay(t.getAttribute("data-day"));
 });
 document.addEventListener("keydown",e=>{
-  if(e.target.matches("textarea,input")){ if(e.key==="Escape"&&backdrop.classList.contains("open"))closeModal(); return; }
+  if(e.key==="Escape"){ if(movepick.classList.contains("open"))closeMove(); if(backdrop.classList.contains("open"))closeModal(); }
+  if(e.target.matches("textarea,input")) return;
   const t=e.target.closest && e.target.closest("[data-day]");
   if(t && (e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
-  if(e.key==="Escape"&&backdrop.classList.contains("open")) closeModal();
 });
 document.getElementById("closebtn").addEventListener("click",closeModal);
 backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal();});
 
+/* Text/number inputs */
 document.addEventListener("input",e=>{
   const en=e.target.closest(".entry"); if(!en) return;
-  const k=en.getAttribute("data-key"), i=+en.getAttribute("data-idx"); arr(k); if(!ENTRIES[k][i])ENTRIES[k][i]={note:"",link:"",cost:""};
-  if(e.target.classList.contains("ent-note")) ENTRIES[k][i].note=e.target.value;
+  const k=en.getAttribute("data-key"), i=+en.getAttribute("data-idx"); arr(k); if(!ENTRIES[k][i])ENTRIES[k][i]={note:"",link:"",adult:"",child:"",include:false};
+  const rec=ENTRIES[k][i];
+  if(e.target.classList.contains("ent-note")) rec.note=e.target.value;
   else if(e.target.classList.contains("ent-link")){
-    ENTRIES[k][i].link=e.target.value;
+    rec.link=e.target.value;
     const v=en.querySelector(".ent-visit"); const val=e.target.value.trim();
-    if(v){ v.href=normUrl(val); v.classList.toggle("hidden",!val); }
+    if(v){v.href=normUrl(val);v.classList.toggle("hidden",!val);}
   }
-  else if(e.target.classList.contains("ent-cost")){ ENTRIES[k][i].cost=e.target.value; updateSum(k); }
+  else if(e.target.classList.contains("ent-adult")||e.target.classList.contains("ent-child")){
+    if(e.target.classList.contains("ent-adult")) rec.adult=e.target.value; else rec.child=e.target.value;
+    const c=en.querySelector(".ent-calc"); if(c)c.innerHTML=calcLabel(rec);
+    updateSum(k); updateGrand();
+  }
   updateDot(k); persistSoon();
+});
+/* Include checkbox */
+document.addEventListener("change",e=>{
+  if(!e.target.classList.contains("ent-check")) return;
+  const en=e.target.closest(".entry"); const k=en.getAttribute("data-key"), i=+en.getAttribute("data-idx");
+  arr(k); if(!ENTRIES[k][i])return;
+  ENTRIES[k][i].include=e.target.checked;
+  en.classList.toggle("excluded",!e.target.checked);
+  updateSum(k); updateGrand(); persist();
 });
 
 /* ---------- Export / Import / Copy / Clear ---------- */
@@ -525,14 +642,15 @@ document.getElementById("importFile").addEventListener("change",e=>{
       const inc=JSON.parse(rd.result); let added=0;
       Object.keys(inc).forEach(k=>{
         let items=inc[k];
-        if(typeof items==="string") items=[{note:items,link:"",cost:""}];
+        if(typeof items==="string") items=[{note:items}];
         if(!Array.isArray(items)) return;
         arr(k);
         items.forEach(it=>{
-          const e=(typeof it==="string")?{note:it,link:"",cost:""}:{note:it.note||"",link:it.link||"",cost:it.cost||""};
-          if(emptyEntry(e)) return;
-          const dup=ENTRIES[k].some(x=>(x.note||"")===e.note&&(x.link||"")===e.link&&(x.cost||"")===e.cost);
-          if(!dup){ENTRIES[k].push(e);added++;}
+          const e=(typeof it==="string")?{note:it}:it;
+          const rec={note:e.note||"",link:e.link||"",adult:(e.adult!=null?e.adult:(e.cost||"")),child:e.child||"",include:!!e.include};
+          if(emptyEntry(rec)) return;
+          const dup=ENTRIES[k].some(x=>(x.note||"")===rec.note&&(x.link||"")===rec.link&&String(x.adult||"")===String(rec.adult)&&String(x.child||"")===String(rec.child));
+          if(!dup){ENTRIES[k].push(rec);added++;}
         });
       });
       renderAllEntries(); persist();
@@ -542,11 +660,11 @@ document.getElementById("importFile").addEventListener("change",e=>{
   rd.readAsText(f); e.target.value="";
 });
 document.getElementById("copyBtn").addEventListener("click",()=>{
-  let out="The Long Way South — trip notes\n\n";
-  const dump=(k,label)=>{const es=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ";if((e.note||"").trim())l+=e.note.trim();if((e.cost||"").trim())l+=" ("+e.cost.trim()+")";if((e.link||"").trim())l+=" "+e.link.trim();out+=l+"\n";});out+="\n";};
+  let out="2027 LoCoco Vacation — trip notes\n\n";
+  const dump=(k,label)=>{const es=(ENTRIES[k]||[]).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ";if((e.note||"").trim())l+=e.note.trim();const t=entTotal(e);if(t>0)l+=" [adult $"+num(e.adult)+" / child $"+num(e.child)+" → "+money(t)+" for 2+2"+(e.include?", CHOSEN":"")+"]";if((e.link||"").trim())l+=" "+e.link.trim();out+=l+"\n";});out+="\n";};
   Object.keys(DAYS).forEach(k=>dump(k,DAYS[k].date+" — "+DAYS[k].title));
   dump("_ideas","Open ideas");
-  if(out.trim()==="The Long Way South — trip notes"){alert("No entries yet — add a few first.");return;}
+  if(out.trim()==="2027 LoCoco Vacation — trip notes"){alert("No entries yet — add a few first.");return;}
   const done=()=>{const b=document.getElementById("copyBtn");const t=b.textContent;b.textContent="Copied ✓";setTimeout(()=>b.textContent=t,1400);};
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(out).then(done).catch(()=>fallbackCopy(out,done));}
   else fallbackCopy(out,done);
