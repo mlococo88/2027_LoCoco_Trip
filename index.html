@@ -3,81 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2027 LoCoco Vacation — Boston to Sicily</title>
+<title>Trip Planner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#F4F3EE; --card:#FBFAF6; --ink:#232A2E; --muted:#6E7378; --line:#E2DDD1;
-    --london:#46687F; --bath:#B98436; --edinburgh:#6A5A79; --palermo:#C25E3A; --travel:#9A948A;
-    --london-tint:#E7ECF0; --bath-tint:#F4E9D6; --edinburgh-tint:#EAE5EF; --palermo-tint:#F5E1D7; --travel-tint:#EAE7E0;
+    --accent:#6A5A79; --pos:#3f7d54; --warn:#C25E3A;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{-webkit-text-size-adjust:100%;}
   body{background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.5;padding:clamp(1rem,4vw,3.5rem) clamp(1rem,4vw,2rem);}
-  .wrap{max-width:940px;margin:0 auto;}
-  header{margin-bottom:1.6rem;}
+  .wrap{max-width:960px;margin:0 auto;}
+  header{margin-bottom:1.4rem;}
   .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.9rem;}
-  h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.3rem,7vw,4rem);line-height:1.02;letter-spacing:-.01em;}
-  h1 em{font-style:italic;color:var(--palermo);}
-  .subhead{margin-top:1rem;font-size:clamp(1rem,2.4vw,1.15rem);color:var(--muted);max-width:40ch;}
-  .meta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;font-size:.9rem;}
-  .meta b{font-weight:600;} .meta span{color:var(--muted);} .meta .total{color:var(--palermo);font-weight:600;}
+  h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.03;letter-spacing:-.01em;}
+  .subhead{margin-top:.8rem;font-size:clamp(1rem,2.4vw,1.15rem);color:var(--muted);max-width:44ch;}
+  .meta{margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;font-size:.9rem;}
+  .meta b{font-weight:600;} .meta span{color:var(--muted);} .meta .total{color:var(--warn);font-weight:600;}
 
-  .toolbar{position:sticky;top:0;z-index:40;margin:1.4rem 0 .6rem;display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;
+  .toolbar{position:sticky;top:0;z-index:40;margin:1.2rem 0 .6rem;display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;
     background:rgba(244,243,238,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;}
   .tb-title{font-weight:600;font-size:.92rem;}
   .sync{font-size:.76rem;font-weight:600;color:var(--muted);}
-  .sync.live{color:#3f7d54;} .sync.offline{color:var(--bath);} .sync.error{color:var(--palermo);}
-  .saved{font-size:.78rem;color:var(--edinburgh);opacity:0;transition:opacity .2s ease;font-weight:600;}
+  .sync.live{color:var(--pos);} .sync.offline{color:#B98436;} .sync.error{color:var(--warn);}
+  .saved{font-size:.78rem;color:var(--accent);opacity:0;transition:opacity .2s ease;font-weight:600;}
   .saved.show{opacity:1;}
   .tb-actions{margin-left:auto;display:flex;flex-wrap:wrap;gap:.4rem;}
   .btn{font-family:"Inter",sans-serif;font-size:.82rem;font-weight:600;padding:.4rem .8rem;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;transition:opacity .15s ease;}
   .btn:hover{opacity:.85;}
   .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);}
   .btn.ghost:hover{border-color:var(--ink);opacity:1;}
-  .btn.danger{color:var(--palermo);border-color:var(--palermo);}
+  .btn.danger{color:var(--warn);border-color:var(--warn);}
   .howto{font-size:.82rem;color:var(--muted);margin:.4rem 0 0;line-height:1.55;}
   .howto b{color:#3a4247;}
 
-  .ribbon{margin:1.8rem 0 .6rem;display:grid;grid-template-columns:repeat(5,1fr);border-radius:10px;overflow:hidden;box-shadow:0 1px 0 var(--line);}
-  .leg{padding:.85rem .9rem 1rem;color:#fff;min-height:78px;}
-  .leg .n{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
-  .leg .place{font-family:"Fraunces",serif;font-size:1.12rem;font-weight:500;margin-top:.15rem;}
-  .leg .nights{font-size:.74rem;opacity:.85;margin-top:.1rem;}
-  .leg.l-london{background:var(--london);} .leg.l-bath{background:var(--bath);}
-  .leg.l-edinburgh{background:var(--edinburgh);} .leg.l-palermo{background:var(--palermo);} .leg.l-home{background:var(--travel);}
+  .ribbon{margin:1.6rem 0 .5rem;display:flex;border-radius:10px;overflow:hidden;box-shadow:0 1px 0 var(--line);}
+  .ribbon:empty{display:none;}
+  .leg{padding:.8rem .85rem .95rem;color:#fff;min-height:74px;flex:1 1 0;min-width:0;}
+  .leg .n{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
+  .leg .place{font-family:"Fraunces",serif;font-size:1.05rem;font-weight:500;margin-top:.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .leg .nights{font-size:.72rem;opacity:.85;margin-top:.1rem;}
   .ribbon-caption{font-size:.78rem;color:var(--muted);font-style:italic;}
 
   .section-head{display:flex;align-items:baseline;gap:.9rem;margin:2rem 0 1rem;padding-bottom:.6rem;border-bottom:1.5px solid var(--ink);}
-  .section-head h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.65rem;letter-spacing:-.01em;}
+  .section-head h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.6rem;letter-spacing:-.01em;}
   .section-head .hint{font-size:.85rem;color:var(--muted);margin-left:auto;text-align:right;}
+  .collapse-all{margin-left:auto;font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;color:var(--accent);background:transparent;border:1px solid var(--line);border-radius:8px;padding:.3rem .7rem;cursor:pointer;}
+  .collapse-all:hover{border-color:var(--accent);}
 
-  .cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;}
-  @media(max-width:640px){.cal-grid{grid-template-columns:1fr;}}
-  .month h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem;margin-bottom:.6rem;}
+  .cal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.4rem;}
+  .month h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.05rem;margin-bottom:.5rem;}
   table.cal{width:100%;border-collapse:collapse;table-layout:fixed;}
-  table.cal th{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-bottom:.35rem;}
-  table.cal td{height:52px;vertical-align:top;padding:3px;}
+  table.cal th{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-bottom:.3rem;}
+  table.cal td{height:48px;vertical-align:top;padding:3px;}
   .cell{height:100%;border-radius:7px;padding:4px 5px;position:relative;border:1px solid var(--line);background:transparent;}
   .cell.empty{border:none;}
-  .cell .dnum{font-size:.78rem;font-weight:600;font-variant-numeric:tabular-nums;}
-  .cell .tag{display:block;font-size:.56rem;line-height:1.15;margin-top:2px;text-transform:uppercase;letter-spacing:.03em;font-weight:600;}
-  .cell .ico{position:absolute;top:3px;right:5px;font-size:.72rem;}
-  .cell .dot{position:absolute;bottom:4px;right:5px;min-width:14px;height:14px;padding:0 3px;border-radius:8px;background:var(--edinburgh);color:#fff;font-size:.58rem;font-weight:700;line-height:14px;text-align:center;display:none;}
+  .cell .dnum{font-size:.76rem;font-weight:600;font-variant-numeric:tabular-nums;}
+  .cell .tag{display:block;font-size:.54rem;line-height:1.15;margin-top:2px;text-transform:uppercase;letter-spacing:.02em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .cell .dot{position:absolute;bottom:4px;right:5px;min-width:14px;height:14px;padding:0 3px;border-radius:8px;background:var(--accent);color:#fff;font-size:.56rem;font-weight:700;line-height:14px;text-align:center;display:none;}
   .cell.has-note .dot{display:block;}
   .cell.click{cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;}
   .cell.click:hover,.cell.click:focus-visible{transform:translateY(-2px);box-shadow:0 4px 12px rgba(35,42,46,.14);outline:none;}
   .cell.click:focus-visible{box-shadow:0 0 0 2px var(--ink);}
-  .d-london{background:var(--london-tint);border-color:var(--london);} .d-london .dnum,.d-london .tag{color:var(--london);}
-  .d-bath{background:var(--bath-tint);border-color:var(--bath);} .d-bath .dnum,.d-bath .tag{color:#8a6220;}
-  .d-edinburgh{background:var(--edinburgh-tint);border-color:var(--edinburgh);} .d-edinburgh .dnum,.d-edinburgh .tag{color:var(--edinburgh);}
-  .d-palermo{background:var(--palermo-tint);border-color:var(--palermo);} .d-palermo .dnum,.d-palermo .tag{color:var(--palermo);}
-  .d-travel{background:var(--travel-tint);border-color:var(--travel);border-style:dashed;} .d-travel .dnum,.d-travel .tag{color:#6f6a60;}
-  .legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;margin-top:1.1rem;font-size:.78rem;color:var(--muted);}
-  .legend span{display:inline-flex;align-items:center;gap:.4rem;}
-  .sw{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.12);}
 
   .day{border-top:1px solid var(--line);padding:.35rem 0;}
   .day:first-of-type{border-top:none;}
@@ -91,134 +80,137 @@
   .dh-title{font-family:"Fraunces",serif;font-weight:500;font-size:1.12rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.05rem;}
   .dh-right{display:flex;align-items:center;gap:.9rem;flex:0 0 auto;}
   .daymeta{font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;}
-  .daymeta b{color:var(--palermo);}
-  .daycost{font-family:"Fraunces",serif;font-size:1.02rem;color:var(--muted);cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .daycost:hover{color:var(--ink);text-decoration:underline;}
+  .daymeta b{color:var(--warn);}
+  .daycost{font-family:"Fraunces",serif;font-size:1.02rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
   .day-body{padding:.1rem .35rem .5rem 1.7rem;}
   .day.collapsed .day-body{display:none;}
-  .pill{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;padding:.16rem .5rem;border-radius:20px;font-family:"Inter",sans-serif;}
-  .pill.p-london{background:var(--london);} .pill.p-bath{background:var(--bath);}
-  .pill.p-edinburgh{background:var(--edinburgh);} .pill.p-palermo{background:var(--palermo);} .pill.p-travel{background:var(--travel);}
-  .costchip{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .pill{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:#fff;padding:.16rem .5rem;border-radius:20px;font-family:"Inter",sans-serif;white-space:nowrap;}
   .day-body .plan{list-style:none;margin:.1rem 0 .5rem;display:grid;gap:.3rem;}
   .day-body .plan li{font-size:.88rem;padding-left:1.15rem;position:relative;color:#333b40;}
   .day-body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
-  .collapse-all{margin-left:auto;font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px solid var(--line);border-radius:8px;padding:.3rem .7rem;cursor:pointer;}
-  .collapse-all:hover{border-color:var(--edinburgh);}
 
   .entries{display:grid;gap:.55rem;margin-top:.7rem;}
   .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.5rem .6rem;display:grid;gap:.4rem;}
   .entry.excluded{opacity:.72;}
-  .ent-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
-  .ent-inc{display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;}
-  .ent-inc input{width:15px;height:15px;accent-color:var(--edinburgh);cursor:pointer;}
-  .entry:not(.excluded) .ent-inc{color:var(--edinburgh);}
-  .ent-calc{font-size:.82rem;font-weight:600;color:var(--palermo);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .ent-top{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+  .ent-inc{display:flex;align-items:center;gap:.35rem;font-size:.74rem;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;}
+  .ent-inc input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;}
+  .entry:not(.excluded) .ent-inc{color:var(--accent);}
+  .ent-cat{font-family:"Inter",sans-serif;font-size:.76rem;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:.2rem .55rem;background:var(--paper);max-width:150px;}
+  .ent-cat:focus{outline:none;border-color:var(--accent);background:#fff;}
+  .ent-calc{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--warn);font-variant-numeric:tabular-nums;white-space:nowrap;}
   .entry.excluded .ent-calc{color:var(--muted);}
-  .ent-calc .calc-sub{font-weight:400;color:var(--muted);font-size:.72rem;}
-  .entry textarea.ent-note{width:100%;border:none;background:transparent;font-family:"Inter",sans-serif;font-size:.9rem;line-height:1.5;resize:vertical;min-height:1.7rem;color:var(--ink);}
+  .ent-calc .calc-sub{font-weight:400;color:var(--muted);font-size:.7rem;}
+  .entry textarea.ent-note{width:100%;border:none;background:transparent;font-family:"Inter",sans-serif;font-size:.9rem;line-height:1.5;resize:vertical;min-height:1.5rem;color:var(--ink);}
   .entry textarea.ent-note:focus{outline:none;}
   .entry textarea.ent-note::placeholder{color:#b3aea2;}
-  .entry input{font-family:"Inter",sans-serif;font-size:.82rem;padding:.4rem .55rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);}
+  .entry input,.entry select{font-family:"Inter",sans-serif;font-size:.82rem;padding:.35rem .5rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);}
   .entry input::placeholder{color:#b3aea2;}
-  .entry input:focus{outline:none;border-color:var(--edinburgh);background:#fff;}
+  .entry input:focus,.entry select:focus{outline:none;border-color:var(--accent);background:#fff;}
   .ent-link{width:100%;}
   .entry-row{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;}
+  .ent-mode{font-weight:600;}
   .cf{display:flex;align-items:center;gap:.3rem;font-size:.74rem;color:var(--muted);font-weight:600;}
-  .cf input{width:74px;text-align:right;font-variant-numeric:tabular-nums;}
+  .cf input{width:78px;text-align:right;font-variant-numeric:tabular-nums;}
   .cf-spacer{flex:1 1 auto;}
   .ent-del,.ent-move{flex:0 0 auto;width:30px;height:30px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-radius:6px;}
   .ent-del{font-size:.85rem;} .ent-move{font-size:1rem;}
-  .ent-del:hover{background:#f0dbd2;color:var(--palermo);}
-  .ent-move:hover{background:#e4ebef;color:var(--london);}
-  .ent-visit{font-size:.78rem;color:var(--london);text-decoration:none;font-weight:600;width:max-content;}
+  .ent-del:hover{background:#f0dbd2;color:var(--warn);}
+  .ent-move:hover{background:#e4ebef;color:#46687F;}
+  .ent-visit{font-size:.78rem;color:#46687F;text-decoration:none;font-weight:600;width:max-content;}
   .ent-visit:hover{text-decoration:underline;}
   .ent-visit.hidden{display:none;}
-  .addrow{margin-top:.55rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
-  .addbtn{font-family:"Inter",sans-serif;font-size:.8rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px dashed var(--edinburgh);border-radius:8px;padding:.4rem .75rem;cursor:pointer;}
-  .addbtn:hover{background:#efeaf3;}
-  .added-sum{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;}
-  .added-sum b{color:var(--palermo);} .added-sum .prop{color:var(--muted);}
-  .ent-files{display:flex;flex-wrap:wrap;gap:.4rem;}
-  .ent-files:empty{display:none;}
-  .filechip{display:inline-flex;align-items:center;gap:.4rem;background:var(--london-tint);border:1px solid var(--london);border-radius:20px;padding:.2rem .3rem .2rem .6rem;font-size:.76rem;max-width:100%;}
-  .filechip a{color:var(--london);text-decoration:none;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+  .ent-files{display:flex;flex-wrap:wrap;gap:.4rem;} .ent-files:empty{display:none;}
+  .filechip{display:inline-flex;align-items:center;gap:.4rem;background:#E7ECF0;border:1px solid #46687F;border-radius:20px;padding:.2rem .3rem .2rem .6rem;font-size:.76rem;max-width:100%;}
+  .filechip a{color:#46687F;text-decoration:none;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
   .filechip a:hover{text-decoration:underline;}
   .filechip .fsize{color:var(--muted);font-size:.68rem;font-variant-numeric:tabular-nums;}
-  .filechip .rmfile{border:none;background:transparent;color:var(--london);cursor:pointer;width:18px;height:18px;border-radius:50%;font-size:.7rem;line-height:1;}
-  .filechip .rmfile:hover{background:#fff;color:var(--palermo);}
+  .filechip .rmfile{border:none;background:transparent;color:#46687F;cursor:pointer;width:18px;height:18px;border-radius:50%;font-size:.7rem;line-height:1;}
+  .filechip .rmfile:hover{background:#fff;color:var(--warn);}
   .ent-attach{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;}
-  .attachbtn{font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;color:var(--edinburgh);background:transparent;border:1px dashed var(--line);border-radius:8px;padding:.35rem .65rem;cursor:pointer;}
-  .attachbtn:hover{border-color:var(--edinburgh);background:#efeaf3;}
-  .ent-upstatus{font-size:.76rem;color:var(--palermo);font-weight:600;font-variant-numeric:tabular-nums;}
+  .attachbtn{font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;color:var(--accent);background:transparent;border:1px dashed var(--line);border-radius:8px;padding:.35rem .65rem;cursor:pointer;}
+  .attachbtn:hover{border-color:var(--accent);background:#efeaf3;}
+  .ent-upstatus{font-size:.76rem;color:var(--warn);font-weight:600;font-variant-numeric:tabular-nums;}
+  .addrow{margin-top:.55rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+  .addbtn{font-family:"Inter",sans-serif;font-size:.8rem;font-weight:600;color:var(--accent);background:transparent;border:1px dashed var(--accent);border-radius:8px;padding:.4rem .75rem;cursor:pointer;}
+  .addbtn:hover{background:#efeaf3;}
+  .added-sum{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .added-sum b{color:var(--warn);} .added-sum .prop{color:var(--muted);}
 
   .movegrid{display:grid;gap:.4rem;}
   .moveopt{display:flex;align-items:center;gap:.65rem;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:.55rem .7rem;cursor:pointer;font-family:"Inter",sans-serif;font-size:.9rem;color:var(--ink);}
   .moveopt:hover{border-color:var(--ink);}
   .moveopt.current{opacity:.45;cursor:default;}
   .moveopt .mvdot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;background:var(--muted);}
-  .moveopt .mvdot.p-london{background:var(--london);} .moveopt .mvdot.p-bath{background:var(--bath);}
-  .moveopt .mvdot.p-edinburgh{background:var(--edinburgh);} .moveopt .mvdot.p-palermo{background:var(--palermo);} .moveopt .mvdot.p-travel{background:var(--travel);}
   .moveopt .cur-tag{margin-left:auto;font-size:.7rem;color:var(--muted);font-weight:600;}
 
-  .summary{display:grid;grid-template-columns:1.1fr 1fr;gap:1.6rem;align-items:start;}
+  /* Budget */
+  .summary{display:grid;grid-template-columns:1.05fr 1fr;gap:1.6rem;align-items:start;}
   @media(max-width:640px){.summary{grid-template-columns:1fr;}}
   .bigtotal{background:var(--ink);color:#fff;border-radius:14px;padding:1.6rem 1.5rem;}
   .bigtotal .lbl{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;}
-  .bigtotal .amt{font-family:"Fraunces",serif;font-size:3rem;font-weight:500;line-height:1;margin:.4rem 0 .2rem;}
+  .bigtotal .amt{font-family:"Fraunces",serif;font-size:2.9rem;font-weight:500;line-height:1;margin:.4rem 0 .2rem;font-variant-numeric:tabular-nums;}
   .bigtotal .sub{font-size:.85rem;opacity:.82;}
-  .bigtotal .range{margin-top:1rem;font-size:.82rem;opacity:.9;border-top:1px solid rgba(255,255,255,.18);padding-top:.9rem;}
+  .bigtotal .range{margin-top:1rem;font-size:.85rem;opacity:.92;border-top:1px solid rgba(255,255,255,.18);padding-top:.9rem;}
+  .bigtotal .range b{color:#fff;}
   .breakdown{width:100%;border-collapse:collapse;font-size:.9rem;}
   .breakdown td{padding:.5rem .2rem;border-bottom:1px solid var(--line);}
   .breakdown td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
   .breakdown tr:last-child td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600;}
   .breakdown .cat{color:#3a4247;}
-  .swingnote{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.8rem;}
-  .addon-line{margin-top:1rem;padding-top:.9rem;border-top:1.5px solid var(--ink);font-size:.92rem;line-height:1.7;}
-  .addon-line b{color:var(--palermo);font-variant-numeric:tabular-nums;}
+  .breakdown .empty-cat{color:var(--muted);font-style:italic;}
+  .budget-note{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.8rem;}
 
-  .notes{margin-top:2.6rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.5rem;}
-  .notes h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;margin-bottom:.7rem;}
-  .notes ul{list-style:none;display:grid;gap:.6rem;}
-  .notes li{font-size:.9rem;padding-left:1.4rem;position:relative;color:#3a4247;}
-  .notes li strong{color:var(--ink);}
-  .notes li::before{content:"→";position:absolute;left:0;color:var(--palermo);font-weight:600;}
-  .notes .divide{height:1px;background:var(--line);margin:1.2rem 0;}
   footer{margin-top:2.2rem;font-size:.78rem;color:var(--muted);text-align:center;}
 
   .backdrop{position:fixed;inset:0;background:rgba(20,25,28,.55);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:50;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease;}
   .backdrop.open{opacity:1;visibility:visible;}
-  .modal{background:var(--card);border-radius:16px;max-width:470px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 60px rgba(20,25,28,.35);transform:translateY(12px) scale(.98);transition:transform .2s ease;position:relative;}
+  .modal{background:var(--card);border-radius:16px;max-width:520px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 24px 60px rgba(20,25,28,.35);transform:translateY(12px) scale(.98);transition:transform .2s ease;position:relative;}
   .backdrop.open .modal{transform:none;}
-  .modal-top{padding:1.5rem 1.6rem 1.1rem;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);border-radius:16px 16px 0 0;}
+  .modal-top{padding:1.4rem 1.6rem 1rem;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);border-radius:16px 16px 0 0;}
   .modal-top .mdate{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;}
-  .modal-top h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.5rem;line-height:1.1;margin:.35rem 0 .5rem;}
+  .modal-top h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.45rem;line-height:1.1;margin:.35rem 0 .5rem;}
   .modal-body{padding:1.2rem 1.6rem 1.6rem;}
   .modal-body .sect{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:1.2rem 0 .5rem;}
   .modal-body .sect:first-child{margin-top:0;}
   .mplan{list-style:none;display:grid;gap:.45rem;}
   .mplan li{font-size:.92rem;padding-left:1.15rem;position:relative;color:#333b40;}
   .mplan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
-  .costtbl{width:100%;border-collapse:collapse;font-size:.9rem;}
-  .costtbl td{padding:.42rem .1rem;border-bottom:1px solid var(--line);}
-  .costtbl td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .costtbl tr:last-child td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600;}
   .mentries{list-style:none;display:grid;gap:.5rem;}
   .mentries li{font-size:.9rem;color:#333b40;padding:.55rem .65rem;background:var(--paper);border-radius:8px;}
-  .mentries .mcost{color:var(--palermo);font-weight:600;}
-  .mentries a{color:var(--london);word-break:break-all;}
+  .mentries .mcost{color:var(--warn);font-weight:600;} .mentries .mcat{font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;}
+  .mentries a{color:#46687F;word-break:break-all;}
   .mhint{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.7rem;}
-  .mnote{margin-top:1rem;font-size:.85rem;color:var(--muted);font-style:italic;background:var(--paper);border-radius:8px;padding:.7rem .8rem;}
   .closebtn{position:absolute;top:.9rem;right:1rem;width:32px;height:32px;border-radius:50%;border:none;background:var(--paper);color:var(--ink);font-size:1.1rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;z-index:2;}
   .closebtn:hover{background:var(--line);}
 
+  /* Settings */
+  .set-field{margin-bottom:.9rem;}
+  .set-field label{display:block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.3rem;}
+  .set-field input,.set-field textarea,.set-field select{width:100%;font-family:"Inter",sans-serif;font-size:.9rem;padding:.5rem .6rem;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);}
+  .set-field input:focus,.set-field textarea:focus,.set-field select:focus{outline:none;border-color:var(--accent);background:#fff;}
+  .set-row{display:flex;gap:.6rem;}
+  .set-row>*{flex:1;}
+  .place-row,.day-row{display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:.5rem;}
+  .place-row input[type=color]{width:38px;height:38px;padding:2px;border-radius:8px;flex:0 0 auto;cursor:pointer;}
+  .place-row input[type=text]{flex:1;}
+  .day-row{flex-wrap:wrap;}
+  .day-row .dr-line{display:flex;gap:.5rem;width:100%;}
+  .day-row input[type=date]{flex:0 0 auto;}
+  .day-row select{flex:1;}
+  .day-row textarea{width:100%;min-height:2.4rem;font-size:.82rem;margin-top:.4rem;resize:vertical;}
+  .rowdel{flex:0 0 auto;width:34px;height:34px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-radius:6px;font-size:.9rem;}
+  .rowdel:hover{background:#f0dbd2;color:var(--warn);}
+  .set-actions{display:flex;gap:.6rem;margin-top:1.4rem;position:sticky;bottom:0;background:var(--card);padding-top:.8rem;}
+  .set-actions .btn{flex:1;text-align:center;}
+
   @media print{
     body{background:#fff;padding:0;font-size:11px;}
-    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input,.ent-attach,.rmfile{display:none!important;}
-    .notes,.day,.summary,.bigtotal{break-inside:avoid;}
+    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input,.ent-attach,.rmfile,.collapse-all{display:none!important;}
+    .day,.summary,.bigtotal{break-inside:avoid;}
     .backdrop{display:none!important;}
-    .cell,.pill,.leg,.sw,.bigtotal,.ribbon,.costchip{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .cell,.pill,.leg,.bigtotal,.ribbon{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .section-head .hint{display:none;}
   }
   @media(prefers-reduced-motion:no-preference){
@@ -229,16 +221,11 @@
 </head>
 <body>
 <div class="wrap">
-
   <header>
-    <div class="eyebrow">Family Trip · 2 adults + 2 kids (age 5)</div>
-    <h1>2027 <em>LoCoco</em> Vacation</h1>
-    <p class="subhead">Sixteen days from grey-stone Britain down to the Sicilian sun.</p>
-    <div class="meta">
-      <span><b>Depart</b> Fri, May 21, 2027 (overnight)</span>
-      <span><b>Home</b> Sun, June 6, 2027</span>
-      <span class="total"><b>≈ $12,200</b> base</span>
-    </div>
+    <div class="eyebrow" id="hEyebrow">Trip planner</div>
+    <h1 id="hTitle">Trip Planner</h1>
+    <p class="subhead" id="hSub"></p>
+    <div class="meta" id="hMeta"></div>
   </header>
 
   <div class="toolbar">
@@ -246,44 +233,21 @@
     <span class="sync" id="sync">○ connecting…</span>
     <span class="saved" id="saved">Saved ✓</span>
     <div class="tb-actions">
-      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn" id="settingsBtn">⚙ Settings</button>
+      <button class="btn ghost" id="exportBtn">Export</button>
       <button class="btn ghost" id="importBtn">Import</button>
       <button class="btn ghost" id="copyBtn">Copy all</button>
       <button class="btn ghost danger" id="clearBtn">Clear</button>
     </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </div>
-  <p class="howto">Every entry has a <b>note</b>, a <b>link</b>, <b>per-person costs</b> (adult + child), and you can <b>📎 attach a PDF or image</b> (e.g. a receipt) to any note or to the Documents section. Tick <b>count in total</b> on the ones you'll do. Everything <b>syncs live for everyone</b> via Firestore + Storage — the badge shows ● Live when connected.</p>
+  <p class="howto">Add cost lines under any day — each has a <b>category</b>, a <b>note</b>, a <b>link</b>, a <b>PDF/image</b>, and a cost you enter as a <b>flat total</b> or <b>per-person</b> (adult/child). Tick <b>count in total</b> for committed costs. The budget builds itself. Edit dates, places, and party size in <b>⚙ Settings</b>. Everything <b>syncs live</b> — badge shows ● Live.</p>
 
-  <div class="ribbon" role="img" aria-label="Journey from London to Bath to Edinburgh to Palermo and home">
-    <div class="leg l-london"><div class="n">Leg 1</div><div class="place">London</div><div class="nights">2 nights</div></div>
-    <div class="leg l-bath"><div class="n">Leg 2</div><div class="place">Bath</div><div class="nights">2 nights</div></div>
-    <div class="leg l-edinburgh"><div class="n">Leg 3</div><div class="place">Edinburgh</div><div class="nights">6 nights</div></div>
-    <div class="leg l-palermo"><div class="n">Leg 4</div><div class="place">Palermo</div><div class="nights">4 nights</div></div>
-    <div class="leg l-home"><div class="n">Leg 5</div><div class="place">London → home</div><div class="nights">1 night</div></div>
-  </div>
-  <p class="ribbon-caption">Colour tracks the trip — cool slate in the north, warming to terracotta in Sicily.</p>
+  <div class="ribbon" id="ribbon"></div>
+  <p class="ribbon-caption" id="ribbonCap"></p>
 
-  <div class="section-head">
-    <h2>Calendar</h2>
-    <span class="hint">tap a date for plan &amp; cost<br>✈ flight · 🚆 train · badge = entries</span>
-  </div>
-  <div class="cal-grid">
-    <div class="month"><h3>May 2027</h3>
-      <table class="cal"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody id="may-body"></tbody></table>
-    </div>
-    <div class="month"><h3>June 2027</h3>
-      <table class="cal"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody id="jun-body"></tbody></table>
-    </div>
-  </div>
-  <div class="legend">
-    <span><i class="sw" style="background:var(--london-tint);border-color:var(--london);"></i> London</span>
-    <span><i class="sw" style="background:var(--bath-tint);border-color:var(--bath);"></i> Bath</span>
-    <span><i class="sw" style="background:var(--edinburgh-tint);border-color:var(--edinburgh);"></i> Edinburgh</span>
-    <span><i class="sw" style="background:var(--palermo-tint);border-color:var(--palermo);"></i> Palermo</span>
-    <span><i class="sw" style="background:var(--travel-tint);border-color:var(--travel);"></i> In transit</span>
-    <span>BH = UK bank holiday (May 31)</span>
-  </div>
+  <div class="section-head"><h2>Calendar</h2><span class="hint">tap a date for the day</span></div>
+  <div class="cal-grid" id="calGrid"></div>
 
   <div class="section-head"><h2>Day by Day</h2><button class="collapse-all" id="collapseAll">Collapse all</button></div>
   <div id="daylist"></div>
@@ -296,90 +260,62 @@
   <div class="entries" data-day-entries="_docs"></div>
   <div class="addrow"><button class="addbtn" data-add="_docs">+ Add document</button><span class="added-sum" data-sum="_docs"></span></div>
 
-  <div class="section-head"><h2>What it costs</h2><span class="hint">family of 4, USD</span></div>
+  <div class="section-head"><h2>What it costs</h2><span class="hint" id="budgetHint"></span></div>
   <div class="summary">
     <div class="bigtotal">
-      <div class="lbl">Base estimate</div>
-      <div class="amt">$12,200</div>
-      <div class="sub">Late-May 2027 fares, booked ~2–3 months ahead.</div>
-      <div class="range">Realistic range <b>$11,000 – $15,000</b>, depending mostly on how much you eat out and how nice the hotels are. Your ticked add-ons stack on top.</div>
+      <div class="lbl">Committed total</div>
+      <div class="amt" id="bigAmt">—</div>
+      <div class="sub">Sum of every line ticked “count in total”.</div>
+      <div class="range" id="bigRange"></div>
     </div>
     <div>
-      <table class="breakdown">
-        <tr><td class="cat">Flights — transatlantic + 2 Europe hops</td><td>$3,930</td></tr>
-        <tr><td class="cat">Trains — London→Bath, Bath→Edinburgh</td><td>$390</td></tr>
-        <tr><td class="cat">Lodging — 15 nights</td><td>$3,000</td></tr>
-        <tr><td class="cat">Activities &amp; attractions</td><td>$1,150</td></tr>
-        <tr><td class="cat">Food</td><td>$2,760</td></tr>
-        <tr><td class="cat">Local transport &amp; airport transfers</td><td>$500</td></tr>
-        <tr><td class="cat">Travel insurance</td><td>$300</td></tr>
-        <tr><td class="cat">Entry paperwork (UK ETA + ETIAS)</td><td>$152</td></tr>
-        <tr><td>Base total</td><td>$12,182</td></tr>
-      </table>
-      <p class="swingnote">Food is the big swing. This assumes ~$185/day of mixed eating; all sit-down restaurants for four could roughly double it.</p>
-      <div class="addon-line" id="addonLine"></div>
+      <table class="breakdown" id="breakdown"></table>
+      <p class="budget-note">Add cost lines under each day and tick the ones you're committing to. Untouched categories stay at $0 until you add something.</p>
     </div>
   </div>
 
-  <div class="notes">
-    <h3>Before you lock it in</h3>
-    <ul>
-      <li><strong>The Palermo flight day is the pivot point.</strong> The direct Edinburgh → Palermo flight runs only ~2 days a week (morning departure). If June 1 isn't one of them, shift your Edinburgh checkout by a day or take a connecting flight — confirm before booking anything else.</li>
-      <li><strong>You're travelling over UK half-term.</strong> The last week of May is a school holiday (bank holiday Mon May 31), so UK lodging and castle tickets run busier and pricier — book early. Starting in <em>early</em> May would dodge this and save a few hundred dollars.</li>
-      <li><strong>Entry paperwork.</strong> Everyone needs a UK ETA (~£20 each, kids included), and Italy will likely require ETIAS by 2027 (~€20, adults only). Both are quick online forms — apply about a month out.</li>
-      <li><strong>Two long Edinburgh day-trips to skip with little ones:</strong> Loch Ness and the West Highland line are ~3.5 hrs each way. The Kelpies and Stirling deliver the big-Scotland feeling much closer to base.</li>
-    </ul>
-    <div class="divide"></div>
-    <h3>Two ways to save</h3>
-    <ul>
-      <li><strong>Fly Bath → Edinburgh instead of the train.</strong> Bristol airport is ~45 min from Bath; budget fares run £40–60/person for a ~1h15 flight, versus a 6.5–7 hr train day.</li>
-      <li><strong>Book UK trains ~12 weeks out</strong> (around early March 2027) — that's when the cheap Advance fares release. Same logic on the Boston flights.</li>
-    </ul>
-  </div>
-
-  <footer>Boston · London · Bath · Edinburgh · Palermo — May 21 to June 6, 2027</footer>
+  <footer id="foot"></footer>
 </div>
 
+<datalist id="catlist">
+  <option value="Hotel"></option><option value="Flight"></option><option value="Breakfast"></option>
+  <option value="Lunch"></option><option value="Dinner"></option><option value="Activities"></option>
+  <option value="Transport"></option><option value="Groceries"></option><option value="Shopping"></option><option value="Misc"></option>
+</datalist>
+
 <div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="m-title">
-  <div class="modal">
-    <button class="closebtn" id="closebtn" aria-label="Close">✕</button>
+  <div class="modal"><button class="closebtn" id="closebtn" aria-label="Close">✕</button>
     <div class="modal-top"><div class="mdate" id="m-date"></div><h3 id="m-title"></h3></div>
     <div class="modal-body" id="m-body"></div>
   </div>
 </div>
 <div class="backdrop" id="movepick" role="dialog" aria-modal="true" aria-labelledby="move-h">
-  <div class="modal">
-    <button class="closebtn" id="moveclose" aria-label="Close">✕</button>
+  <div class="modal"><button class="closebtn" id="moveclose" aria-label="Close">✕</button>
     <div class="modal-top"><div class="mdate">Move entry to…</div><h3 id="move-h"></h3></div>
     <div class="modal-body"><div class="movegrid" id="movegrid"></div></div>
   </div>
 </div>
+<div class="backdrop" id="setpick" role="dialog" aria-modal="true" aria-labelledby="set-h">
+  <div class="modal"><button class="closebtn" id="setclose" aria-label="Close">✕</button>
+    <div class="modal-top"><div class="mdate">Trip settings</div><h3 id="set-h">Edit your trip</h3></div>
+    <div class="modal-body" id="set-body"></div>
+  </div>
+</div>
 
-<!-- Firebase SDK (compat build so it works in this classic script) -->
+<!-- Firebase SDK (compat) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
 <script>
-/* =======================================================================
-   CLOUD FIRESTORE — live sync (dedicated project "lococo-vacation").
-   Firebase console setup (one time):
-     1. Build → Firestore Database → Create database (Production mode).
-     2. Build → Authentication → Sign-in method → enable Anonymous.
-     3. Firestore → Rules → paste, then Publish:
-          rules_version = '2';
-          service cloud.firestore {
-            match /databases/{database}/documents {
-              match /trips/{trip}/{document=**} {
-                allow read, write: if request.auth != null;
-              }
-            }
-          }
-   Everyone opens the SAME published URL; TRIP_ID is the shared room.
-   The web config below is safe to publish. NEVER embed a service-account
-   / Admin private key. Last write wins on the same field.
-   ======================================================================= */
+/* ===================================================================
+   CLOUD FIRESTORE (dedicated project "lococo-vacation")
+   Config (trip name/dates/places/party) lives on trips/{TRIP_ID};
+   cost lines live in trips/{TRIP_ID}/entries. Anonymous auth + rules
+   allowing trips/** to authenticated users. Web config is safe to
+   publish; never embed a service-account key.
+   =================================================================== */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDC7cIycE6CTdDJkxbm0p92a0gUdnJlrOE",
   authDomain: "lococo-vacation.firebaseapp.com",
@@ -389,100 +325,76 @@ const FIREBASE_CONFIG = {
   appId: "1:927366124961:web:a7473a7344b607fe79a7e0",
   measurementId: "G-MVMJQSRWRZ"
 };
-const TRIP_ID = "lococo-2027";   // shared room id — keep the same for everyone
+const TRIP_ID = "lococo-2027";
 
-/* ---------- Config / party ---------- */
-const PARTY={adults:2,kids:2};
-const BASE=12182;
-
-/* ---------- Trip data ---------- */
-const DAYS = {
-  "may-21":{wd:"Fri",dd:"21",mo:"May",date:"Friday, May 21",loc:"Travel",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly out",title:"Boston → London",
-    plan:["<span class='whenlbl'>Evening:</span> overnight flight from Boston Logan to London Heathrow. Sleep as much as the kids allow — you land into Saturday morning."],
-    costs:[["Transatlantic flight, outbound (×4)","$1,600"],["Airport meals","$40"]],total:"$1,640"},
-  "may-22":{wd:"Sat",dd:"22",mo:"May",date:"Saturday, May 22",loc:"London",pill:"london",fill:"d-london",tag:"London",title:"London — arrival & easy day",
-    plan:["<span class='whenlbl'>Morning:</span> land Heathrow, get to the hotel, drop bags.","<span class='whenlbl'>Afternoon:</span> Hyde Park & Kensington Gardens — the free Diana Memorial pirate-ship playground. Walk past Buckingham Palace.","<span class='whenlbl'>Evening:</span> early dinner, early bed to beat jet lag."],
-    costs:[["Hotel — London, night 1","$260"],["Meals","$200"],["Parks & playground","free"]],total:"$460"},
-  "may-23":{wd:"Sun",dd:"23",mo:"May",date:"Sunday, May 23",loc:"London",pill:"london",fill:"d-london",tag:"London",title:"London — the big day",
-    plan:["<span class='whenlbl'>Morning:</span> Natural History Museum (dinosaurs, blue whale — free) or London Zoo.","<span class='whenlbl'>Afternoon:</span> a short Thames cruise past the London Eye, Big Ben and Tower Bridge.","<span class='whenlbl'>Evening:</span> dinner near the river."],
-    costs:[["Hotel — London, night 2","$260"],["Zoo / museum + river cruise","$200"],["Meals","$200"]],total:"$660"},
-  "may-24":{wd:"Mon",dd:"24",mo:"May",date:"Monday, May 24",loc:"Bath",pill:"bath",fill:"d-bath",ico:"🚆",tag:"→ Bath",title:"London → Bath",
-    plan:["<span class='whenlbl'>Morning:</span> train from London Paddington to Bath Spa (~1h 25m).","<span class='whenlbl'>Afternoon:</span> the Roman Baths, then Pulteney Bridge and the Royal Crescent.","<span class='whenlbl'>Late day:</span> Royal Victoria Park — a superb free playground."],
-    costs:[["Train, London→Bath (2 adult + 2 child)","$110"],["Hotel — Bath, night 1","$200"],["Roman Baths (family)","$95"],["Meals","$200"]],total:"$605"},
-  "may-25":{wd:"Tue",dd:"25",mo:"May",date:"Tuesday, May 25",loc:"Bath",pill:"bath",fill:"d-bath",tag:"Bath",title:"Bath — day trip",
-    plan:["Longleat Safari Park (~1 hr) — drive-through lions and monkeys plus a hedge maze, a sure hit with 5-year-olds. Swap in Stonehenge if you'd rather the icon."],
-    costs:[["Hotel — Bath, night 2","$200"],["Longleat Safari (family)","$190"],["Meals","$200"]],total:"$590"},
-  "may-26":{wd:"Wed",dd:"26",mo:"May",date:"Wednesday, May 26",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",ico:"🚆",tag:"→ Edin",title:"Bath → Edinburgh",
-    plan:["<span class='whenlbl'>The long haul:</span> train Bath → Edinburgh (~6.5–7 hrs, one change). Pack snacks, download shows.","<span class='whenlbl'>Faster option:</span> fly Bristol → Edinburgh (~1h15).","<span class='whenlbl'>Evening:</span> arrive, check in, easy dinner near the Royal Mile."],
-    costs:[["Train, Bath→Edinburgh","$280"],["Lodging — Edinburgh, night 1","$210"],["Meals (travel day)","$150"]],total:"$640",note:"The Bristol→Edinburgh flight can come in cheaper than the train and saves most of a day."},
-  "may-27":{wd:"Thu",dd:"27",mo:"May",date:"Thursday, May 27",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Edinburgh Castle & the Royal Mile",
-    plan:["Edinburgh Castle up on its volcanic rock (book a timed entry), then walk the Royal Mile downhill toward Holyrood."],
-    costs:[["Lodging — Edinburgh","$210"],["Edinburgh Castle (family)","$100"],["Meals","$200"]],total:"$510"},
-  "may-28":{wd:"Fri",dd:"28",mo:"May",date:"Friday, May 28",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Museums & illusions",
-    plan:["<span class='whenlbl'>Morning:</span> National Museum of Scotland — free, enormous, hands-on.","<span class='whenlbl'>Afternoon:</span> Camera Obscura & World of Illusions — mirror mazes and optical tricks."],
-    costs:[["Lodging — Edinburgh","$210"],["Camera Obscura (museum is free)","$75"],["Meals","$200"]],total:"$485"},
-  "may-29":{wd:"Sat",dd:"29",mo:"May",date:"Saturday, May 29",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Edinburgh — day trip",
-    plan:["The Kelpies & Falkirk Wheel — giant steel horse-heads plus a rotating boat lift, both close and magic for young kids. Stirling Castle is an easy alternative."],
-    costs:[["Lodging — Edinburgh","$210"],["Kelpies day trip (transport + entry)","$120"],["Meals","$200"]],total:"$530"},
-  "may-30":{wd:"Sun",dd:"30",mo:"May",date:"Sunday, May 30",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin",title:"Science & a hill",
-    plan:["<span class='whenlbl'>Morning:</span> Dynamic Earth — hands-on planet-and-science exhibits near Holyrood.","<span class='whenlbl'>Afternoon:</span> an easy climb up Arthur's Seat for city views, or Edinburgh Zoo for the penguins."],
-    costs:[["Lodging — Edinburgh","$210"],["Dynamic Earth (Arthur's Seat is free)","$75"],["Meals","$200"]],total:"$485"},
-  "may-31":{wd:"Mon",dd:"31",mo:"May",date:"Monday, May 31 · UK bank holiday",loc:"Edinburgh",pill:"edinburgh",fill:"d-edinburgh",tag:"Edin ·BH",title:"Britannia & the beach",
-    plan:["The Royal Yacht Britannia (self-guided, kids' audio guide), then Portobello Beach if the weather cooperates."],
-    costs:[["Lodging — Edinburgh","$210"],["Royal Yacht Britannia (family)","$95"],["Meals","$200"]],total:"$505",note:"Bank holiday — expect bigger crowds at the main sights."},
-  "jun-1":{wd:"Tue",dd:"1",mo:"Jun",date:"Tuesday, June 1",loc:"Palermo",pill:"palermo",fill:"d-palermo",ico:"✈",tag:"→ Palermo",title:"Edinburgh → Palermo",
-    plan:["<span class='whenlbl'>Morning:</span> flight to Palermo (aim for the direct Ryanair — verify the day).","<span class='whenlbl'>Afternoon:</span> land around midday, check in, a first gentle wander through the old town and the first gelato."],
-    costs:[["Flight, Edinburgh→Palermo (×4)","$450"],["Lodging — Palermo, night 1","$140"],["Meals","$130"]],total:"$720",note:"The direct flight runs only ~2 days/week. Confirm it operates on your date before booking the rest."},
-  "jun-2":{wd:"Wed",dd:"2",mo:"Jun",date:"Wednesday, June 2",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",title:"Palermo old town",
-    plan:["The Cathedral and the Palatine Chapel (dazzling gold mosaics), then the buzz of the Ballarò and Vucciria markets. Street-food lunch — arancini, panelle, cannoli."],
-    costs:[["Lodging — Palermo","$140"],["Cathedral + Palatine Chapel","$40"],["Meals","$150"]],total:"$330"},
-  "jun-3":{wd:"Thu",dd:"3",mo:"Jun",date:"Thursday, June 3",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",title:"Beach or Cefalù",
-    plan:["Mondello Beach (~20 min) — calm, shallow water made for 5-year-olds. Or take the train ~1 hr to Cefalù, a gorgeous beach-and-cathedral town."],
-    costs:[["Lodging — Palermo","$140"],["Beach free / Cefalù train","$40"],["Meals","$150"]],total:"$330"},
-  "jun-4":{wd:"Fri",dd:"4",mo:"Jun",date:"Friday, June 4",loc:"Palermo",pill:"palermo",fill:"d-palermo",tag:"Palermo",title:"Monreale & the puppets",
-    plan:["<span class='whenlbl'>Morning:</span> Monreale — the hilltop cathedral with breathtaking mosaics (~20 min from town).","<span class='whenlbl'>Evening:</span> Opera dei Pupi, the Sicilian puppet theatre — a delight for kids — then a last Sicilian dinner."],
-    costs:[["Lodging — Palermo","$140"],["Monreale + puppet theatre","$70"],["Meals","$150"]],total:"$360"},
-  "jun-5":{wd:"Sat",dd:"5",mo:"Jun",date:"Saturday, June 5",loc:"London",pill:"london",fill:"d-london",ico:"✈",tag:"→ London",title:"Palermo → London",
-    plan:["Fly back to London and check in for the night. Keep it low-key — this buffer night is your insurance against a delayed Sicily flight so you never risk the trip home."],
-    costs:[["Flight, Palermo→London (×4)","$280"],["Hotel — London buffer night","$260"],["Meals","$130"]],total:"$670"},
-  "jun-6":{wd:"Sun",dd:"6",mo:"Jun",date:"Sunday, June 6",loc:"Home",pill:"travel",fill:"d-travel",ico:"✈",tag:"Fly home",title:"London → Boston",
-    plan:["Morning flight London → Boston. Home by evening, with two very well-travelled 5-year-olds."],
-    costs:[["Transatlantic flight, return (×4)","$1,600"],["Airport meals","$60"]],total:"$1,660"}
+/* ---------- Template seed (used only if no config exists yet) ---------- */
+const TEMPLATE = {
+  name:"2027 LoCoco Vacation",
+  subtitle:"Sixteen days from grey-stone Britain down to the Sicilian sun.",
+  eyebrow:"Family Trip",
+  adults:2, kids:2, currency:"$",
+  places:[
+    {id:"london",name:"London",color:"#46687F"},
+    {id:"bath",name:"Bath",color:"#B98436"},
+    {id:"edinburgh",name:"Edinburgh",color:"#6A5A79"},
+    {id:"palermo",name:"Palermo",color:"#C25E3A"},
+    {id:"travel",name:"Travel",color:"#9A948A"}
+  ],
+  days:[
+    {id:"may-21",date:"2027-05-21",placeId:"travel",plan:"Evening: overnight flight Boston → London Heathrow."},
+    {id:"may-22",date:"2027-05-22",placeId:"london",plan:"Morning: land Heathrow, check in.\nAfternoon: Hyde Park & Diana Memorial Playground; Buckingham Palace.\nEvening: early dinner, early bed."},
+    {id:"may-23",date:"2027-05-23",placeId:"london",plan:"Morning: Natural History Museum or London Zoo.\nAfternoon: Thames cruise past the Eye, Big Ben, Tower Bridge."},
+    {id:"may-24",date:"2027-05-24",placeId:"bath",plan:"Morning: train London Paddington → Bath Spa (~1h25).\nAfternoon: Roman Baths, Pulteney Bridge, Royal Crescent.\nLate: Royal Victoria Park playground."},
+    {id:"may-25",date:"2027-05-25",placeId:"bath",plan:"Day trip: Longleat Safari Park, or Stonehenge."},
+    {id:"may-26",date:"2027-05-26",placeId:"edinburgh",plan:"Train Bath → Edinburgh (~6.5–7h, one change), or fly Bristol → Edinburgh.\nEvening: check in near the Royal Mile."},
+    {id:"may-27",date:"2027-05-27",placeId:"edinburgh",plan:"Edinburgh Castle, then walk the Royal Mile to Holyrood."},
+    {id:"may-28",date:"2027-05-28",placeId:"edinburgh",plan:"Morning: National Museum of Scotland (free).\nAfternoon: Camera Obscura & World of Illusions."},
+    {id:"may-29",date:"2027-05-29",placeId:"edinburgh",plan:"Day trip: the Kelpies & Falkirk Wheel, or Stirling Castle."},
+    {id:"may-30",date:"2027-05-30",placeId:"edinburgh",plan:"Morning: Dynamic Earth.\nAfternoon: Arthur's Seat, or Edinburgh Zoo penguins."},
+    {id:"may-31",date:"2027-05-31",placeId:"edinburgh",plan:"Royal Yacht Britannia, then Portobello Beach. (UK bank holiday — busy.)"},
+    {id:"jun-1",date:"2027-06-01",placeId:"palermo",plan:"Morning: fly Edinburgh → Palermo (aim for the direct Ryanair).\nAfternoon: land midday, check in, first wander + gelato."},
+    {id:"jun-2",date:"2027-06-02",placeId:"palermo",plan:"Old town: Cathedral, Palatine Chapel, Ballarò & Vucciria markets. Street food lunch."},
+    {id:"jun-3",date:"2027-06-03",placeId:"palermo",plan:"Mondello Beach, or day trip to Cefalù by train (~1h)."},
+    {id:"jun-4",date:"2027-06-04",placeId:"palermo",plan:"Morning: Monreale mosaics.\nEvening: Opera dei Pupi puppet theatre, last Sicilian dinner."},
+    {id:"jun-5",date:"2027-06-05",placeId:"london",plan:"Fly Palermo → London; buffer night before the flight home."},
+    {id:"jun-6",date:"2027-06-06",placeId:"travel",plan:"Morning: fly London → Boston. Home."}
+  ]
 };
 
-const MAY = [
-  [null,null,null,null,null,null,"b-1"],["b-2","b-3","b-4","b-5","b-6","b-7","b-8"],
-  ["b-9","b-10","b-11","b-12","b-13","b-14","b-15"],["b-16","b-17","b-18","b-19","b-20","may-21","may-22"],
-  ["may-23","may-24","may-25","may-26","may-27","may-28","may-29"],["may-30","may-31",null,null,null,null,null]
-];
-const JUN = [
-  [null,null,"jun-1","jun-2","jun-3","jun-4","jun-5"],["jun-6","bj-7","bj-8","bj-9","bj-10","bj-11","bj-12"],
-  ["bj-13","bj-14","bj-15","bj-16","bj-17","bj-18","bj-19"]
-];
+/* ---------- Runtime state ---------- */
+let CONFIG=null;
+const STATE={}; // id -> entry {day,category,note,link,mode,flat,adult,child,include,order,files}
+const LOCAL_CFG="lococo-cfg-v1", LOCAL_ENT="lococo-ent-v1";
 
-/* ---------- State: id -> entry ---------- */
-const STATE={};
-const LOCAL_KEY="lococo-2027-v4";
-function uid(){return 'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function esc(s){return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function normUrl(u){u=(u||"").trim();if(!u)return"#";if(!/^https?:\/\//i.test(u))u="https://"+u;return u;}
 function n2(v){const n=parseFloat(String(v==null?"":v).replace(/[^0-9.]/g,""));return isNaN(n)?0:n;}
-function money(x){const r=Math.round(x*100)/100;return "$"+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2));}
-function entTotal(e){return PARTY.adults*n2(e.adult)+PARTY.kids*n2(e.child);}
-function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||String(e.adult||"").trim()||String(e.child||"").trim()||(Array.isArray(e.files)&&e.files.length));}
-function entriesForDay(day){return Object.keys(STATE).filter(id=>STATE[id].day===day).map(id=>Object.assign({id},STATE[id])).sort((a,b)=>(a.order||0)-(b.order||0));}
+function cur(){return (CONFIG&&CONFIG.currency)||"$";}
+function money(x){const r=Math.round(x*100)/100;return cur()+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2));}
+function party(){return {a:(CONFIG&&+CONFIG.adults)||0,k:(CONFIG&&+CONFIG.kids)||0};}
+function entTotal(e){if((e.mode||"flat")==="person"){const p=party();return p.a*n2(e.adult)+p.k*n2(e.child);}return n2(e.flat);}
+function emptyEntry(e){return !((e.note||"").trim()||(e.link||"").trim()||String(e.flat||"").trim()||String(e.adult||"").trim()||String(e.child||"").trim()||(Array.isArray(e.files)&&e.files.length));}
+function uid(){return 'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function did(){return 'd'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+function place(id){return (CONFIG&&CONFIG.places||[]).find(p=>p.id===id)||null;}
+function placeColor(id){const p=place(id);return p?p.color:"#9A948A";}
+function placeName(id){const p=place(id);return p?p.name:"—";}
+function dayById(id){return (CONFIG&&CONFIG.days||[]).find(d=>d.id===id)||null;}
+function tint(hex){return hex+"22";}
 
-/* ---------- Persistence: cloud (Firestore) or local ---------- */
-let CLOUD=false, db=null, entriesCol=null, storage=null, seeded=false;
-function persistLocal(){try{localStorage.setItem(LOCAL_KEY,JSON.stringify(STATE));}catch(e){}}
-function loadLocal(){try{const r=localStorage.getItem(LOCAL_KEY);if(r)Object.assign(STATE,JSON.parse(r));}catch(e){}migrateOld();}
-function migrateOld(){
-  if(Object.keys(STATE).length) return;
-  try{
-    const v3=localStorage.getItem("longwaysouth-entries-v3");
-    if(v3){const o=JSON.parse(v3);let ord=Date.now();Object.keys(o).forEach(day=>{(o[day]||[]).forEach(e=>{STATE[uid()]={day,note:e.note||"",link:e.link||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:ord++};});});}
-  }catch(e){}
-}
+/* ---------- date helpers ---------- */
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function parseISO(iso){const p=(iso||"").split('-');return {y:+p[0],m:+p[1],d:+p[2]};}
+function fmtLong(iso){const {y,m,d}=parseISO(iso);if(!y)return"";const dt=new Date(y,m-1,d);return WD[dt.getDay()]+', '+MONTHS[m-1]+' '+d+', '+y;}
+function fmtShort(iso){const {y,m,d}=parseISO(iso);if(!y)return"";const dt=new Date(y,m-1,d);return WD[dt.getDay()]+' '+d+' '+MONTHS[m-1].slice(0,3);}
+function daysInMonth(y,m){return new Date(y,m,0).getDate();}
+
+/* ---------- persistence ---------- */
+let CLOUD=false, db=null, tripRef=null, entriesCol=null, storage=null, seededEnt=false, seededCfg=false;
+function persistLocal(){try{localStorage.setItem(LOCAL_ENT,JSON.stringify(STATE));localStorage.setItem(LOCAL_CFG,JSON.stringify(CONFIG));}catch(e){}}
+function loadLocal(){try{const c=localStorage.getItem(LOCAL_CFG);if(c)CONFIG=JSON.parse(c);const r=localStorage.getItem(LOCAL_ENT);if(r)Object.assign(STATE,JSON.parse(r));}catch(e){}
+  if(!CONFIG)CONFIG=JSON.parse(JSON.stringify(TEMPLATE));}
 let savedT;
 function flashSaved(){const s=document.getElementById("saved");if(!s)return;s.classList.add("show");clearTimeout(savedT);savedT=setTimeout(()=>s.classList.remove("show"),1200);}
 function setSync(mode){const el=document.getElementById("sync");if(!el)return;el.classList.remove("live","offline","error");
@@ -492,97 +404,155 @@ function setSync(mode){const el=document.getElementById("sync");if(!el)return;el
   else if(mode==='connecting'){el.textContent="○ connecting…";}
   else{el.textContent="○ Local only";}}
 
-const dirty=new Set(); let saveT;
-function sanitize(e){return {day:e.day,note:e.note||"",link:e.link||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
-function scheduleSave(id){dirty.add(id);clearTimeout(saveT);saveT=setTimeout(flush,250);}
-function flush(){
-  if(CLOUD){dirty.forEach(id=>{if(STATE[id])entriesCol.doc(id).set(sanitize(STATE[id]));});}
-  else persistLocal();
-  dirty.clear();flashSaved();
-}
-function writeNow(id){ if(CLOUD){if(STATE[id])entriesCol.doc(id).set(sanitize(STATE[id]));flashSaved();} else {persistLocal();flashSaved();} }
-function deleteRemote(id){ if(CLOUD){entriesCol.doc(id).delete();flashSaved();} else {persistLocal();flashSaved();} }
-function clearCloud(){ if(!entriesCol||!db)return; entriesCol.get().then(s=>{const batch=db.batch();s.forEach(d=>batch.delete(d.ref));return batch.commit();}).catch(e=>console.warn('clear failed',e)); }
+function sanitize(e){return {day:e.day,category:e.category||"Misc",note:e.note||"",link:e.link||"",mode:(e.mode==="person"?"person":"flat"),flat:e.flat||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
+function normEntry(e){return {day:e.day||"_ideas",category:e.category||"Misc",note:e.note||"",link:e.link||"",mode:(e.mode==="person"?"person":((e.adult||e.child)&&!e.flat?"person":"flat")),flat:e.flat||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
 
-/* ---------- Firebase (Firestore) ---------- */
+const dirty=new Set(); let saveT;
+function scheduleSave(id){dirty.add(id);clearTimeout(saveT);saveT=setTimeout(flushEnt,250);}
+function flushEnt(){if(CLOUD){dirty.forEach(id=>{if(STATE[id])entriesCol.doc(id).set(sanitize(STATE[id]));});}else persistLocal();dirty.clear();flashSaved();}
+function writeEnt(id){if(CLOUD){if(STATE[id])entriesCol.doc(id).set(sanitize(STATE[id]));flashSaved();}else{persistLocal();flashSaved();}}
+function delEnt(id){if(CLOUD){entriesCol.doc(id).delete();flashSaved();}else{persistLocal();flashSaved();}}
+function saveEntry(id){if(CLOUD)scheduleSave(id);else{persistLocal();flashSaved();}}
+function writeCfg(){if(CLOUD){tripRef.set({config:CONFIG},{merge:true});flashSaved();}else{persistLocal();flashSaved();}}
+function clearCloudEntries(){if(!entriesCol||!db)return;entriesCol.get().then(s=>{const b=db.batch();s.forEach(d=>b.delete(d.ref));return b.commit();}).catch(e=>console.warn(e));}
+
 function initCloud(){
   if(!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf("PASTE")===-1)) return false;
-  if(typeof firebase==="undefined"){console.warn('Firebase SDK not loaded — running local only.');return false;}
+  if(typeof firebase==="undefined"){console.warn("Firebase SDK not loaded — local only.");return false;}
   try{
     firebase.initializeApp(FIREBASE_CONFIG);
     db=firebase.firestore();
-    try{storage=firebase.storage();}catch(e){console.warn('Storage unavailable',e);}
-    entriesCol=db.collection('trips').doc(TRIP_ID).collection('entries');
+    try{storage=firebase.storage();}catch(e){console.warn("Storage unavailable",e);}
+    tripRef=db.collection('trips').doc(TRIP_ID);
+    entriesCol=tripRef.collection('entries');
     setSync('connecting');
-    firebase.auth().signInAnonymously().catch(err=>{console.warn('anon auth failed — enable Anonymous sign-in',err);setSync('error');});
+    firebase.auth().signInAnonymously().catch(err=>{console.warn("anon auth failed",err);setSync('error');});
     let live=false;
-    entriesCol.onSnapshot(
-      snap=>{ if(!live){live=true;setSync('live');} const val={}; snap.forEach(doc=>{val[doc.id]=doc.data();}); applyRemote(val); },
-      err=>{ console.warn('Firestore listen error — check rules / anon auth',err); setSync('error'); }
-    );
+    tripRef.onSnapshot(snap=>{
+      const data=snap.data()||{};
+      if(!seededCfg){seededCfg=true;
+        if(!data.config){tripRef.set({config:CONFIG},{merge:true});return;} // seed template
+      }
+      if(data.config){CONFIG=data.config;renderShell();renderAll();}
+    },err=>{console.warn("config listen error",err);setSync('error');});
+    entriesCol.onSnapshot(snap=>{
+      if(!live){live=true;setSync('live');}
+      const val={};snap.forEach(doc=>{val[doc.id]=doc.data();});applyRemoteEntries(val);
+    },err=>{console.warn("entries listen error",err);setSync('error');});
     window.addEventListener('offline',()=>{if(CLOUD)setSync('offline');});
     window.addEventListener('online',()=>{if(CLOUD)setSync('live');});
-    CLOUD=true; return true;
-  }catch(e){console.warn('Firebase init failed — running local only.',e);return false;}
+    CLOUD=true;return true;
+  }catch(e){console.warn("Firebase init failed — local only.",e);return false;}
 }
-function canon(o){return Object.keys(o).sort().map(id=>{const e=o[id];return id+'|'+e.day+'|'+e.note+'|'+e.link+'|'+e.adult+'|'+e.child+'|'+(e.include?1:0)+'|'+((e.files||[]).map(f=>f.path).join(','));}).join('§');}
-function applyRemote(val){
-  const incoming={};
-  Object.keys(val).forEach(id=>{const e=val[id]||{};incoming[id]={day:e.day||"_ideas",note:e.note||"",link:e.link||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};});
-  if(!seeded){
-    seeded=true;
-    if(Object.keys(incoming).length===0 && Object.keys(STATE).length>0){
-      Object.keys(STATE).forEach(id=>entriesCol.doc(id).set(sanitize(STATE[id])));
-      return; // our seed echoes back
-    }
-  }
-  if(canon(incoming)===canon(STATE)) return; // ignore echo of our own writes
+function canon(o){return Object.keys(o).sort().map(id=>{const e=o[id];return id+'|'+e.day+'|'+e.category+'|'+e.note+'|'+e.link+'|'+e.mode+'|'+e.flat+'|'+e.adult+'|'+e.child+'|'+(e.include?1:0)+'|'+((e.files||[]).map(f=>f.path).join(','));}).join('§');}
+function applyRemoteEntries(val){
+  const incoming={};Object.keys(val).forEach(id=>{incoming[id]=normEntry(val[id]||{});});
+  if(!seededEnt){seededEnt=true;if(Object.keys(incoming).length===0&&Object.keys(STATE).length>0){Object.keys(STATE).forEach(id=>entriesCol.doc(id).set(sanitize(STATE[id])));return;}}
+  if(canon(incoming)===canon(STATE))return;
   const foc=captureFocus();
-  Object.keys(STATE).forEach(k=>delete STATE[k]); Object.assign(STATE,incoming);
-  renderAll();
-  restoreFocus(foc);
+  Object.keys(STATE).forEach(k=>delete STATE[k]);Object.assign(STATE,incoming);
+  renderAll();restoreFocus(foc);
 }
-function captureFocus(){
-  const el=document.activeElement; if(!el||!el.closest)return null;
-  const en=el.closest(".entry"); if(!en)return null;
-  const m=(el.className||"").match(/ent-(note|link|adult|child)/); if(!m)return null;
-  return {id:en.getAttribute("data-id"),cls:m[0],val:el.value,start:el.selectionStart,end:el.selectionEnd};
-}
-function restoreFocus(f){
-  if(!f)return;
-  const el=document.querySelector('.entry[data-id="'+f.id+'"] .'+f.cls); if(!el)return;
-  el.value=f.val;
-  if(STATE[f.id]) STATE[f.id][f.cls.replace('ent-','')]=f.val;
-  try{el.focus();if(f.start!=null)el.setSelectionRange(f.start,f.end);}catch(e){}
-}
-function saveEntry(id){ if(CLOUD){scheduleSave(id);} else {persistLocal();flashSaved();} }
+function captureFocus(){const el=document.activeElement;if(!el||!el.closest)return null;const en=el.closest(".entry");if(!en)return null;const m=(el.className||"").match(/ent-(note|link|flat|adult|child|cat)/);if(!m)return null;return {id:en.getAttribute("data-id"),cls:m[0],val:el.value,start:el.selectionStart,end:el.selectionEnd};}
+function restoreFocus(f){if(!f)return;const el=document.querySelector('.entry[data-id="'+f.id+'"] .'+f.cls);if(!el)return;el.value=f.val;if(STATE[f.id]){const map={'ent-note':'note','ent-link':'link','ent-flat':'flat','ent-adult':'adult','ent-child':'child','ent-cat':'category'};if(map[f.cls])STATE[f.id][map[f.cls]]=f.val;}try{el.focus();if(f.start!=null&&el.setSelectionRange)el.setSelectionRange(f.start,f.end);}catch(e){}}
 
-/* ---------- Collapse state (per-browser view preference) ---------- */
-const COLLAPSE_KEY="lococo-collapsed";
-let collapsed={};
+/* ---------- collapse state ---------- */
+const COLLAPSE_KEY="lococo-collapsed";let collapsed={};
 function loadCollapse(){try{const r=localStorage.getItem(COLLAPSE_KEY);if(r)collapsed=JSON.parse(r)||{};}catch(e){}}
 function saveCollapse(){try{localStorage.setItem(COLLAPSE_KEY,JSON.stringify(collapsed));}catch(e){}}
 function isCollapsed(k){return !!collapsed[k];}
 function toggleDay(k){collapsed[k]=!collapsed[k];saveCollapse();const c=document.querySelector('[data-day-card="'+k+'"]');if(c)c.classList.toggle('collapsed',collapsed[k]);updateCollapseAllLabel();}
-function setAllCollapsed(v){Object.keys(DAYS).forEach(k=>{collapsed[k]=v;const c=document.querySelector('[data-day-card="'+k+'"]');if(c)c.classList.toggle('collapsed',v);});saveCollapse();updateCollapseAllLabel();}
-function updateCollapseAllLabel(){const b=document.getElementById('collapseAll');if(!b)return;const anyOpen=Object.keys(DAYS).some(k=>!collapsed[k]);b.textContent=anyOpen?'Collapse all':'Expand all';}
-loadCollapse();
+function setAllCollapsed(v){(CONFIG.days||[]).forEach(d=>{collapsed[d.id]=v;const c=document.querySelector('[data-day-card="'+d.id+'"]');if(c)c.classList.toggle('collapsed',v);});saveCollapse();updateCollapseAllLabel();}
+function updateCollapseAllLabel(){const b=document.getElementById('collapseAll');if(!b)return;const anyOpen=(CONFIG.days||[]).some(d=>!collapsed[d.id]);b.textContent=anyOpen?'Collapse all':'Expand all';}
 
-/* ---------- Rendering ---------- */
-function calcLabel(e){if(n2(e.adult)<=0&&n2(e.child)<=0)return '';return '= '+money(entTotal(e))+' <span class="calc-sub">('+PARTY.adults+' ad + '+PARTY.kids+' ch)</span>';}
+/* ---------- entries per day ---------- */
+function entriesForDay(day){return Object.keys(STATE).filter(id=>STATE[id].day===day).map(id=>Object.assign({id},STATE[id])).sort((a,b)=>(a.order||0)-(b.order||0));}
+
+/* ---------- shell (header, ribbon, calendar) ---------- */
+function renderShell(){
+  document.getElementById("hEyebrow").textContent=(CONFIG.eyebrow||"Trip")+" · "+party().a+" adults + "+party().k+" kids";
+  document.getElementById("hTitle").textContent=CONFIG.name||"Trip";
+  document.getElementById("hSub").textContent=CONFIG.subtitle||"";
+  document.title=CONFIG.name||"Trip Planner";
+  const days=(CONFIG.days||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const first=days[0], last=days[days.length-1];
+  document.getElementById("hMeta").innerHTML =
+    (first?'<span><b>Start</b> '+fmtLong(first.date)+'</span>':'')+
+    (last?'<span><b>End</b> '+fmtLong(last.date)+'</span>':'')+
+    '<span><b>'+days.length+' days</b> · '+party().a+' + '+party().k+'</span>';
+  document.getElementById("foot").textContent=(CONFIG.name||"Trip")+(first&&last?(" — "+fmtLong(first.date)+" to "+fmtLong(last.date)):"");
+  renderRibbon(); renderCalendar();
+}
+function renderRibbon(){
+  const days=CONFIG.days||[]; const legs=[];
+  days.forEach(d=>{const last=legs[legs.length-1];if(last&&last.placeId===d.placeId)last.n++;else legs.push({placeId:d.placeId,n:1});});
+  const rb=document.getElementById("ribbon");
+  rb.innerHTML=legs.map((l,i)=>{const c=placeColor(l.placeId);return '<div class="leg" style="background:'+c+'"><div class="n">Leg '+(i+1)+'</div><div class="place">'+esc(placeName(l.placeId))+'</div><div class="nights">'+l.n+(l.n===1?' day':' days')+'</div></div>';}).join('');
+  document.getElementById("ribbonCap").textContent=legs.length?"Colour tracks your route across places.":"";
+}
+function renderCalendar(){
+  const days=(CONFIG.days||[]).filter(d=>d.date);
+  const map={};days.forEach(d=>{map[d.date]={placeId:d.placeId,id:d.id};});
+  const dates=days.map(d=>d.date).sort();
+  const grid=document.getElementById("calGrid");
+  if(!dates.length){grid.innerHTML="";return;}
+  const f=parseISO(dates[0]), l=parseISO(dates[dates.length-1]);
+  let y=f.y,m=f.m; let html="";
+  while(y<l.y||(y===l.y&&m<=l.m)){
+    html+='<div class="month"><h3>'+MONTHS[m-1]+' '+y+'</h3><table class="cal"><thead><tr>'+WD.map(w=>'<th>'+w+'</th>').join('')+'</tr></thead><tbody>';
+    const start=new Date(y,m-1,1).getDay(); const dim=daysInMonth(y,m); let cells=[];
+    for(let i=0;i<start;i++)cells.push(null);
+    for(let dd=1;dd<=dim;dd++)cells.push(dd);
+    while(cells.length%7)cells.push(null);
+    for(let i=0;i<cells.length;i+=7){
+      html+='<tr>'+cells.slice(i,i+7).map(dd=>{
+        if(dd===null)return '<td><div class="cell empty"></div></td>';
+        const iso=y+'-'+String(m).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+        const info=map[iso];
+        if(!info)return '<td><div class="cell"><span class="dnum">'+dd+'</span></div></td>';
+        const c=placeColor(info.placeId);
+        return '<td><div class="cell click" data-day="'+info.id+'" role="button" tabindex="0" style="background:'+tint(c)+';border-color:'+c+'" aria-label="'+esc(fmtLong(iso))+'"><span class="dnum" style="color:'+c+'">'+dd+'</span><span class="tag" style="color:'+c+'">'+esc(placeName(info.placeId))+'</span><span class="dot" style="background:'+c+'"></span></div></td>';
+      }).join('')+'</tr>';
+    }
+    html+='</tbody></table></div>';
+    m++; if(m>12){m=1;y++;}
+  }
+  grid.innerHTML=html;
+  days.forEach(d=>updateDot(d.id));
+}
+
+/* ---------- planHTML ---------- */
+function planHTML(plan){
+  const lines=String(plan||"").split('\n').map(s=>s.trim()).filter(Boolean);
+  if(!lines.length)return '';
+  return '<ul class="plan">'+lines.map(li=>{const m=li.match(/^([A-Za-z][\w \-]*?):\s*(.*)$/);return '<li>'+(m?'<span class="whenlbl">'+esc(m[1])+':</span> '+esc(m[2]):esc(li))+'</li>';}).join('')+'</ul>';
+}
+
+/* ---------- entry rendering ---------- */
+function fmtSize(b){b=+b||0;if(b<1024)return b+' B';if(b<1048576)return Math.round(b/1024)+' KB';return (b/1048576).toFixed(1)+' MB';}
+function filesHTML(e){const fs=e.files||[];if(!fs.length)return '';return fs.map((f,fi)=>'<span class="filechip"><a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer" title="'+esc(f.name)+'">📄 '+esc(f.name)+'</a><span class="fsize">'+fmtSize(f.size)+'</span><button class="rmfile" data-fi="'+fi+'" title="Remove file" aria-label="Remove file">✕</button></span>').join('');}
+function calcLabel(e){const t=entTotal(e);if((e.mode||"flat")==="person"){if(n2(e.adult)<=0&&n2(e.child)<=0)return '';const p=party();return '= '+money(t)+' <span class="calc-sub">('+p.a+' ad + '+p.k+' ch)</span>';}if(n2(e.flat)<=0)return '';return '= '+money(t);}
+function costFieldsHTML(e){
+  if((e.mode||"flat")==="person"){
+    return '<label class="cf">Adult '+cur()+'<input class="ent-adult" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.adult||"")+'"></label>'+
+           '<label class="cf">Child '+cur()+'<input class="ent-child" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.child||"")+'"></label>';
+  }
+  return '<label class="cf">Total '+cur()+'<input class="ent-flat" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.flat||"")+'"></label>';
+}
 function entryHTML(e){
   const link=(e.link||"").trim();
   return '<div class="entry'+(e.include?'':' excluded')+'" data-id="'+e.id+'" data-key="'+e.day+'">'+
     '<div class="ent-top">'+
-      '<label class="ent-inc"><input type="checkbox" class="ent-check"'+(e.include?' checked':'')+'> <span>count in total</span></label>'+
+      '<label class="ent-inc"><input type="checkbox" class="ent-check"'+(e.include?' checked':'')+'> <span>count</span></label>'+
+      '<input class="ent-cat" list="catlist" placeholder="Category" value="'+esc(e.category||"")+'">'+
       '<span class="ent-calc">'+calcLabel(e)+'</span>'+
     '</div>'+
-    '<textarea class="ent-note" rows="2" placeholder="Note or idea…">'+esc(e.note||"")+'</textarea>'+
+    '<textarea class="ent-note" rows="1" placeholder="What is it?">'+esc(e.note||"")+'</textarea>'+
     '<a class="ent-visit'+(link?"":" hidden")+'" href="'+esc(normUrl(link))+'" target="_blank" rel="noopener noreferrer">open link ↗</a>'+
     '<input class="ent-link" type="url" placeholder="Paste a link (optional)" value="'+esc(e.link||"")+'">'+
     '<div class="entry-row">'+
-      '<label class="cf">Adult $<input class="ent-adult" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.adult||"")+'"></label>'+
-      '<label class="cf">Child $<input class="ent-child" type="text" inputmode="decimal" placeholder="0" value="'+esc(e.child||"")+'"></label>'+
+      '<select class="ent-mode"><option value="flat"'+((e.mode||"flat")==="flat"?" selected":"")+'>Flat total</option><option value="person"'+(e.mode==="person"?" selected":"")+'>Per person</option></select>'+
+      costFieldsHTML(e)+
       '<span class="cf-spacer"></span>'+
       '<button class="ent-move" title="Move to another day" aria-label="Move to another day">⤴</button>'+
       '<button class="ent-del" title="Remove" aria-label="Remove entry">✕</button>'+
@@ -591,293 +561,243 @@ function entryHTML(e){
     '<div class="ent-attach"><label class="attachbtn">📎 Attach PDF / image<input type="file" class="ent-file" accept="application/pdf,image/*" hidden></label><span class="ent-upstatus"></span></div>'+
   '</div>';
 }
-function fmtSize(b){b=+b||0;if(b<1024)return b+' B';if(b<1048576)return Math.round(b/1024)+' KB';return (b/1048576).toFixed(1)+' MB';}
-function filesHTML(e){
-  const fs=e.files||[]; if(!fs.length) return '';
-  return fs.map((f,fi)=>'<span class="filechip"><a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer" title="'+esc(f.name)+'">📄 '+esc(f.name)+'</a><span class="fsize">'+fmtSize(f.size)+'</span><button class="rmfile" data-fi="'+fi+'" title="Remove file" aria-label="Remove file">✕</button></span>').join('');
-}
 function renderDay(day){
   const wrap=document.querySelector('[data-day-entries="'+day+'"]');
-  if(wrap) wrap.innerHTML=entriesForDay(day).map(entryHTML).join('');
-  updateSum(day); updateDot(day);
+  if(wrap)wrap.innerHTML=entriesForDay(day).map(entryHTML).join('');
+  updateSum(day);updateDot(day);
 }
-function renderAll(){Object.keys(DAYS).forEach(renderDay);renderDay("_ideas");renderDay("_docs");updateGrand();}
-function updateSum(day){
-  const list=entriesForDay(day);
-  let chosen=0,proposed=0;
-  list.forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
-  const span=document.querySelector('[data-sum="'+day+'"]');
-  if(span){
-    let html="";
-    if(chosen>0) html+='chosen: <b>'+money(chosen)+'</b>';
-    if(proposed>0) html+=(html?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';
-    span.innerHTML=html;
-  }
-  const meta=document.querySelector('[data-meta="'+day+'"]');
-  if(meta){
-    const cnt=list.filter(e=>!emptyEntry(e)).length;
-    let m=cnt?(cnt+(cnt===1?' note':' notes')):'';
-    if(chosen>0) m+=(m?' · ':'')+'chosen <b>'+money(chosen)+'</b>';
-    meta.innerHTML=m;
-  }
+function renderDays(){
+  const list=document.getElementById("daylist");
+  list.innerHTML=(CONFIG.days||[]).map(cardHTML).join('');
+  (CONFIG.days||[]).forEach(d=>renderDay(d.id));
+  updateCollapseAllLabel();
 }
-function updateDot(day){
-  const cell=document.querySelector('.cell.click[data-day="'+day+'"]'); if(!cell)return;
-  const c=entriesForDay(day).filter(e=>!emptyEntry(e)).length;
-  cell.classList.toggle("has-note",c>0);
-  const dot=cell.querySelector(".dot"); if(dot)dot.textContent=c>0?c:"";
-}
-function updateGrand(){
-  let g=0,count=0;
-  Object.keys(STATE).forEach(id=>{const e=STATE[id];if(e.include){g+=entTotal(e);if(!emptyEntry(e))count++;}});
-  const el=document.getElementById("addonLine"); if(!el)return;
-  el.innerHTML='Your chosen add-ons ('+count+'): <b>'+money(g)+'</b><br>Grand total incl. picks: <b>'+money(BASE+g)+'</b>';
-}
-
-/* ---------- Calendar & cards ---------- */
-function cellHTML(key){
-  if(key===null) return '<td><div class="cell empty"></div></td>';
-  if(key.charAt(0)==="b"){const nn=key.split("-")[1];return '<td><div class="cell"><span class="dnum">'+nn+'</span></div></td>';}
-  const d=DAYS[key], ico=d.ico?'<span class="ico">'+d.ico+'</span>':'';
-  return '<td><div class="cell click '+d.fill+'" role="button" tabindex="0" data-day="'+key+'" aria-label="'+d.date+' — '+d.title+'">'+
-    ico+'<span class="dnum">'+d.dd+'</span><span class="tag">'+d.tag+'</span><span class="dot"></span></div></td>';
-}
-function renderMonth(rows,id){document.getElementById(id).innerHTML=rows.map(r=>'<tr>'+r.map(cellHTML).join('')+'</tr>').join('');}
-function cardHTML(key){
-  const d=DAYS[key], plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
-  const col=isCollapsed(key)?' collapsed':'';
-  return '<div class="day'+col+'" data-day-card="'+key+'">'+
-    '<div class="day-head" data-day-toggle="'+key+'" role="button" tabindex="0" aria-label="Toggle '+d.date+'">'+
+function renderAll(){renderDays();renderDay("_ideas");renderDay("_docs");renderBudget();(CONFIG.days||[]).forEach(d=>updateDot(d.id));}
+function cardHTML(d){
+  const c=placeColor(d.placeId),col=isCollapsed(d.id)?' collapsed':'';
+  return '<div class="day'+col+'" data-day-card="'+d.id+'">'+
+    '<div class="day-head" data-day-toggle="'+d.id+'" role="button" tabindex="0" aria-label="Toggle '+esc(fmtLong(d.date))+'">'+
       '<span class="chev">▾</span>'+
-      '<div class="dh-text"><div class="dh-date">'+d.wd+' '+d.dd+' '+d.mo+'</div>'+
-        '<h4 class="dh-title">'+d.title+' <span class="pill p-'+d.pill+'">'+d.loc+'</span></h4></div>'+
-      '<div class="dh-right"><span class="daymeta" data-meta="'+key+'"></span>'+
-        '<span class="daycost" data-day="'+key+'" title="Base cost breakdown →">'+d.total+'</span></div>'+
+      '<div class="dh-text"><div class="dh-date">'+esc(fmtShort(d.date))+'</div>'+
+        '<h4 class="dh-title"><span class="pill" style="background:'+c+'">'+esc(placeName(d.placeId))+'</span></h4></div>'+
+      '<div class="dh-right"><span class="daymeta" data-meta="'+d.id+'"></span>'+
+        '<span class="daycost" data-day="'+d.id+'"></span></div>'+
     '</div>'+
-    '<div class="day-body">'+
-      '<ul class="plan">'+plan+'</ul>'+
-      '<div class="entries" data-day-entries="'+key+'"></div>'+
-      '<div class="addrow"><button class="addbtn" data-add="'+key+'">+ Add note</button><span class="added-sum" data-sum="'+key+'"></span></div>'+
+    '<div class="day-body">'+planHTML(d.plan)+
+      '<div class="entries" data-day-entries="'+d.id+'"></div>'+
+      '<div class="addrow"><button class="addbtn" data-add="'+d.id+'">+ Add cost / note</button><span class="added-sum" data-sum="'+d.id+'"></span></div>'+
     '</div></div>';
 }
+function updateSum(day){
+  const list=entriesForDay(day);let chosen=0,proposed=0;
+  list.forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
+  const span=document.querySelector('[data-sum="'+day+'"]');
+  if(span){let h="";if(chosen>0)h+='chosen: <b>'+money(chosen)+'</b>';if(proposed>0)h+=(h?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';span.innerHTML=h;}
+  const meta=document.querySelector('[data-meta="'+day+'"]');
+  if(meta){const cnt=list.filter(e=>!emptyEntry(e)).length;let m=cnt?(cnt+(cnt===1?' item':' items')):'';meta.innerHTML=m;}
+  const dc=document.querySelector('.daycost[data-day="'+day+'"]');
+  if(dc)dc.textContent=chosen>0?money(chosen):'';
+  renderBudget();
+}
+function updateDot(day){const cell=document.querySelector('.cell.click[data-day="'+day+'"]');if(!cell)return;const c=entriesForDay(day).filter(e=>!emptyEntry(e)).length;cell.classList.toggle("has-note",c>0);const dot=cell.querySelector(".dot");if(dot)dot.textContent=c>0?c:"";}
+function renderBudget(){
+  const cats={};let committed=0,proposed=0,cCount=0;
+  Object.keys(STATE).forEach(id=>{const e=STATE[id];const t=entTotal(e);const c=(e.category||"Misc").trim()||"Misc";if(e.include){committed+=t;cats[c]=(cats[c]||0)+t;if(!emptyEntry(e))cCount++;}else proposed+=t;});
+  document.getElementById("bigAmt").textContent=money(committed);
+  document.getElementById("bigRange").innerHTML=(cCount?('From <b>'+cCount+'</b> committed line'+(cCount===1?'':'s')+'. '):'')+(proposed>0?('Plus <b>'+money(proposed)+'</b> in proposed (unticked) lines.'):'Tick lines to add them here.');
+  document.getElementById("budgetHint").textContent=cur()+" · "+party().a+" adults + "+party().k+" kids";
+  const rows=Object.keys(cats).sort((a,b)=>cats[b]-cats[a]);
+  let html=rows.map(c=>'<tr><td class="cat">'+esc(c)+'</td><td>'+money(cats[c])+'</td></tr>').join('');
+  if(!rows.length)html='<tr><td class="empty-cat">No committed costs yet</td><td>'+money(0)+'</td></tr>';
+  html+='<tr><td>Committed total</td><td>'+money(committed)+'</td></tr>';
+  document.getElementById("breakdown").innerHTML=html;
+}
 
-/* ---------- Modal ---------- */
+/* ---------- modal (day) ---------- */
 const backdrop=document.getElementById("backdrop");
-const mDate=document.getElementById("m-date"), mTitle=document.getElementById("m-title"), mBody=document.getElementById("m-body");
+const mDate=document.getElementById("m-date"),mTitle=document.getElementById("m-title"),mBody=document.getElementById("m-body");
 let lastFocus=null;
-function openDay(key){
-  const d=DAYS[key]; if(!d) return;
-  lastFocus=document.activeElement;
-  mDate.textContent=d.date;
-  mTitle.innerHTML=d.title+' <span class="pill p-'+d.pill+'" style="vertical-align:middle;">'+d.loc+'</span>';
-  const plan=d.plan.map(p=>'<li>'+p+'</li>').join('');
-  const costs=d.costs.map(c=>'<tr><td>'+c[0]+'</td><td>'+c[1]+'</td></tr>').join('');
-  let html='<div class="sect">The plan</div><ul class="mplan">'+plan+'</ul>'+
-    '<div class="sect">Base estimate — family of 4</div><table class="costtbl">'+costs+'<tr><td>Day total</td><td>'+d.total+'</td></tr></table>';
-  if(d.note) html+='<div class="mnote">'+d.note+'</div>';
-  const es=entriesForDay(key).filter(e=>!emptyEntry(e));
+function openDay(id){
+  const d=dayById(id);if(!d)return;lastFocus=document.activeElement;
+  mDate.textContent=fmtLong(d.date);
+  mTitle.innerHTML='<span class="pill" style="background:'+placeColor(d.placeId)+';vertical-align:middle">'+esc(placeName(d.placeId))+'</span>';
+  let html=planHTML(d.plan)?('<div class="sect">Plan</div>'+planHTML(d.plan)):'';
+  const es=entriesForDay(id).filter(e=>!emptyEntry(e));
   if(es.length){
-    html+='<div class="sect">Added notes &amp; ideas ('+es.length+')</div><ul class="mentries">'+
-      es.map(e=>{let li='<li>';if((e.note||"").trim())li+=esc(e.note.trim());const t=entTotal(e);if(t>0)li+=' <span class="mcost">'+money(t)+(e.include?' ✓':' (not counted)')+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';if(e.files&&e.files.length)li+='<br>'+e.files.map(f=>'📄 <a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer">'+esc(f.name)+'</a>').join('<br>');return li+'</li>';}).join('')+'</ul>';
+    let chosen=0;es.forEach(e=>{if(e.include)chosen+=entTotal(e);});
+    html+='<div class="sect">Costs & notes ('+es.length+') — chosen '+money(chosen)+'</div><ul class="mentries">'+
+      es.map(e=>{let li='<li><span class="mcat">'+esc(e.category||"Misc")+'</span> ';if((e.note||"").trim())li+=esc(e.note.trim());const t=entTotal(e);if(t>0)li+=' <span class="mcost">'+money(t)+(e.include?' ✓':' (not counted)')+'</span>';if((e.link||"").trim())li+='<br><a href="'+esc(normUrl(e.link))+'" target="_blank" rel="noopener noreferrer">'+esc(e.link.trim())+'</a>';if(e.files&&e.files.length)li+='<br>'+e.files.map(f=>'📄 <a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer">'+esc(f.name)+'</a>').join('<br>');return li+'</li>';}).join('')+'</ul>';
   }
-  html+='<p class="mhint">Add or edit entries under this day in the list below.</p>';
-  mBody.innerHTML=html;
-  backdrop.classList.add("open");
-  document.getElementById("closebtn").focus();
-  document.body.style.overflow="hidden";
+  html+='<p class="mhint">Add or edit under this day in the list below.</p>';
+  mBody.innerHTML=html;backdrop.classList.add("open");document.getElementById("closebtn").focus();document.body.style.overflow="hidden";
 }
 function closeModal(){backdrop.classList.remove("open");document.body.style.overflow="";if(lastFocus)lastFocus.focus();}
 
-/* ---------- Add / remove ---------- */
-function addEntry(day){
-  const id=uid();
-  STATE[id]={day,note:"",link:"",adult:"",child:"",include:false,order:Date.now(),files:[]};
-  writeNow(id);
-  renderDay(day); updateGrand();
-  const nt=document.querySelector('[data-day-entries="'+day+'"] .entry[data-id="'+id+'"] .ent-note'); if(nt)nt.focus();
-}
-function removeEntry(id){
-  const rec=STATE[id]; const day=rec&&rec.day;
-  if(rec&&storage&&Array.isArray(rec.files)){rec.files.forEach(f=>{if(f.path)storage.ref(f.path).delete().catch(()=>{});});}
-  delete STATE[id];
-  deleteRemote(id);
-  if(day)renderDay(day); updateGrand();
-}
-
-/* ---------- File attachments (Firebase Storage) ---------- */
+/* ---------- add / remove / files ---------- */
+function addEntry(day){const id=uid();STATE[id]={day,category:"",note:"",link:"",mode:"flat",flat:"",adult:"",child:"",include:false,order:Date.now(),files:[]};writeEnt(id);renderDay(day);renderBudget();const nt=document.querySelector('[data-day-entries="'+day+'"] .entry[data-id="'+id+'"] .ent-note');if(nt)nt.focus();}
+function removeEntry(id){const rec=STATE[id];const day=rec&&rec.day;if(rec&&storage&&Array.isArray(rec.files))rec.files.forEach(f=>{if(f.path)storage.ref(f.path).delete().catch(()=>{});});delete STATE[id];delEnt(id);if(day)renderDay(day);renderBudget();}
 function safeName(n){return String(n||'file').replace(/[^\w.\- ]+/g,'_').slice(0,80);}
 function uploadFile(id,file){
-  if(!CLOUD||!storage){alert("Attachments need Firebase Storage. Enable Storage (Blaze plan) in the console — or paste a Drive/Dropbox share link in the link field instead.");return;}
-  if(file.size>25*1048576){alert("That file is over 25 MB — please attach a smaller PDF.");return;}
-  const rec=STATE[id]; if(!rec)return;
+  if(!CLOUD||!storage){alert("Attachments need Firebase Storage. Enable Storage (Blaze) in the console, or paste a Drive/Dropbox link in the link field.");return;}
+  if(file.size>25*1048576){alert("That file is over 25 MB — please attach a smaller one.");return;}
+  const rec=STATE[id];if(!rec)return;
   const path='trips/'+TRIP_ID+'/files/'+id+'/'+Date.now()+'_'+safeName(file.name);
-  const ref=storage.ref(path);
-  const status=document.querySelector('.entry[data-id="'+id+'"] .ent-upstatus');
+  const ref=storage.ref(path),status=document.querySelector('.entry[data-id="'+id+'"] .ent-upstatus');
   const task=ref.put(file,{contentType:file.type||'application/octet-stream'});
   task.on('state_changed',
-    s=>{ if(status)status.textContent='Uploading… '+Math.round(s.bytesTransferred/s.totalBytes*100)+'%'; },
-    err=>{ console.warn('upload failed',err); if(status)status.textContent=''; alert("Upload failed ("+((err&&err.code)||err)+").\nCheck that Storage is enabled and its rules allow authenticated writes."); },
-    ()=>{ ref.getDownloadURL().then(url=>{ if(!Array.isArray(rec.files))rec.files=[]; rec.files.push({name:file.name,url:url,path:path,size:file.size,type:file.type||''}); if(status)status.textContent=''; writeNow(id); renderDay(rec.day); }); }
+    s=>{if(status)status.textContent='Uploading… '+Math.round(s.bytesTransferred/s.totalBytes*100)+'%';},
+    err=>{console.warn(err);if(status)status.textContent='';alert("Upload failed ("+((err&&err.code)||err)+").\nCheck Storage is enabled and its rules allow authenticated writes.");},
+    ()=>{ref.getDownloadURL().then(url=>{if(!Array.isArray(rec.files))rec.files=[];rec.files.push({name:file.name,url:url,path:path,size:file.size,type:file.type||''});if(status)status.textContent='';writeEnt(id);renderDay(rec.day);});}
   );
 }
-function removeFile(id,fi){
-  const rec=STATE[id]; if(!rec||!Array.isArray(rec.files)||!rec.files[fi])return;
-  const f=rec.files[fi];
-  if(!confirm('Remove "'+f.name+'"?'))return;
-  if(storage&&f.path){storage.ref(f.path).delete().catch(e=>console.warn('storage delete failed (metadata removed anyway)',e));}
-  rec.files.splice(fi,1); writeNow(id); renderDay(rec.day);
-}
+function removeFile(id,fi){const rec=STATE[id];if(!rec||!Array.isArray(rec.files)||!rec.files[fi])return;const f=rec.files[fi];if(!confirm('Remove "'+f.name+'"?'))return;if(storage&&f.path)storage.ref(f.path).delete().catch(e=>console.warn(e));rec.files.splice(fi,1);writeEnt(id);renderDay(rec.day);}
 
-/* ---------- Move ---------- */
-const movepick=document.getElementById("movepick");
-let moveCtx={id:null};
+/* ---------- move ---------- */
+const movepick=document.getElementById("movepick");let moveCtx={id:null};
 function buildMoveGrid(){
-  let html=Object.keys(DAYS).map(k=>{const d=DAYS[k];
-    return '<button class="moveopt" data-move-to="'+k+'"><span class="mvdot p-'+d.pill+'"></span><span class="mvlabel"><b>'+d.wd+' '+d.dd+' '+d.mo+'</b> · '+d.loc+'</span></button>';}).join('');
-  html+='<button class="moveopt" data-move-to="_ideas"><span class="mvdot"></span><span class="mvlabel"><b>Open ideas</b> · parking lot</span></button>';
+  let html=(CONFIG.days||[]).map(d=>'<button class="moveopt" data-move-to="'+d.id+'"><span class="mvdot" style="background:'+placeColor(d.placeId)+'"></span><span class="mvlabel"><b>'+esc(fmtShort(d.date))+'</b> · '+esc(placeName(d.placeId))+'</span></button>').join('');
+  html+='<button class="moveopt" data-move-to="_ideas"><span class="mvdot"></span><span class="mvlabel"><b>Open ideas</b></span></button>';
+  html+='<button class="moveopt" data-move-to="_docs"><span class="mvdot"></span><span class="mvlabel"><b>Documents & receipts</b></span></button>';
   document.getElementById("movegrid").innerHTML=html;
 }
-function openMove(id){
-  moveCtx={id};
-  const e=STATE[id]||{}; const nt=(e.note||"").trim();
-  document.getElementById("move-h").textContent = nt ? ('“'+nt.slice(0,60)+(nt.length>60?'…':'')+'”') : "(empty note)";
-  const cur=e.day;
-  document.querySelectorAll("#movegrid .moveopt").forEach(b=>{
-    const isCur=b.getAttribute("data-move-to")===cur;
-    b.classList.toggle("current",isCur); b.disabled=isCur;
-    let tag=b.querySelector(".cur-tag");
-    if(isCur&&!tag){tag=document.createElement("span");tag.className="cur-tag";tag.textContent="current";b.appendChild(tag);}
-    else if(!isCur&&tag){tag.remove();}
-  });
-  movepick.classList.add("open"); document.body.style.overflow="hidden";
-}
+function openMove(id){moveCtx={id};const e=STATE[id]||{};const nt=(e.note||"").trim();document.getElementById("move-h").textContent=nt?('“'+nt.slice(0,60)+(nt.length>60?'…':'')+'”'):"(empty note)";const cur2=e.day;document.querySelectorAll("#movegrid .moveopt").forEach(b=>{const isCur=b.getAttribute("data-move-to")===cur2;b.classList.toggle("current",isCur);b.disabled=isCur;let tag=b.querySelector(".cur-tag");if(isCur&&!tag){tag=document.createElement("span");tag.className="cur-tag";tag.textContent="current";b.appendChild(tag);}else if(!isCur&&tag)tag.remove();});movepick.classList.add("open");document.body.style.overflow="hidden";}
 function closeMove(){movepick.classList.remove("open");document.body.style.overflow="";moveCtx={id:null};}
-function doMove(toDay){
-  const id=moveCtx.id; if(!id||!STATE[id]){closeMove();return;}
-  const from=STATE[id].day; if(toDay===from){closeMove();return;}
-  STATE[id].day=toDay; STATE[id].order=Date.now();
-  writeNow(id);
-  renderDay(from); renderDay(toDay); updateGrand();
-  closeMove();
-}
+function doMove(toDay){const id=moveCtx.id;if(!id||!STATE[id]){closeMove();return;}const from=STATE[id].day;if(toDay===from){closeMove();return;}STATE[id].day=toDay;STATE[id].order=Date.now();writeEnt(id);renderDay(from);renderDay(toDay);renderBudget();closeMove();}
 document.getElementById("moveclose").addEventListener("click",closeMove);
 movepick.addEventListener("click",e=>{if(e.target===movepick)closeMove();});
 
-/* ---------- Events ---------- */
+/* ---------- settings ---------- */
+const setpick=document.getElementById("setpick"),setBody=document.getElementById("set-body");
+function openSettings(){
+  const c=CONFIG;
+  let placesHTML=(c.places||[]).map(p=>'<div class="place-row" data-pid="'+p.id+'"><input type="color" class="pl-color" value="'+esc(p.color)+'"><input type="text" class="pl-name" value="'+esc(p.name)+'" placeholder="Place name"><button class="rowdel" data-delplace="'+p.id+'" title="Remove place">✕</button></div>').join('');
+  const placeOpts=id=>(c.places||[]).map(p=>'<option value="'+p.id+'"'+(p.id===id?" selected":"")+'>'+esc(p.name)+'</option>').join('');
+  let daysHTML=(c.days||[]).map(d=>'<div class="day-row" data-did="'+d.id+'"><div class="dr-line"><input type="date" class="dr-date" value="'+esc(d.date)+'"><select class="dr-place">'+placeOpts(d.placeId)+'</select><button class="rowdel" data-delday="'+d.id+'" title="Remove day">✕</button></div><textarea class="dr-plan" placeholder="Plan for the day (one item per line, e.g. Morning: …)">'+esc(d.plan||"")+'</textarea></div>').join('');
+  setBody.innerHTML=
+    '<div class="set-field"><label>Trip name</label><input type="text" id="sfName" value="'+esc(c.name||"")+'"></div>'+
+    '<div class="set-field"><label>Subtitle</label><input type="text" id="sfSub" value="'+esc(c.subtitle||"")+'"></div>'+
+    '<div class="set-row"><div class="set-field"><label>Adults</label><input type="number" id="sfAdults" min="0" value="'+(+c.adults||0)+'"></div>'+
+      '<div class="set-field"><label>Kids</label><input type="number" id="sfKids" min="0" value="'+(+c.kids||0)+'"></div>'+
+      '<div class="set-field"><label>Currency</label><input type="text" id="sfCur" maxlength="3" value="'+esc(c.currency||"$")+'"></div></div>'+
+    '<div class="sect">Places</div><div id="placeList">'+placesHTML+'</div>'+
+    '<button class="addbtn" id="addPlace">+ Add place</button>'+
+    '<div class="sect">Days</div><div id="dayList">'+daysHTML+'</div>'+
+    '<button class="addbtn" id="addDay">+ Add day</button>'+
+    '<div class="set-actions"><button class="btn ghost" id="setCancel">Cancel</button><button class="btn" id="setSave">Save changes</button></div>';
+  setpick.classList.add("open");document.body.style.overflow="hidden";
+  document.getElementById("addPlace").onclick=()=>{const id=did();const row=document.createElement("div");row.className="place-row";row.setAttribute("data-pid",id);row.innerHTML='<input type="color" class="pl-color" value="#6A5A79"><input type="text" class="pl-name" value="" placeholder="Place name"><button class="rowdel" data-delplace="'+id+'" title="Remove place">✕</button>';document.getElementById("placeList").appendChild(row);};
+  document.getElementById("addDay").onclick=()=>{const id=did();const days=collectDays();const lastDate=days.length?days[days.length-1].date:(new Date().toISOString().slice(0,10));const nd=nextDate(lastDate);const row=document.createElement("div");row.className="day-row";row.setAttribute("data-did",id);row.innerHTML='<div class="dr-line"><input type="date" class="dr-date" value="'+nd+'"><select class="dr-place">'+placeOpts((c.places[0]||{}).id)+'</select><button class="rowdel" data-delday="'+id+'" title="Remove day">✕</button></div><textarea class="dr-plan" placeholder="Plan for the day"></textarea>';document.getElementById("dayList").appendChild(row);};
+  document.getElementById("setCancel").onclick=closeSettings;
+  document.getElementById("setSave").onclick=saveSettings;
+}
+function nextDate(iso){const {y,m,d}=parseISO(iso);const dt=new Date(y,m-1,d+1);return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');}
+function collectDays(){return [...document.querySelectorAll('#dayList .day-row')].map(r=>({id:r.getAttribute('data-did'),date:r.querySelector('.dr-date').value,placeId:r.querySelector('.dr-place').value,plan:r.querySelector('.dr-plan').value}));}
+function closeSettings(){setpick.classList.remove("open");document.body.style.overflow="";}
+function saveSettings(){
+  const places=[...document.querySelectorAll('#placeList .place-row')].map(r=>({id:r.getAttribute('data-pid'),name:r.querySelector('.pl-name').value.trim()||"Place",color:r.querySelector('.pl-color').value}));
+  const days=collectDays().filter(d=>d.date).sort((a,b)=>a.date.localeCompare(b.date));
+  const oldIds=new Set((CONFIG.days||[]).map(d=>d.id));
+  const newIds=new Set(days.map(d=>d.id));
+  const removed=[...oldIds].filter(id=>!newIds.has(id));
+  CONFIG={...CONFIG,
+    name:document.getElementById("sfName").value.trim()||"Trip",
+    subtitle:document.getElementById("sfSub").value.trim(),
+    adults:+document.getElementById("sfAdults").value||0,
+    kids:+document.getElementById("sfKids").value||0,
+    currency:document.getElementById("sfCur").value.trim()||"$",
+    places,days};
+  // rescue entries from removed days
+  if(removed.length){removed.forEach(rid=>{Object.keys(STATE).forEach(eid=>{if(STATE[eid].day===rid){STATE[eid].day="_ideas";writeEnt(eid);}});});}
+  writeCfg();buildMoveGrid();renderShell();renderAll();closeSettings();
+}
+document.getElementById("settingsBtn").addEventListener("click",openSettings);
+document.getElementById("setclose").addEventListener("click",closeSettings);
+setpick.addEventListener("click",e=>{if(e.target===setpick)closeSettings();
+  const dp=e.target.closest("[data-delplace]");if(dp){const row=dp.closest(".place-row");if(row)row.remove();}
+  const dd=e.target.closest("[data-delday]");if(dd){const row=dd.closest(".day-row");if(row)row.remove();}
+});
+
+/* ---------- events ---------- */
 document.addEventListener("click",e=>{
-  const dest=e.target.closest("[data-move-to]"); if(dest){doMove(dest.getAttribute("data-move-to"));return;}
-  const add=e.target.closest("[data-add]"); if(add){addEntry(add.getAttribute("data-add"));return;}
-  const mv=e.target.closest(".ent-move"); if(mv){openMove(mv.closest(".entry").getAttribute("data-id"));return;}
-  const del=e.target.closest(".ent-del"); if(del){removeEntry(del.closest(".entry").getAttribute("data-id"));return;}
-  const rmf=e.target.closest(".rmfile"); if(rmf){const en=rmf.closest(".entry");removeFile(en.getAttribute("data-id"),+rmf.getAttribute("data-fi"));return;}
-  const dc=e.target.closest(".daycost"); if(dc){openDay(dc.getAttribute("data-day"));return;}
-  const hd=e.target.closest("[data-day-toggle]"); if(hd){toggleDay(hd.getAttribute("data-day-toggle"));return;}
-  if(e.target.closest("textarea,input,button,a,label,.entries,.addrow,.ent-files,.ent-attach,.toolbar")) return;
-  const t=e.target.closest("[data-day]"); if(t) openDay(t.getAttribute("data-day"));
+  const dest=e.target.closest("[data-move-to]");if(dest){doMove(dest.getAttribute("data-move-to"));return;}
+  const add=e.target.closest("[data-add]");if(add){addEntry(add.getAttribute("data-add"));return;}
+  const mv=e.target.closest(".ent-move");if(mv){openMove(mv.closest(".entry").getAttribute("data-id"));return;}
+  const del=e.target.closest(".ent-del");if(del){removeEntry(del.closest(".entry").getAttribute("data-id"));return;}
+  const rmf=e.target.closest(".rmfile");if(rmf){const en=rmf.closest(".entry");removeFile(en.getAttribute("data-id"),+rmf.getAttribute("data-fi"));return;}
+  const dc=e.target.closest(".daycost");if(dc){openDay(dc.getAttribute("data-day"));return;}
+  const hd=e.target.closest("[data-day-toggle]");if(hd){toggleDay(hd.getAttribute("data-day-toggle"));return;}
+  if(e.target.closest("textarea,input,select,button,a,label,.entries,.addrow,.ent-files,.ent-attach,.toolbar")) return;
+  const t=e.target.closest("[data-day]");if(t)openDay(t.getAttribute("data-day"));
 });
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){if(movepick.classList.contains("open"))closeMove();if(backdrop.classList.contains("open"))closeModal();}
-  if(e.target.matches("textarea,input")) return;
-  const hd=e.target.closest && e.target.closest("[data-day-toggle]");
-  if(hd && (e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDay(hd.getAttribute("data-day-toggle"));return;}
-  const t=e.target.closest && e.target.closest("[data-day]");
-  if(t && (e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
+  if(e.key==="Escape"){if(setpick.classList.contains("open"))closeSettings();if(movepick.classList.contains("open"))closeMove();if(backdrop.classList.contains("open"))closeModal();}
+  if(e.target.matches("textarea,input,select")) return;
+  const hd=e.target.closest&&e.target.closest("[data-day-toggle]");
+  if(hd&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDay(hd.getAttribute("data-day-toggle"));return;}
+  const t=e.target.closest&&e.target.closest("[data-day]");
+  if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openDay(t.getAttribute("data-day"));}
 });
 document.getElementById("closebtn").addEventListener("click",closeModal);
 backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal();});
 
 document.addEventListener("input",e=>{
-  const en=e.target.closest(".entry"); if(!en) return;
-  const id=en.getAttribute("data-id"); const rec=STATE[id]; if(!rec) return;
-  if(e.target.classList.contains("ent-note")) rec.note=e.target.value;
-  else if(e.target.classList.contains("ent-link")){
-    rec.link=e.target.value;
-    const v=en.querySelector(".ent-visit"); const val=e.target.value.trim();
-    if(v){v.href=normUrl(val);v.classList.toggle("hidden",!val);}
-  }
-  else if(e.target.classList.contains("ent-adult")||e.target.classList.contains("ent-child")){
-    if(e.target.classList.contains("ent-adult")) rec.adult=e.target.value; else rec.child=e.target.value;
-    const c=en.querySelector(".ent-calc"); if(c)c.innerHTML=calcLabel(rec);
-    updateSum(rec.day); updateGrand();
-  } else return;
+  const en=e.target.closest(".entry");if(!en)return;const id=en.getAttribute("data-id");const rec=STATE[id];if(!rec)return;
+  const cl=e.target.classList;
+  if(cl.contains("ent-note"))rec.note=e.target.value;
+  else if(cl.contains("ent-cat")){rec.category=e.target.value;updateSum(rec.day);}
+  else if(cl.contains("ent-link")){rec.link=e.target.value;const v=en.querySelector(".ent-visit");const val=e.target.value.trim();if(v){v.href=normUrl(val);v.classList.toggle("hidden",!val);}}
+  else if(cl.contains("ent-flat")){rec.flat=e.target.value;const c=en.querySelector(".ent-calc");if(c)c.innerHTML=calcLabel(rec);updateSum(rec.day);}
+  else if(cl.contains("ent-adult")){rec.adult=e.target.value;const c=en.querySelector(".ent-calc");if(c)c.innerHTML=calcLabel(rec);updateSum(rec.day);}
+  else if(cl.contains("ent-child")){rec.child=e.target.value;const c=en.querySelector(".ent-calc");if(c)c.innerHTML=calcLabel(rec);updateSum(rec.day);}
+  else return;
   saveEntry(id);
 });
 document.addEventListener("change",e=>{
-  if(e.target.classList.contains("ent-file")){
-    const en=e.target.closest(".entry"); const id=en.getAttribute("data-id");
-    const file=e.target.files&&e.target.files[0];
-    if(file&&STATE[id]) uploadFile(id,file);
-    e.target.value="";
-    return;
-  }
-  if(!e.target.classList.contains("ent-check")) return;
-  const en=e.target.closest(".entry"); const id=en.getAttribute("data-id"); if(!STATE[id])return;
-  STATE[id].include=e.target.checked;
-  en.classList.toggle("excluded",!e.target.checked);
-  updateSum(STATE[id].day); updateGrand();
-  writeNow(id);
+  if(e.target.classList.contains("ent-file")){const en=e.target.closest(".entry");const id=en.getAttribute("data-id");const file=e.target.files&&e.target.files[0];if(file&&STATE[id])uploadFile(id,file);e.target.value="";return;}
+  if(e.target.classList.contains("ent-mode")){const en=e.target.closest(".entry");const id=en.getAttribute("data-id");if(!STATE[id])return;STATE[id].mode=e.target.value;renderDay(STATE[id].day);renderBudget();writeEnt(id);return;}
+  if(e.target.classList.contains("ent-check")){const en=e.target.closest(".entry");const id=en.getAttribute("data-id");if(!STATE[id])return;STATE[id].include=e.target.checked;en.classList.toggle("excluded",!e.target.checked);updateSum(STATE[id].day);renderBudget();writeEnt(id);return;}
 });
 
-/* ---------- Export / Import / Copy / Clear ---------- */
-function cleanExport(){const o={};[...Object.keys(DAYS),"_ideas","_docs"].forEach(day=>{const a=entriesForDay(day).filter(e=>!emptyEntry(e)||(e.files&&e.files.length)).map(e=>({note:e.note,link:e.link,adult:e.adult,child:e.child,include:e.include,files:e.files||[]}));if(a.length)o[day]=a;});return o;}
-document.getElementById("exportBtn").addEventListener("click",()=>{
-  const blob=new Blob([JSON.stringify(cleanExport(),null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob), a=document.createElement("a"); a.href=url; a.download="trip-notes.json"; a.click(); URL.revokeObjectURL(url);
-});
+/* ---------- export / import / copy / clear ---------- */
+function cleanExport(){const o={config:CONFIG,entries:{}};[...(CONFIG.days||[]).map(d=>d.id),"_ideas","_docs"].forEach(day=>{const a=entriesForDay(day).filter(e=>!emptyEntry(e)).map(e=>({category:e.category,note:e.note,link:e.link,mode:e.mode,flat:e.flat,adult:e.adult,child:e.child,include:e.include,files:e.files||[]}));if(a.length)o.entries[day]=a;});return o;}
+document.getElementById("exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(cleanExport(),null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="trip-backup.json";a.click();URL.revokeObjectURL(url);});
 document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
 document.getElementById("importFile").addEventListener("change",e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const rd=new FileReader();
-  rd.onload=()=>{
-    try{
-      const inc=JSON.parse(rd.result); let added=0;
-      Object.keys(inc).forEach(day=>{
-        let items=inc[day]; if(typeof items==="string")items=[{note:items}]; if(!Array.isArray(items))return;
-        items.forEach(it=>{
-          const e=(typeof it==="string")?{note:it}:it;
-          const rec={day,note:e.note||"",link:e.link||"",adult:(e.adult!=null?e.adult:(e.cost||"")),child:e.child||"",include:!!e.include,order:Date.now()+added,files:Array.isArray(e.files)?e.files:[]};
-          if(emptyEntry(rec)) return;
-          const dup=Object.keys(STATE).some(id=>{const x=STATE[id];return x.day===day&&(x.note||"")===rec.note&&(x.link||"")===rec.link&&String(x.adult||"")===String(rec.adult)&&String(x.child||"")===String(rec.child);});
-          if(!dup){const id=uid();STATE[id]=rec;if(CLOUD)entriesCol.doc(id).set(sanitize(rec));added++;}
-        });
-      });
-      if(!CLOUD)persistLocal();
-      renderAll();
-      alert(added+" new "+(added===1?"entry":"entries")+" merged in. Nothing was overwritten.");
-    }catch(err){ alert("Couldn't read that file. Make sure it's a trip-notes.json export."); }
-  };
-  rd.readAsText(f); e.target.value="";
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{
+    const data=JSON.parse(rd.result);
+    const ent=data.entries||data; let added=0;
+    Object.keys(ent).forEach(day=>{let items=ent[day];if(typeof items==="string")items=[{note:items}];if(!Array.isArray(items))return;
+      items.forEach(it=>{const e=(typeof it==="string")?{note:it}:it;const rec=normEntry({day,category:e.category,note:e.note,link:e.link,mode:e.mode,flat:(e.flat!=null?e.flat:e.cost),adult:e.adult,child:e.child,include:e.include,files:e.files});rec.order=Date.now()+added;if(emptyEntry(rec))return;const dup=Object.keys(STATE).some(id=>{const x=STATE[id];return x.day===day&&(x.note||"")===rec.note&&(x.link||"")===rec.link&&String(x.flat||"")===String(rec.flat)&&String(x.adult||"")===String(rec.adult)&&String(x.child||"")===String(rec.child);});if(!dup){const id=uid();STATE[id]=rec;if(CLOUD)entriesCol.doc(id).set(sanitize(rec));added++;}});
+    });
+    if(!CLOUD)persistLocal();renderAll();
+    alert(added+" new line"+(added===1?"":"s")+" merged in. Nothing overwritten. (Config not changed by import.)");
+  }catch(err){alert("Couldn't read that file. Make sure it's a trip-backup.json export.");}};
+  rd.readAsText(f);e.target.value="";
 });
 document.getElementById("copyBtn").addEventListener("click",()=>{
-  let out="2027 LoCoco Vacation — trip notes\n\n";
-  const dump=(k,label)=>{const es=entriesForDay(k).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ";if((e.note||"").trim())l+=e.note.trim();const t=entTotal(e);if(t>0)l+=" [adult $"+n2(e.adult)+" / child $"+n2(e.child)+" → "+money(t)+" for 2+2"+(e.include?", CHOSEN":"")+"]";if((e.link||"").trim())l+=" "+e.link.trim();if(e.files&&e.files.length)l+=" 📄 "+e.files.map(f=>f.name).join(", ");out+=l+"\n";});out+="\n";};
-  Object.keys(DAYS).forEach(k=>dump(k,DAYS[k].date+" — "+DAYS[k].title)); dump("_ideas","Open ideas"); dump("_docs","Documents & receipts");
-  if(out.trim()==="2027 LoCoco Vacation — trip notes"){alert("No entries yet — add a few first.");return;}
+  let out=(CONFIG.name||"Trip")+" — notes & costs\n\n";
+  const dump=(k,label)=>{const es=entriesForDay(k).filter(e=>!emptyEntry(e));if(!es.length)return;out+="• "+label+"\n";es.forEach(e=>{let l="   - ["+(e.category||"Misc")+"] ";if((e.note||"").trim())l+=e.note.trim();const t=entTotal(e);if(t>0)l+=" "+money(t)+(e.include?" ✓":" (proposed)");if((e.link||"").trim())l+=" "+e.link.trim();if(e.files&&e.files.length)l+=" 📄 "+e.files.map(f=>f.name).join(", ");out+=l+"\n";});out+="\n";};
+  (CONFIG.days||[]).forEach(d=>dump(d.id,fmtShort(d.date)+" · "+placeName(d.placeId)));dump("_ideas","Open ideas");dump("_docs","Documents & receipts");
+  if(out.trim()===(CONFIG.name||"Trip")+" — notes & costs"){alert("No lines yet — add some first.");return;}
   const done=()=>{const b=document.getElementById("copyBtn");const t=b.textContent;b.textContent="Copied ✓";setTimeout(()=>b.textContent=t,1400);};
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(out).then(done).catch(()=>fallbackCopy(out,done));}
-  else fallbackCopy(out,done);
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(out).then(done).catch(()=>fallbackCopy(out,done));else fallbackCopy(out,done);
 });
 function fallbackCopy(text,cb){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){alert("Copy failed — please copy manually.");}document.body.removeChild(ta);}
 document.getElementById("clearBtn").addEventListener("click",()=>{
-  const msg=CLOUD?"Clear ALL shared entries — for everyone? This can't be undone (Export first if you want a backup).":"Clear all entries saved in your browser? This can't be undone.";
-  if(!confirm(msg)) return;
-  if(CLOUD)clearCloud();
-  Object.keys(STATE).forEach(k=>delete STATE[k]); persistLocal(); renderAll(); flashSaved();
+  const msg=CLOUD?"Clear ALL shared cost lines — for everyone? (Trip settings are kept.) This can't be undone; Export first for a backup.":"Clear all cost lines saved in your browser?";
+  if(!confirm(msg))return;if(CLOUD)clearCloudEntries();Object.keys(STATE).forEach(k=>delete STATE[k]);persistLocal();renderAll();flashSaved();
 });
-document.getElementById("collapseAll").addEventListener("click",()=>{
-  const anyOpen=Object.keys(DAYS).some(k=>!collapsed[k]);
-  setAllCollapsed(anyOpen);
-});
+document.getElementById("collapseAll").addEventListener("click",()=>{const anyOpen=(CONFIG.days||[]).some(d=>!collapsed[d.id]);setAllCollapsed(anyOpen);});
 
-/* ---------- Boot ---------- */
-renderMonth(MAY,"may-body"); renderMonth(JUN,"jun-body");
-document.getElementById("daylist").innerHTML=Object.keys(DAYS).map(cardHTML).join('');
-buildMoveGrid();
+/* ---------- boot ---------- */
+loadCollapse();
 loadLocal();
+buildMoveGrid();
+renderShell();
 const cloudOK=initCloud();
-if(!cloudOK) setSync('local');
+if(!cloudOK)setSync('local');
 renderAll();
-updateCollapseAllLabel();
 </script>
 </body>
 </html>
