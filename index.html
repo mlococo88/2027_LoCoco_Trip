@@ -300,6 +300,7 @@
     <span class="saved" id="saved">Saved ✓</span>
     <div class="tb-actions">
       <button class="btn" id="settingsBtn">⚙ Settings</button>
+      <button class="btn" id="reportBtn">📄 Report</button>
       <button class="btn ghost" id="exportBtn">Export</button>
       <button class="btn ghost" id="importBtn">Import</button>
       <button class="btn ghost" id="copyBtn">Copy all</button>
@@ -456,7 +457,7 @@ function symOf(code){const c=curDef(code);return c?c.symbol:"$";}
 function rateOf(code){const c=curDef(code);const r=c?+c.rate:1;return (isFinite(r)&&r>0)?r:1;}
 function cur(){return symOf(baseCode());}
 function toBase(amt,code){return amt*rateOf(code)/rateOf(baseCode());}
-function fmtIn(x,code){const r=Math.round(x*100)/100;return symOf(code)+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2));}
+function fmtIn(x,code){const r=Math.round(x*100)/100;return symOf(code)+r.toLocaleString(undefined,{minimumFractionDigits:Number.isInteger(r)?0:2,maximumFractionDigits:2});}
 function money(x){return fmtIn(x,baseCode());}
 function placeCur(placeId){const p=place(placeId);return (p&&p.cur)||baseCode();}
 function dayCur(dayId){const d=dayById(dayId);return d?placeCur(d.placeId):baseCode();}
@@ -604,13 +605,19 @@ function setQuickCur(day,key,code){
 }
 function itemizedTotal(day){let s=0;itemsForDay(day).forEach(e=>{if(e.include)s+=entBase(e);});return s;}
 function updateDaySub(day){
-  const dc=dayCur(day);let localSum=0,baseSum=0,mixed=false;
-  entriesForDay(day).forEach(e=>{if(!e.include)return;const b=entBase(e);baseSum+=b;
-    if(entCur(e)===dc)localSum+=entTotal(e);else mixed=true;});
+  let baseSum=0,localSum=0,codes={};
+  entriesForDay(day).forEach(e=>{if(!e.include)return;baseSum+=entBase(e);
+    const c=entCur(e);if(entTotal(e)>0||e.quick)codes[c]=(codes[c]||0)+entTotal(e);});
+  const used=Object.keys(codes).filter(c=>codes[c]>0);
   const el=document.querySelector('[data-daysub="'+day+'"]');
   if(el){
-    if(dc===baseCode()||mixed&&localSum===0)el.innerHTML=money(baseSum);
-    else el.innerHTML=fmtIn(localSum,dc)+'<span class="dc-conv">≈ '+money(baseSum)+(mixed?' all in':'')+'</span>';
+    if(used.length===1&&used[0]!==baseCode()){
+      // whole day in one foreign currency — show it, with the base equivalent
+      el.innerHTML=fmtIn(codes[used[0]],used[0])+'<span class="dc-conv">≈ '+money(baseSum)+'</span>';
+    } else {
+      // mixed currencies (or all base) — one honest number in the base currency
+      el.innerHTML=money(baseSum)+(used.length>1?'<span class="dc-conv">mixed currencies</span>':'');
+    }
   }
   const it=itemizedTotal(day);
   const note=document.querySelector('[data-miscroll="'+day+'"]');
@@ -630,7 +637,7 @@ function dailyCostsHTML(d){
       '</span>'+
       (q.key==="misc"?'<span class="dc-roll" data-miscroll="'+d.id+'"></span>':'')+'</label>';
     }).join('')+
-    '<div class="dc-cell dc-sub"><span class="dc-lab">Day total'+(dc!==baseCode()?' · '+dc:'')+'</span><b data-daysub="'+d.id+'"></b></div>'+
+    '<div class="dc-cell dc-sub"><span class="dc-lab">Day total</span><b data-daysub="'+d.id+'"></b></div>'+
   '</div>';
 }
 function groupKeyOf(key){const g=QUICK_GROUPS.find(g=>g.items.some(i=>i.key===key));return g?g.label.split(' ')[0].toLowerCase():'other';}
@@ -897,6 +904,208 @@ function renderBudget(){
   ];
   document.getElementById("statGrid").innerHTML=stats.map(s=>'<div class="stat"><div class="stat-l">'+s.l+'</div><div class="stat-v">'+s.v+'</div><div class="stat-s">'+esc(s.s)+'</div></div>').join('');
 }
+/* ---------- printable report ---------- */
+function reportCalendarHTML(){
+  const days=(CONFIG.days||[]).filter(d=>d.date);if(!days.length)return '';
+  const map={};days.forEach(d=>{map[d.date]=d;});
+  const dates=days.map(d=>d.date).sort();
+  const f=parseISO(dates[0]),l=parseISO(dates[dates.length-1]);
+  let y=f.y,m=f.m,out='';
+  while(y<l.y||(y===l.y&&m<=l.m)){
+    out+='<div class="rmonth"><h4>'+MONTHS[m-1]+' '+y+'</h4><table class="rcal"><thead><tr>'+WD.map(w=>'<th>'+w+'</th>').join('')+'</tr></thead><tbody>';
+    const start=new Date(y,m-1,1).getDay(),dim=daysInMonth(y,m);let cells=[];
+    for(let i=0;i<start;i++)cells.push(null);
+    for(let dd=1;dd<=dim;dd++)cells.push(dd);
+    while(cells.length%7)cells.push(null);
+    for(let i=0;i<cells.length;i+=7){
+      out+='<tr>'+cells.slice(i,i+7).map(dd=>{
+        if(dd===null)return '<td></td>';
+        const iso=y+'-'+String(m).padStart(2,'0')+'-'+String(dd).padStart(2,'0'),d=map[iso];
+        if(!d)return '<td><span class="rd">'+dd+'</span></td>';
+        const c=placeColor(d.placeId);let tot=0;entriesForDay(d.id).forEach(e=>{if(e.include)tot+=entBase(e);});
+        return '<td style="background:'+c+'22;border-color:'+c+'"><span class="rd" style="color:'+c+'">'+dd+'</span>'+
+          '<span class="rp" style="color:'+c+'">'+esc(placeName(d.placeId))+'</span>'+
+          (tot>0?'<span class="rt">'+money(tot)+'</span>':'')+'</td>';
+      }).join('')+'</tr>';
+    }
+    out+='</tbody></table></div>';
+    m++;if(m>12){m=1;y++;}
+  }
+  return '<div class="rcalgrid">'+out+'</div>';
+}
+function reportDayHTML(d){
+  const all=entriesForDay(d.id),quick=all.filter(e=>e.quick&&n2(e.flat)>0),items=all.filter(e=>!e.quick&&!emptyEntry(e));
+  let tot=0;all.forEach(e=>{if(e.include)tot+=entBase(e);});
+  let h='<div class="rday"><div class="rday-head"><div><span class="rdate">'+esc(fmtLong(d.date))+'</span>'+
+    '<span class="rpill" style="background:'+placeColor(d.placeId)+'">'+esc(placeName(d.placeId))+'</span></div>'+
+    '<div class="rday-tot">'+money(tot)+'</div></div>';
+  if((d.plan||"").trim())h+=planLines(d.plan);
+  if(quick.length){
+    h+='<table class="rtbl"><tbody>'+quick.map(e=>'<tr><td>'+esc(e.category)+'</td><td class="num">'+fmtIn(n2(e.flat),entCur(e))+
+      (entCur(e)!==baseCode()?'<span class="conv"> ≈ '+money(entBase(e))+'</span>':'')+'</td></tr>').join('')+'</tbody></table>';
+  }
+  if(items.length){
+    h+='<table class="rtbl ritems"><tbody>'+items.map(e=>{
+      let cell=esc((e.note||"").trim()||"(untitled)");
+      if((e.link||"").trim())cell+='<br><a href="'+esc(normUrl(e.link))+'">'+esc(e.link.trim())+'</a>';
+      if(e.files&&e.files.length)cell+='<br>'+e.files.map(f=>'<a href="'+esc(f.url)+'">📄 '+esc(f.name)+'</a>').join(' · ');
+      const amt=entTotal(e)>0?(fmtIn(entTotal(e),entCur(e))+(entCur(e)!==baseCode()?'<span class="conv"> ≈ '+money(entBase(e))+'</span>':'')):'—';
+      return '<tr><td>'+cell+(e.include?'':' <span class="prop">(proposed)</span>')+'</td><td class="num">'+amt+'</td></tr>';
+    }).join('')+'</tbody></table>';
+  }
+  if(!quick.length&&!items.length&&!(d.plan||"").trim())h+='<p class="rempty">Nothing recorded.</p>';
+  return h+'</div>';
+}
+function allAttachments(){
+  const out=[];
+  const label=k=>{const d=dayById(k);return d?fmtShort(d.date)+' · '+placeName(d.placeId):(k==="_ideas"?"Open ideas":(k==="_docs"?"Documents":k));};
+  Object.keys(STATE).forEach(id=>{const e=STATE[id];(e.files||[]).forEach(f=>out.push({where:label(e.day),day:e.day,note:(e.note||"").trim(),file:f}));});
+  return out;
+}
+function buildReport(){
+  const {cats,days,groups,committed,proposed}=collectCosts();
+  const dl=(CONFIG.days||[]),heads=party().a+party().k,nDays=dl.length;
+  const first=dl[0],last=dl[dl.length-1];
+  const atts=allAttachments(),imgs=atts.filter(a=>/^image\//.test(a.file.type||'')||/\.(png|jpe?g|gif|webp)$/i.test(a.file.name||'')),pdfs=atts.filter(a=>imgs.indexOf(a)===-1);
+  const catNames=Object.keys(cats).filter(c=>cats[c].committed>0||cats[c].proposed>0).sort((a,b)=>cats[b].committed-cats[a].committed);
+  const others=curList().filter(c=>c.code!==baseCode());
+
+  const css=`
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",system-ui,sans-serif;color:#232A2E;background:#fff;line-height:1.5;padding:28px 30px;font-size:13px}
+  .rwrap{max-width:900px;margin:0 auto}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:34px;line-height:1.05}
+  h2{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:20px;margin:26px 0 10px;padding-bottom:6px;border-bottom:1.5px solid #232A2E}
+  h4{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:13px;margin-bottom:5px}
+  .sub{color:#6E7378;margin-top:6px}
+  .facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:12px;font-size:12px;color:#6E7378}
+  .facts b{color:#232A2E}
+  .hero{background:#232A2E;color:#fff;border-radius:12px;padding:18px 20px;margin:14px 0 4px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  .hero .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+  .hero .amt{font-family:"Fraunces",Georgia,serif;font-size:32px;line-height:1;margin-top:4px}
+  .hero .side{font-size:11px;opacity:.85;text-align:right}
+  .rcalgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+  table.rcal{width:100%;border-collapse:collapse;table-layout:fixed}
+  table.rcal th{font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#6E7378;padding-bottom:3px}
+  table.rcal td{height:40px;border:1px solid #E2DDD1;border-radius:4px;vertical-align:top;padding:2px 3px}
+  .rd{font-size:10px;font-weight:600;display:block}
+  .rp{font-size:7px;text-transform:uppercase;font-weight:600;display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .rt{font-size:7.5px;color:#C25E3A;font-weight:600;display:block}
+  .rday{border-top:1px solid #E2DDD1;padding:11px 0;break-inside:avoid}
+  .rday-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .rdate{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6E7378;font-weight:600}
+  .rpill{font-size:9px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:#fff;padding:2px 7px;border-radius:20px;margin-left:8px}
+  .rday-tot{font-family:"Fraunces",Georgia,serif;font-size:16px;white-space:nowrap}
+  ul.plan{list-style:none;margin:7px 0}
+  ul.plan li{font-size:12px;padding-left:13px;position:relative;color:#333b40;margin-bottom:2px}
+  ul.plan li:before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:#E2DDD1;border:1px solid #6E7378}
+  .whenlbl{font-weight:600}
+  table.rtbl{width:100%;border-collapse:collapse;margin-top:7px;font-size:12px}
+  table.rtbl td{padding:4px 6px;border-bottom:1px solid #EFEBE1;vertical-align:top}
+  table.rtbl td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  table.rtbl.ritems td{background:#FBFAF6}
+  .conv{color:#6E7378;font-size:10.5px}
+  .prop{color:#6E7378;font-style:italic;font-size:11px}
+  .rempty{font-size:11.5px;color:#6E7378;font-style:italic;margin-top:5px}
+  table.sheet{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+  table.sheet th{text-align:left;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#6E7378;padding:6px;border-bottom:1px solid #E2DDD1}
+  table.sheet td{padding:5px 6px;border-bottom:1px solid #EFEBE1}
+  table.sheet .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  table.sheet tfoot td{border-top:1.5px solid #232A2E;font-weight:600;background:#F7F5EF}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:12px}
+  .stat{border:1px solid #E2DDD1;border-radius:9px;padding:9px 10px}
+  .stat-l{font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:#6E7378;font-weight:600}
+  .stat-v{font-family:"Fraunces",Georgia,serif;font-size:17px;margin-top:2px}
+  .note{font-size:11px;color:#6E7378;margin-top:10px;line-height:1.5}
+  .imgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:8px}
+  .imgcard{border:1px solid #E2DDD1;border-radius:8px;padding:6px;break-inside:avoid}
+  .imgcard img{width:100%;height:auto;border-radius:5px;display:block}
+  .imgcap{font-size:9.5px;color:#6E7378;margin-top:4px;word-break:break-word}
+  a{color:#46687F;word-break:break-all}
+  .foot{margin-top:26px;padding-top:10px;border-top:1px solid #E2DDD1;font-size:10.5px;color:#6E7378;text-align:center}
+  .pbtn{position:fixed;top:14px;right:14px;background:#232A2E;color:#fff;border:none;border-radius:8px;padding:9px 15px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+  @media print{.pbtn{display:none}body{padding:0;font-size:11.5px}.rday,.imgcard,.stat{break-inside:avoid}h2{break-after:avoid}
+    td,.hero,.rpill{-webkit-print-color-adjust:exact;print-color-adjust:exact}}`;
+
+  let h='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+    '<title>'+esc(CONFIG.name||"Trip")+' — Report</title>'+
+    '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'+
+    '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'+
+    '<style>'+css+'</style></head><body>'+
+    '<button class="pbtn" onclick="window.print()">Print / Save as PDF</button><div class="rwrap">';
+
+  h+='<h1>'+esc(CONFIG.name||"Trip")+'</h1>';
+  if((CONFIG.subtitle||"").trim())h+='<p class="sub">'+esc(CONFIG.subtitle)+'</p>';
+  h+='<div class="facts">'+
+    (first?'<span><b>Start</b> '+esc(fmtLong(first.date))+'</span>':'')+
+    (last?'<span><b>End</b> '+esc(fmtLong(last.date))+'</span>':'')+
+    '<span><b>'+nDays+'</b> days</span><span><b>'+party().a+'</b> adults + <b>'+party().k+'</b> kids</span>'+
+    '<span>Report generated '+new Date().toLocaleDateString()+'</span></div>';
+
+  h+='<div class="hero"><div><div class="lbl">Committed total</div><div class="amt">'+money(committed)+'</div></div>'+
+     '<div class="side">'+(proposed>0?('Proposed (not committed): '+money(proposed)+'<br>Potential total: '+money(committed+proposed)+'<br>'):'')+
+     (heads>0?('Per person: '+money(committed/heads)):'')+(nDays>0?(' · Per day: '+money(committed/nDays)):'')+'</div></div>';
+
+  const calHTML=reportCalendarHTML();
+  if(calHTML)h+='<h2>Calendar</h2>'+calHTML;
+
+  h+='<h2>Day by day</h2>'+(dl.length?dl.map(reportDayHTML).join(''):'<p class="rempty">No days yet.</p>');
+
+  ["_ideas","_docs"].forEach(k=>{
+    const es=entriesForDay(k).filter(e=>!emptyEntry(e));if(!es.length)return;
+    h+='<h2>'+(k==="_ideas"?"Open ideas":"Documents &amp; receipts")+'</h2><table class="rtbl"><tbody>'+
+      es.map(e=>{let c=esc((e.note||"").trim()||"(untitled)");
+        if((e.link||"").trim())c+='<br><a href="'+esc(normUrl(e.link))+'">'+esc(e.link.trim())+'</a>';
+        if(e.files&&e.files.length)c+='<br>'+e.files.map(f=>'<a href="'+esc(f.url)+'">📄 '+esc(f.name)+'</a>').join(' · ');
+        const amt=entTotal(e)>0?fmtIn(entTotal(e),entCur(e)):'—';
+        return '<tr><td>'+c+'</td><td class="num">'+amt+'</td></tr>';}).join('')+'</tbody></table>';
+  });
+
+  h+='<h2>Cost breakdown</h2><table class="sheet"><thead><tr><th>Category</th><th>Group</th><th class="num">Committed</th><th class="num">Proposed</th><th class="num">Share</th></tr></thead><tbody>';
+  h+= catNames.length? catNames.map(c=>'<tr><td>'+esc(c)+'</td><td>'+esc(groupFor(c))+'</td><td class="num">'+money(cats[c].committed)+'</td><td class="num">'+(cats[c].proposed>0?money(cats[c].proposed):'—')+'</td><td class="num">'+pct(cats[c].committed,committed)+'%</td></tr>').join('')
+    : '<tr><td colspan="5">No costs recorded.</td></tr>';
+  h+='</tbody><tfoot><tr><td>Total</td><td></td><td class="num">'+money(committed)+'</td><td class="num">'+(proposed>0?money(proposed):'—')+'</td><td class="num">100%</td></tr></tfoot></table>';
+
+  h+='<table class="sheet"><thead><tr><th>Day</th><th>Place</th><th class="num">Stay &amp; travel</th><th class="num">Food</th><th class="num">Other</th><th class="num">Total</th></tr></thead><tbody>';
+  let anyd=false;
+  h+=dl.map(d=>{const r=days[d.id];if(!r)return '';anyd=true;
+    return '<tr><td>'+esc(fmtShort(d.date))+'</td><td>'+esc(placeName(d.placeId))+'</td><td class="num">'+(r["Stay & travel"]?money(r["Stay & travel"]):'—')+
+    '</td><td class="num">'+(r["Food"]?money(r["Food"]):'—')+'</td><td class="num">'+(r["Other"]?money(r["Other"]):'—')+'</td><td class="num">'+money(r.total)+'</td></tr>';}).join('');
+  if(!anyd)h+='<tr><td colspan="6">No committed day costs.</td></tr>';
+  h+='</tbody><tfoot><tr><td>Total</td><td></td><td class="num">'+money(groups["Stay & travel"])+'</td><td class="num">'+money(groups["Food"])+'</td><td class="num">'+money(groups["Other"])+'</td><td class="num">'+money(committed)+'</td></tr></tfoot></table>';
+
+  h+='<div class="stats">'+
+    '<div class="stat"><div class="stat-l">Per person</div><div class="stat-v">'+(heads>0?money(committed/heads):'—')+'</div></div>'+
+    '<div class="stat"><div class="stat-l">Per day</div><div class="stat-v">'+(nDays>0?money(committed/nDays):'—')+'</div></div>'+
+    '<div class="stat"><div class="stat-l">Per person / day</div><div class="stat-v">'+((heads>0&&nDays>0)?money(committed/heads/nDays):'—')+'</div></div>'+
+    '<div class="stat"><div class="stat-l">Food total</div><div class="stat-v">'+money(groups["Food"])+'</div></div></div>';
+
+  if(others.length)h+='<p class="note">All totals converted to <b>'+baseCode()+'</b> at '+others.map(c=>c.code+' '+c.rate).join(' · ')+
+    (CONFIG.ratesUpdated?(' (rates set '+esc(CONFIG.ratesUpdated)+')'):'')+'. Converted figures are estimates — your card statement is the actual charge.</p>';
+
+  if(atts.length){
+    h+='<h2>Attachments</h2><table class="sheet"><thead><tr><th>Day</th><th>Item</th><th>File</th></tr></thead><tbody>'+
+      atts.map(a=>'<tr><td>'+esc(a.where)+'</td><td>'+esc(a.note||'—')+'</td><td><a href="'+esc(a.file.url)+'">'+esc(a.file.name)+'</a></td></tr>').join('')+
+      '</tbody></table>'+
+      '<p class="note">'+pdfs.length+' PDF'+(pdfs.length===1?'':'s')+' linked above — they stay in Firebase Storage, so the links work for anyone who can reach the planner. Open each and save it alongside this report if you need a fully offline copy.</p>';
+    if(imgs.length){
+      h+='<h2>Attached images</h2><div class="imgs">'+imgs.map(a=>'<div class="imgcard"><img src="'+esc(a.file.url)+'" alt="'+esc(a.file.name)+'"><div class="imgcap">'+esc(a.where)+' — '+esc(a.file.name)+'</div></div>').join('')+'</div>';
+    }
+  }
+
+  h+='<div class="foot">'+esc(CONFIG.name||"Trip")+(first&&last?(' — '+esc(fmtLong(first.date))+' to '+esc(fmtLong(last.date))):'')+'</div>';
+  h+='</div></body></html>';
+  return h;
+}
+document.getElementById("reportBtn").addEventListener("click",()=>{
+  const html=buildReport();
+  const blob=new Blob([html],{type:"text/html"}),url=URL.createObjectURL(blob);
+  const w=window.open(url,"_blank");
+  const a=document.createElement("a");a.href=url;
+  a.download=(CONFIG.name||"trip").replace(/[^\w\-]+/g,"-").toLowerCase()+"-report.html";
+  if(!w)a.click(); else setTimeout(()=>a.click(),400);
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+});
 function costCSV(){
   const {cats,days,groups,committed,proposed}=collectCosts();
   const q=s=>'"'+String(s==null?"":s).replace(/"/g,'""')+'"';
