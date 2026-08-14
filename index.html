@@ -89,9 +89,13 @@
   .dc-lab{font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .dc-cell[data-grp="food"] .dc-lab{color:#8a6220;}
   .dc-cell[data-grp="other"] .dc-lab{color:var(--accent);}
-  .dc-in{display:flex;align-items:center;gap:.15rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:.16rem .3rem;}
+  .dc-in{display:flex;align-items:center;gap:.1rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:.16rem .3rem;}
   .dc-in:focus-within{border-color:var(--accent);background:#fff;}
-  .dc-cur{color:var(--muted);font-size:.74rem;}
+  .dc-in.odd-cur{border-color:var(--warn);background:#fdf3ee;}
+  .dc-cur{font-family:"Inter",sans-serif;font-size:.8rem;color:var(--muted);border:none;background:transparent;padding:0 .1rem;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;border-radius:4px;}
+  .dc-cur:hover{background:var(--line);color:var(--ink);}
+  .dc-cur:focus{outline:none;box-shadow:0 0 0 2px var(--accent);}
+  .dc-in.odd-cur .dc-cur{color:var(--warn);font-weight:600;}
   .dc-input{width:100%;min-width:0;text-align:right;font-variant-numeric:tabular-nums;font-family:"Inter",sans-serif;font-size:.84rem;padding:.16rem 0;border:none;background:transparent;color:var(--ink);}
   .dc-input:focus{outline:none;}
   .dc-sub{justify-content:flex-end;}
@@ -581,12 +585,21 @@ const QUICK_GROUPS=[
 const QUICK_CATS=QUICK_GROUPS.reduce((a,g)=>a.concat(g.items),[]);
 function quickId(day,key){return 'q_'+day+'_'+key;}
 function getQuickVal(day,key){const e=STATE[quickId(day,key)];return e?(e.flat||""):"";}
+function getQuickCur(day,key){const e=STATE[quickId(day,key)];return (e&&e.cur)||dayCur(day);}
+function makeQuick(day,key,flat,code){
+  const cat=QUICK_CATS.find(q=>q.key===key),label=cat?cat.label:key,id=quickId(day,key),prev=STATE[id];
+  return {day,category:label,note:"",link:"",mode:"flat",cur:code,flat:flat,adult:"",child:"",include:true,quick:true,order:(prev&&prev.order)||Date.now(),files:[]};
+}
 function setQuick(day,key,value){
-  const cat=QUICK_CATS.find(q=>q.key===key),label=cat?cat.label:key,id=quickId(day,key),v=(value||"").trim();
-  if(v===""){ if(STATE[id]){delete STATE[id];delEnt(id);} }
-  else { const prev=STATE[id];
-    STATE[id]={day,category:label,note:"",link:"",mode:"flat",cur:(prev&&prev.cur)||dayCur(day),flat:v,adult:"",child:"",include:true,quick:true,order:(prev&&prev.order)||Date.now(),files:[]};
-    saveEntry(id); }
+  const id=quickId(day,key),v=(value||"").trim(),code=getQuickCur(day,key);
+  if(v===""&&code===dayCur(day)){ if(STATE[id]){delete STATE[id];delEnt(id);} }
+  else { STATE[id]=makeQuick(day,key,v,code); saveEntry(id); }
+  updateSum(day); updateDaySub(day);
+}
+function setQuickCur(day,key,code){
+  const id=quickId(day,key),v=getQuickVal(day,key);
+  if(v===""&&code===dayCur(day)){ if(STATE[id]){delete STATE[id];delEnt(id);} }
+  else { STATE[id]=makeQuick(day,key,v,code); writeEnt(id); }
   updateSum(day); updateDaySub(day);
 }
 function itemizedTotal(day){let s=0;itemsForDay(day).forEach(e=>{if(e.include)s+=entBase(e);});return s;}
@@ -604,13 +617,19 @@ function updateDaySub(day){
   if(note)note.innerHTML=it>0?('+'+money(it)+' itemized'):'';
 }
 function dailyCostsHTML(d){
-  const dc=placeCur(d.placeId),sym=symOf(dc);
+  const dc=placeCur(d.placeId);
   return '<div class="day-costs">'+
-    QUICK_CATS.map(q=>
-      '<label class="dc-cell" data-grp="'+groupKeyOf(q.key)+'"><span class="dc-lab">'+q.label+'</span>'+
-      '<span class="dc-in"><span class="dc-cur">'+sym+'</span><input class="dc-input" data-day="'+d.id+'" data-cat="'+q.key+'" inputmode="decimal" placeholder="0" value="'+esc(getQuickVal(d.id,q.key))+'"></span>'+
-      (q.key==="misc"?'<span class="dc-roll" data-miscroll="'+d.id+'"></span>':'')+'</label>'
-    ).join('')+
+    QUICK_CATS.map(q=>{
+      const fc=getQuickCur(d.id,q.key),odd=fc!==dc;
+      return '<label class="dc-cell" data-grp="'+groupKeyOf(q.key)+'"><span class="dc-lab">'+q.label+'</span>'+
+      '<span class="dc-in'+(odd?' odd-cur':'')+'">'+
+        '<select class="dc-cur" data-day="'+d.id+'" data-cat="'+q.key+'" title="Currency for this field">'+
+          curList().map(c=>'<option value="'+c.code+'"'+(fc===c.code?" selected":"")+'>'+c.symbol+'</option>').join('')+
+        '</select>'+
+        '<input class="dc-input" data-day="'+d.id+'" data-cat="'+q.key+'" inputmode="decimal" placeholder="0" value="'+esc(getQuickVal(d.id,q.key))+'">'+
+      '</span>'+
+      (q.key==="misc"?'<span class="dc-roll" data-miscroll="'+d.id+'"></span>':'')+'</label>';
+    }).join('')+
     '<div class="dc-cell dc-sub"><span class="dc-lab">Day total'+(dc!==baseCode()?' · '+dc:'')+'</span><b data-daysub="'+d.id+'"></b></div>'+
   '</div>';
 }
@@ -729,6 +748,9 @@ function entryHTML(e){
 function renderDay(day){
   const wrap=document.querySelector('[data-day-entries="'+day+'"]');
   if(wrap)wrap.innerHTML=itemsForDay(day).map(entryHTML).join('');
+  const strip=document.querySelector('[data-day-card="'+day+'"] .day-costs');
+  const d=dayById(day);
+  if(strip&&d){const tmp=document.createElement('div');tmp.innerHTML=dailyCostsHTML(d);strip.replaceWith(tmp.firstElementChild);}
   updateSum(day);updateDot(day);updateDaySub(day);
 }
 function renderDays(){
@@ -1052,6 +1074,7 @@ document.addEventListener("input",e=>{
   saveEntry(id);
 });
 document.addEventListener("change",e=>{
+  if(e.target.classList.contains("dc-cur")){const day=e.target.getAttribute("data-day");setQuickCur(day,e.target.getAttribute("data-cat"),e.target.value);renderDay(day);return;}
   if(e.target.classList.contains("ent-file")){const en=e.target.closest(".entry");const id=en.getAttribute("data-id");const file=e.target.files&&e.target.files[0];if(file&&STATE[id])uploadFile(id,file);e.target.value="";return;}
   if(e.target.classList.contains("ent-cur")){const en=e.target.closest(".entry");const id=en.getAttribute("data-id");if(!STATE[id])return;STATE[id].cur=e.target.value;renderDay(STATE[id].day);renderBudget();writeEnt(id);return;}
   if(e.target.classList.contains("ent-mode")){const en=e.target.closest(".entry");const id=en.getAttribute("data-id");if(!STATE[id])return;STATE[id].mode=e.target.value;renderDay(STATE[id].day);renderBudget();writeEnt(id);return;}
