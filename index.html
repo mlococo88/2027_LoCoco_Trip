@@ -84,11 +84,37 @@
   .daycost{font-family:"Fraunces",serif;font-size:1.02rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
   .day-body{padding:.1rem .35rem .5rem 1.7rem;}
   .day.collapsed .day-body{display:none;}
+  .day-cols{display:grid;grid-template-columns:1fr 236px;gap:1.3rem;align-items:start;}
+  @media(max-width:760px){.day-cols{grid-template-columns:1fr;}}
+  .day-costs{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;}
+  .dc-title{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.5rem;}
+  .dc-group{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:.6rem 0 .3rem;}
+  .dc-group:first-of-type{margin-top:0;}
+  .dc-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.32rem;font-size:.84rem;color:#3a4247;}
+  .dc-row>span:first-child{flex:1;}
+  .dc-cur{color:var(--muted);font-size:.78rem;}
+  .dc-input{width:74px;text-align:right;font-variant-numeric:tabular-nums;font-family:"Inter",sans-serif;font-size:.82rem;padding:.28rem .45rem;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);}
+  .dc-input:focus{outline:none;border-color:var(--accent);background:#fff;}
+  .dc-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--line);font-size:.85rem;font-weight:600;}
+  .dc-total b{color:var(--warn);font-variant-numeric:tabular-nums;}
   .pill{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:#fff;padding:.16rem .5rem;border-radius:20px;font-family:"Inter",sans-serif;white-space:nowrap;}
   .day-body .plan{list-style:none;margin:.1rem 0 .5rem;display:grid;gap:.3rem;}
   .day-body .plan li{font-size:.88rem;padding-left:1.15rem;position:relative;color:#333b40;}
   .day-body .plan li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--line);border:1px solid var(--muted);}
   .whenlbl{font-weight:600;color:var(--ink);}
+  .plan-wrap{position:relative;border-radius:8px;padding:.3rem 4.2rem .3rem .4rem;margin:0 0 .4rem -.4rem;cursor:text;transition:background .12s ease;}
+  .plan-wrap:hover{background:var(--card);}
+  .plan-wrap:focus-visible{outline:none;box-shadow:0 0 0 2px var(--ink);}
+  .plan-wrap .plan-edit{position:absolute;top:.3rem;right:.5rem;font-size:.66rem;font-weight:600;color:var(--accent);opacity:0;transition:opacity .12s ease;}
+  .plan-wrap:hover .plan-edit,.plan-wrap:focus-visible .plan-edit{opacity:1;}
+  .plan-wrap.editing{background:var(--card);cursor:default;padding-right:.4rem;}
+  .plan-wrap.editing .plan-edit{display:none;}
+  .plan-empty{font-size:.86rem;color:var(--muted);font-style:italic;}
+  .plan-input{width:100%;font-family:"Inter",sans-serif;font-size:.88rem;line-height:1.55;padding:.5rem .6rem;border:1px solid var(--accent);border-radius:8px;background:#fff;color:var(--ink);resize:vertical;}
+  .plan-input:focus{outline:none;}
+  .plan-actions{display:flex;align-items:center;gap:.5rem;margin-top:.45rem;flex-wrap:wrap;}
+  .plan-actions .btn{padding:.3rem .7rem;font-size:.78rem;}
+  .plan-tip{font-size:.72rem;color:var(--muted);font-style:italic;}
 
   .entries{display:grid;gap:.55rem;margin-top:.7rem;}
   .entry{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:.5rem .6rem;display:grid;gap:.4rem;}
@@ -162,6 +188,29 @@
   .breakdown .empty-cat{color:var(--muted);font-style:italic;}
   .budget-note{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:.8rem;}
 
+  .sheet-head{display:flex;align-items:center;gap:1rem;margin:1.8rem 0 .7rem;}
+  .sheet-head h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.15rem;}
+  .sheet-head .btn{margin-left:auto;}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);}
+  table.sheet{width:100%;border-collapse:collapse;font-size:.88rem;min-width:520px;}
+  table.sheet th{text-align:left;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:.7rem .8rem;border-bottom:1px solid var(--line);white-space:nowrap;}
+  table.sheet td{padding:.55rem .8rem;border-bottom:1px solid var(--line);}
+  table.sheet tbody tr:last-child td{border-bottom:none;}
+  table.sheet .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  table.sheet .strong{font-weight:600;}
+  table.sheet .sub-cell{color:var(--muted);font-size:.82rem;}
+  table.sheet tbody tr:hover{background:rgba(106,90,121,.05);}
+  table.sheet tfoot td{padding:.7rem .8rem;border-top:1.5px solid var(--ink);font-weight:600;background:rgba(35,42,46,.03);}
+  table.sheet .empty-cat{color:var(--muted);font-style:italic;text-align:center;padding:1.2rem;}
+  .bar{display:inline-block;width:54px;height:6px;border-radius:3px;background:var(--line);margin-right:.5rem;vertical-align:middle;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--accent);}
+  .dotc{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.4rem;vertical-align:middle;}
+  .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-top:1.1rem;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:.85rem .95rem;}
+  .stat-l{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .stat-v{font-family:"Fraunces",serif;font-size:1.5rem;font-weight:500;margin:.2rem 0 .1rem;font-variant-numeric:tabular-nums;}
+  .stat-s{font-size:.74rem;color:var(--muted);}
+
   footer{margin-top:2.2rem;font-size:.78rem;color:var(--muted);text-align:center;}
 
   .backdrop{position:fixed;inset:0;background:rgba(20,25,28,.55);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:50;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease;}
@@ -207,7 +256,7 @@
 
   @media print{
     body{background:#fff;padding:0;font-size:11px;}
-    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input,.ent-attach,.rmfile,.collapse-all{display:none!important;}
+    .toolbar,.howto,.addrow,.ent-del,.ent-move,.ent-inc input,.ent-attach,.rmfile,.collapse-all,.plan-edit,.plan-actions{display:none!important;}
     .day,.summary,.bigtotal{break-inside:avoid;}
     .backdrop{display:none!important;}
     .cell,.pill,.leg,.bigtotal,.ribbon{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -241,7 +290,7 @@
     </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </div>
-  <p class="howto">Add cost lines under any day — each has a <b>category</b>, a <b>note</b>, a <b>link</b>, a <b>PDF/image</b>, and a cost you enter as a <b>flat total</b> or <b>per-person</b> (adult/child). Tick <b>count in total</b> for committed costs. The budget builds itself. Edit dates, places, and party size in <b>⚙ Settings</b>. Everything <b>syncs live</b> — badge shows ● Live.</p>
+  <p class="howto">Each day has a <b>Daily costs</b> panel — type quick numbers for Hotel, Flight, Transport, Breakfast, Lunch, Dinner (whole-family totals) that flow straight into the budget by category. Use <b>+ Add itemized line</b> for anything needing a note, link, PDF receipt, or per-person (adult/child) pricing. Edit dates, places, and party size in <b>⚙ Settings</b>. Everything <b>syncs live</b>.</p>
 
   <div class="ribbon" id="ribbon"></div>
   <p class="ribbon-caption" id="ribbonCap"></p>
@@ -260,19 +309,30 @@
   <div class="entries" data-day-entries="_docs"></div>
   <div class="addrow"><button class="addbtn" data-add="_docs">+ Add document</button><span class="added-sum" data-sum="_docs"></span></div>
 
-  <div class="section-head"><h2>What it costs</h2><span class="hint" id="budgetHint"></span></div>
+  <div class="section-head"><h2>Cost sheet</h2><span class="hint" id="budgetHint"></span></div>
   <div class="summary">
     <div class="bigtotal">
       <div class="lbl">Committed total</div>
       <div class="amt" id="bigAmt">—</div>
-      <div class="sub">Sum of every line ticked “count in total”.</div>
+      <div class="sub">Every daily-cost field plus each ticked line item.</div>
       <div class="range" id="bigRange"></div>
     </div>
     <div>
       <table class="breakdown" id="breakdown"></table>
-      <p class="budget-note">Add cost lines under each day and tick the ones you're committing to. Untouched categories stay at $0 until you add something.</p>
+      <p class="budget-note">Untouched categories stay out of the sheet until you enter something.</p>
     </div>
   </div>
+
+  <div class="sheet-head">
+    <h3>By category</h3>
+    <button class="btn ghost" id="csvBtn">Download CSV</button>
+  </div>
+  <div class="tablewrap"><table class="sheet" id="catSheet"></table></div>
+
+  <div class="sheet-head"><h3>By day</h3></div>
+  <div class="tablewrap"><table class="sheet" id="daySheet"></table></div>
+
+  <div class="statgrid" id="statGrid"></div>
 
   <footer id="foot"></footer>
 </div>
@@ -404,8 +464,8 @@ function setSync(mode){const el=document.getElementById("sync");if(!el)return;el
   else if(mode==='connecting'){el.textContent="○ connecting…";}
   else{el.textContent="○ Local only";}}
 
-function sanitize(e){return {day:e.day,category:e.category||"Misc",note:e.note||"",link:e.link||"",mode:(e.mode==="person"?"person":"flat"),flat:e.flat||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
-function normEntry(e){return {day:e.day||"_ideas",category:e.category||"Misc",note:e.note||"",link:e.link||"",mode:(e.mode==="person"?"person":((e.adult||e.child)&&!e.flat?"person":"flat")),flat:e.flat||"",adult:e.adult||"",child:e.child||"",include:!!e.include,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
+function sanitize(e){return {day:e.day,category:e.category||"Misc",note:e.note||"",link:e.link||"",mode:(e.mode==="person"?"person":"flat"),flat:e.flat||"",adult:e.adult||"",child:e.child||"",include:!!e.include,quick:!!e.quick,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
+function normEntry(e){return {day:e.day||"_ideas",category:e.category||"Misc",note:e.note||"",link:e.link||"",mode:(e.mode==="person"?"person":((e.adult||e.child)&&!e.flat?"person":"flat")),flat:e.flat||"",adult:e.adult||"",child:e.child||"",include:!!e.include,quick:!!e.quick,order:e.order||0,files:Array.isArray(e.files)?e.files:[]};}
 
 const dirty=new Set(); let saveT;
 function scheduleSave(id){dirty.add(id);clearTimeout(saveT);saveT=setTimeout(flushEnt,250);}
@@ -433,7 +493,7 @@ function initCloud(){
       if(!seededCfg){seededCfg=true;
         if(!data.config){tripRef.set({config:CONFIG},{merge:true});return;} // seed template
       }
-      if(data.config){CONFIG=data.config;renderShell();renderAll();}
+      if(data.config){CONFIG=data.config;if(editingPlan)return;renderShell();renderAll();}
     },err=>{console.warn("config listen error",err);setSync('error');});
     entriesCol.onSnapshot(snap=>{
       if(!live){live=true;setSync('live');}
@@ -453,8 +513,8 @@ function applyRemoteEntries(val){
   Object.keys(STATE).forEach(k=>delete STATE[k]);Object.assign(STATE,incoming);
   renderAll();restoreFocus(foc);
 }
-function captureFocus(){const el=document.activeElement;if(!el||!el.closest)return null;const en=el.closest(".entry");if(!en)return null;const m=(el.className||"").match(/ent-(note|link|flat|adult|child|cat)/);if(!m)return null;return {id:en.getAttribute("data-id"),cls:m[0],val:el.value,start:el.selectionStart,end:el.selectionEnd};}
-function restoreFocus(f){if(!f)return;const el=document.querySelector('.entry[data-id="'+f.id+'"] .'+f.cls);if(!el)return;el.value=f.val;if(STATE[f.id]){const map={'ent-note':'note','ent-link':'link','ent-flat':'flat','ent-adult':'adult','ent-child':'child','ent-cat':'category'};if(map[f.cls])STATE[f.id][map[f.cls]]=f.val;}try{el.focus();if(f.start!=null&&el.setSelectionRange)el.setSelectionRange(f.start,f.end);}catch(e){}}
+function captureFocus(){const el=document.activeElement;if(!el||!el.closest)return null;if(el.classList.contains("dc-input"))return {kind:"dc",day:el.getAttribute("data-day"),cat:el.getAttribute("data-cat"),val:el.value,start:el.selectionStart,end:el.selectionEnd};const en=el.closest(".entry");if(!en)return null;const m=(el.className||"").match(/ent-(note|link|flat|adult|child|cat)/);if(!m)return null;return {kind:"ent",id:en.getAttribute("data-id"),cls:m[0],val:el.value,start:el.selectionStart,end:el.selectionEnd};}
+function restoreFocus(f){if(!f)return;let el;if(f.kind==="dc"){el=document.querySelector('.dc-input[data-day="'+f.day+'"][data-cat="'+f.cat+'"]');}else{el=document.querySelector('.entry[data-id="'+f.id+'"] .'+f.cls);}if(!el)return;el.value=f.val;if(f.kind==="ent"&&STATE[f.id]){const map={'ent-note':'note','ent-link':'link','ent-flat':'flat','ent-adult':'adult','ent-child':'child','ent-cat':'category'};if(map[f.cls])STATE[f.id][map[f.cls]]=f.val;}try{el.focus();if(f.start!=null&&el.setSelectionRange)el.setSelectionRange(f.start,f.end);}catch(e){}}
 
 /* ---------- collapse state ---------- */
 const COLLAPSE_KEY="lococo-collapsed";let collapsed={};
@@ -467,6 +527,33 @@ function updateCollapseAllLabel(){const b=document.getElementById('collapseAll')
 
 /* ---------- entries per day ---------- */
 function entriesForDay(day){return Object.keys(STATE).filter(id=>STATE[id].day===day).map(id=>Object.assign({id},STATE[id])).sort((a,b)=>(a.order||0)-(b.order||0));}
+function itemsForDay(day){return entriesForDay(day).filter(e=>!e.quick);}
+
+/* ---------- quick daily costs (fixed per-day category fields) ---------- */
+const QUICK_GROUPS=[
+  {label:"Stay & travel",items:[{key:"hotel",label:"Hotel"},{key:"flight",label:"Flight"},{key:"transport",label:"Transport"}]},
+  {label:"Food",items:[{key:"breakfast",label:"Breakfast"},{key:"lunch",label:"Lunch"},{key:"dinner",label:"Dinner"}]},
+  {label:"Other",items:[{key:"activities",label:"Activities"},{key:"misc",label:"Misc"}]}
+];
+const QUICK_CATS=QUICK_GROUPS.reduce((a,g)=>a.concat(g.items),[]);
+function quickId(day,key){return 'q_'+day+'_'+key;}
+function getQuickVal(day,key){const e=STATE[quickId(day,key)];return e?(e.flat||""):"";}
+function setQuick(day,key,value){
+  const cat=QUICK_CATS.find(q=>q.key===key),label=cat?cat.label:key,id=quickId(day,key),v=(value||"").trim();
+  if(v===""){ if(STATE[id]){delete STATE[id];delEnt(id);} }
+  else { STATE[id]={day,category:label,note:"",link:"",mode:"flat",flat:v,adult:"",child:"",include:true,quick:true,order:(STATE[id]&&STATE[id].order)||Date.now(),files:[]}; saveEntry(id); }
+  updateSum(day); updateDaySub(day);
+}
+function updateDaySub(day){const el=document.querySelector('[data-daysub="'+day+'"]');if(!el)return;let s=0;QUICK_CATS.forEach(q=>{const e=STATE[quickId(day,q.key)];if(e)s+=n2(e.flat);});el.textContent=money(s);}
+function dailyCostsHTML(d){
+  return '<aside class="day-costs">'+
+    '<div class="dc-title">Daily costs · '+cur()+' whole family</div>'+
+    QUICK_GROUPS.map(g=>'<div class="dc-group">'+g.label+'</div>'+g.items.map(q=>
+      '<label class="dc-row"><span>'+q.label+'</span><span class="dc-cur">'+cur()+'</span><input class="dc-input" data-day="'+d.id+'" data-cat="'+q.key+'" inputmode="decimal" placeholder="0" value="'+esc(getQuickVal(d.id,q.key))+'"></label>'
+    ).join('')).join('')+
+    '<div class="dc-total"><span>Daily subtotal</span><b data-daysub="'+d.id+'"></b></div>'+
+  '</aside>';
+}
 
 /* ---------- shell (header, ribbon, calendar) ---------- */
 function renderShell(){
@@ -522,10 +609,17 @@ function renderCalendar(){
 }
 
 /* ---------- planHTML ---------- */
-function planHTML(plan){
+function planLines(plan){
   const lines=String(plan||"").split('\n').map(s=>s.trim()).filter(Boolean);
   if(!lines.length)return '';
   return '<ul class="plan">'+lines.map(li=>{const m=li.match(/^([A-Za-z][\w \-]*?):\s*(.*)$/);return '<li>'+(m?'<span class="whenlbl">'+esc(m[1])+':</span> '+esc(m[2]):esc(li))+'</li>';}).join('')+'</ul>';
+}
+function planHTML(plan){return planLines(plan);}
+function planBlockHTML(d){
+  const body=planLines(d.plan);
+  return '<div class="plan-wrap" data-plan="'+d.id+'" role="button" tabindex="0" title="Click to edit this day\u2019s plan">'+
+    (body||'<p class="plan-empty">+ Add a plan for this day</p>')+
+    '<span class="plan-edit">\u270E edit</span></div>';
 }
 
 /* ---------- entry rendering ---------- */
@@ -563,8 +657,8 @@ function entryHTML(e){
 }
 function renderDay(day){
   const wrap=document.querySelector('[data-day-entries="'+day+'"]');
-  if(wrap)wrap.innerHTML=entriesForDay(day).map(entryHTML).join('');
-  updateSum(day);updateDot(day);
+  if(wrap)wrap.innerHTML=itemsForDay(day).map(entryHTML).join('');
+  updateSum(day);updateDot(day);updateDaySub(day);
 }
 function renderDays(){
   const list=document.getElementById("daylist");
@@ -583,34 +677,139 @@ function cardHTML(d){
       '<div class="dh-right"><span class="daymeta" data-meta="'+d.id+'"></span>'+
         '<span class="daycost" data-day="'+d.id+'"></span></div>'+
     '</div>'+
-    '<div class="day-body">'+planHTML(d.plan)+
+    '<div class="day-body"><div class="day-cols"><div class="day-main">'+planBlockHTML(d)+
       '<div class="entries" data-day-entries="'+d.id+'"></div>'+
-      '<div class="addrow"><button class="addbtn" data-add="'+d.id+'">+ Add cost / note</button><span class="added-sum" data-sum="'+d.id+'"></span></div>'+
-    '</div></div>';
+      '<div class="addrow"><button class="addbtn" data-add="'+d.id+'">+ Add itemized line</button><span class="added-sum" data-sum="'+d.id+'"></span></div>'+
+    '</div>'+dailyCostsHTML(d)+'</div></div></div>';
 }
 function updateSum(day){
-  const list=entriesForDay(day);let chosen=0,proposed=0;
-  list.forEach(e=>{const t=entTotal(e);if(e.include)chosen+=t;else proposed+=t;});
+  const all=entriesForDay(day), items=all.filter(e=>!e.quick);
+  let iChosen=0,iProp=0; items.forEach(e=>{const t=entTotal(e);if(e.include)iChosen+=t;else iProp+=t;});
+  let allChosen=0; all.forEach(e=>{if(e.include)allChosen+=entTotal(e);});
   const span=document.querySelector('[data-sum="'+day+'"]');
-  if(span){let h="";if(chosen>0)h+='chosen: <b>'+money(chosen)+'</b>';if(proposed>0)h+=(h?' · ':'')+'<span class="prop">'+money(proposed)+' proposed</span>';span.innerHTML=h;}
+  if(span){let h="";if(iChosen>0)h+='chosen: <b>'+money(iChosen)+'</b>';if(iProp>0)h+=(h?' · ':'')+'<span class="prop">'+money(iProp)+' proposed</span>';span.innerHTML=h;}
   const meta=document.querySelector('[data-meta="'+day+'"]');
-  if(meta){const cnt=list.filter(e=>!emptyEntry(e)).length;let m=cnt?(cnt+(cnt===1?' item':' items')):'';meta.innerHTML=m;}
+  if(meta){const cnt=items.filter(e=>!emptyEntry(e)).length;meta.innerHTML=cnt?(cnt+(cnt===1?' item':' items')):'';}
   const dc=document.querySelector('.daycost[data-day="'+day+'"]');
-  if(dc)dc.textContent=chosen>0?money(chosen):'';
+  if(dc)dc.textContent=allChosen>0?money(allChosen):'';
   renderBudget();
 }
-function updateDot(day){const cell=document.querySelector('.cell.click[data-day="'+day+'"]');if(!cell)return;const c=entriesForDay(day).filter(e=>!emptyEntry(e)).length;cell.classList.toggle("has-note",c>0);const dot=cell.querySelector(".dot");if(dot)dot.textContent=c>0?c:"";}
+function updateDot(day){const cell=document.querySelector('.cell.click[data-day="'+day+'"]');if(!cell)return;const c=itemsForDay(day).filter(e=>!emptyEntry(e)).length;cell.classList.toggle("has-note",c>0);const dot=cell.querySelector(".dot");if(dot)dot.textContent=c>0?c:"";}
+
+/* ---------- inline plan editing ---------- */
+let editingPlan=null;
+function startPlanEdit(dayId){
+  if(editingPlan)return;
+  const wrap=document.querySelector('.plan-wrap[data-plan="'+dayId+'"]');const d=dayById(dayId);if(!wrap||!d)return;
+  editingPlan=dayId;
+  wrap.classList.add("editing");
+  wrap.innerHTML='<textarea class="plan-input" rows="4" placeholder="One item per line, e.g.&#10;Morning: train to Bath&#10;Afternoon: Roman Baths">'+esc(d.plan||"")+'</textarea>'+
+    '<div class="plan-actions"><button class="btn" data-plan-save="'+dayId+'">Save</button><button class="btn ghost" data-plan-cancel="'+dayId+'">Cancel</button><span class="plan-tip">One line per item. Start a line with a label and colon (e.g. “Morning:”) to bold it.</span></div>';
+  const ta=wrap.querySelector('.plan-input');if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}
+}
+function cancelPlanEdit(dayId){
+  editingPlan=null;
+  const wrap=document.querySelector('.plan-wrap[data-plan="'+dayId+'"]');const d=dayById(dayId);if(!wrap||!d)return;
+  wrap.classList.remove("editing");
+  wrap.outerHTML=planBlockHTML(d);
+}
+function savePlanEdit(dayId){
+  const wrap=document.querySelector('.plan-wrap[data-plan="'+dayId+'"]');if(!wrap)return;
+  const ta=wrap.querySelector('.plan-input');const d=dayById(dayId);
+  if(ta&&d)d.plan=ta.value;
+  editingPlan=null;
+  writeCfg();
+  wrap.classList.remove("editing");
+  if(d)wrap.outerHTML=planBlockHTML(d);
+}
+/* ---------- cost sheet ---------- */
+const GROUP_OF={hotel:"Stay & travel",flight:"Stay & travel",transport:"Stay & travel",transportation:"Stay & travel",lodging:"Stay & travel",train:"Stay & travel",
+  breakfast:"Food",lunch:"Food",dinner:"Food",groceries:"Food",food:"Food",snacks:"Food"};
+function groupFor(cat){return GROUP_OF[String(cat||"").trim().toLowerCase()]||"Other";}
+function pct(x,total){return total>0?Math.round(x/total*1000)/10:0;}
+function collectCosts(){
+  const cats={},days={},groups={"Stay & travel":0,"Food":0,"Other":0};
+  let committed=0,proposed=0,cCount=0;
+  Object.keys(STATE).forEach(id=>{
+    const e=STATE[id],t=entTotal(e),c=(e.category||"Misc").trim()||"Misc";
+    if(!cats[c])cats[c]={committed:0,proposed:0};
+    if(e.include){cats[c].committed+=t;committed+=t;groups[groupFor(c)]+=t;
+      if(!days[e.day])days[e.day]={total:0,"Stay & travel":0,"Food":0,"Other":0};
+      days[e.day].total+=t;days[e.day][groupFor(c)]+=t;
+      if(!emptyEntry(e))cCount++;
+    } else {cats[c].proposed+=t;proposed+=t;}
+  });
+  return {cats,days,groups,committed,proposed,cCount};
+}
 function renderBudget(){
-  const cats={};let committed=0,proposed=0,cCount=0;
-  Object.keys(STATE).forEach(id=>{const e=STATE[id];const t=entTotal(e);const c=(e.category||"Misc").trim()||"Misc";if(e.include){committed+=t;cats[c]=(cats[c]||0)+t;if(!emptyEntry(e))cCount++;}else proposed+=t;});
+  const {cats,days,groups,committed,proposed,cCount}=collectCosts();
   document.getElementById("bigAmt").textContent=money(committed);
-  document.getElementById("bigRange").innerHTML=(cCount?('From <b>'+cCount+'</b> committed line'+(cCount===1?'':'s')+'. '):'')+(proposed>0?('Plus <b>'+money(proposed)+'</b> in proposed (unticked) lines.'):'Tick lines to add them here.');
+  document.getElementById("bigRange").innerHTML=
+    (cCount?('From <b>'+cCount+'</b> committed item'+(cCount===1?'':'s')+'. '):'')+
+    (proposed>0?('Plus <b>'+money(proposed)+'</b> proposed (unticked) — would bring it to <b>'+money(committed+proposed)+'</b>.'):'Tick line items to add them here.');
   document.getElementById("budgetHint").textContent=cur()+" · "+party().a+" adults + "+party().k+" kids";
-  const rows=Object.keys(cats).sort((a,b)=>cats[b]-cats[a]);
-  let html=rows.map(c=>'<tr><td class="cat">'+esc(c)+'</td><td>'+money(cats[c])+'</td></tr>').join('');
-  if(!rows.length)html='<tr><td class="empty-cat">No committed costs yet</td><td>'+money(0)+'</td></tr>';
-  html+='<tr><td>Committed total</td><td>'+money(committed)+'</td></tr>';
-  document.getElementById("breakdown").innerHTML=html;
+
+  /* compact breakdown beside the big number: the three groups */
+  const gRows=Object.keys(groups).filter(g=>groups[g]>0);
+  let bd=gRows.map(g=>'<tr><td class="cat">'+esc(g)+'</td><td>'+money(groups[g])+'</td></tr>').join('');
+  if(!gRows.length)bd='<tr><td class="empty-cat">Nothing entered yet</td><td>'+money(0)+'</td></tr>';
+  bd+='<tr><td>Committed total</td><td>'+money(committed)+'</td></tr>';
+  document.getElementById("breakdown").innerHTML=bd;
+
+  /* by category */
+  const catNames=Object.keys(cats).filter(c=>cats[c].committed>0||cats[c].proposed>0)
+    .sort((a,b)=>(cats[b].committed-cats[a].committed)||a.localeCompare(b));
+  let ch='<thead><tr><th>Category</th><th>Group</th><th class="num">Committed</th><th class="num">Proposed</th><th class="num">Share</th></tr></thead><tbody>';
+  if(!catNames.length){
+    ch+='<tr><td colspan="5" class="empty-cat">No costs entered yet — fill in a day\u2019s Daily costs panel or add a line item.</td></tr>';
+  } else {
+    ch+=catNames.map(c=>{const p=pct(cats[c].committed,committed);
+      return '<tr><td>'+esc(c)+'</td><td class="sub-cell">'+esc(groupFor(c))+'</td><td class="num">'+money(cats[c].committed)+'</td>'+
+      '<td class="num sub-cell">'+(cats[c].proposed>0?money(cats[c].proposed):'—')+'</td>'+
+      '<td class="num"><span class="bar"><i style="width:'+Math.min(p,100)+'%"></i></span>'+p+'%</td></tr>';}).join('');
+  }
+  ch+='</tbody><tfoot><tr><td>Total</td><td></td><td class="num">'+money(committed)+'</td><td class="num">'+(proposed>0?money(proposed):'—')+'</td><td class="num">100%</td></tr></tfoot>';
+  document.getElementById("catSheet").innerHTML=ch;
+
+  /* by day */
+  const dayList=(CONFIG.days||[]);
+  let dh='<thead><tr><th>Day</th><th>Place</th><th class="num">Stay &amp; travel</th><th class="num">Food</th><th class="num">Other</th><th class="num">Day total</th></tr></thead><tbody>';
+  let anyDay=false;
+  dh+=dayList.map(d=>{const r=days[d.id];if(!r)return '';anyDay=true;
+    return '<tr><td>'+esc(fmtShort(d.date))+'</td><td class="sub-cell"><span class="dotc" style="background:'+placeColor(d.placeId)+'"></span>'+esc(placeName(d.placeId))+'</td>'+
+    '<td class="num">'+(r["Stay & travel"]?money(r["Stay & travel"]):'—')+'</td>'+
+    '<td class="num">'+(r["Food"]?money(r["Food"]):'—')+'</td>'+
+    '<td class="num">'+(r["Other"]?money(r["Other"]):'—')+'</td>'+
+    '<td class="num strong">'+money(r.total)+'</td></tr>';}).join('');
+  ["_ideas","_docs"].forEach(k=>{const r=days[k];if(!r)return;anyDay=true;
+    dh+='<tr><td>'+(k==="_ideas"?"Open ideas":"Documents")+'</td><td class="sub-cell">not dated</td>'+
+    '<td class="num">'+(r["Stay & travel"]?money(r["Stay & travel"]):'—')+'</td><td class="num">'+(r["Food"]?money(r["Food"]):'—')+'</td>'+
+    '<td class="num">'+(r["Other"]?money(r["Other"]):'—')+'</td><td class="num strong">'+money(r.total)+'</td></tr>';});
+  if(!anyDay)dh+='<tr><td colspan="6" class="empty-cat">No committed costs on any day yet.</td></tr>';
+  dh+='</tbody><tfoot><tr><td>Total</td><td></td><td class="num">'+money(groups["Stay & travel"])+'</td><td class="num">'+money(groups["Food"])+'</td><td class="num">'+money(groups["Other"])+'</td><td class="num strong">'+money(committed)+'</td></tr></tfoot>';
+  document.getElementById("daySheet").innerHTML=dh;
+
+  /* stats */
+  const nDays=dayList.length,heads=party().a+party().k;
+  const stats=[
+    {l:"Per person",v:heads>0?money(committed/heads):"—",s:heads+" travellers"},
+    {l:"Per day",v:nDays>0?money(committed/nDays):"—",s:nDays+" days"},
+    {l:"Per person / day",v:(heads>0&&nDays>0)?money(committed/heads/nDays):"—",s:"average"},
+    {l:"Food total",v:money(groups["Food"]),s:nDays>0?(money(groups["Food"]/nDays)+" / day"):""}
+  ];
+  document.getElementById("statGrid").innerHTML=stats.map(s=>'<div class="stat"><div class="stat-l">'+s.l+'</div><div class="stat-v">'+s.v+'</div><div class="stat-s">'+esc(s.s)+'</div></div>').join('');
+}
+function costCSV(){
+  const {cats,days,groups,committed,proposed}=collectCosts();
+  const q=s=>'"'+String(s==null?"":s).replace(/"/g,'""')+'"';
+  let rows=[[q(CONFIG.name||"Trip"),"","",""].join(',')];
+  rows.push('');rows.push(['Category','Group','Committed','Proposed'].map(q).join(','));
+  Object.keys(cats).sort((a,b)=>cats[b].committed-cats[a].committed).forEach(c=>rows.push([q(c),q(groupFor(c)),cats[c].committed,cats[c].proposed].join(',')));
+  rows.push([q('TOTAL'),'',committed,proposed].join(','));
+  rows.push('');rows.push(['Date','Place','Stay & travel','Food','Other','Day total'].map(q).join(','));
+  (CONFIG.days||[]).forEach(d=>{const r=days[d.id];if(!r)return;rows.push([q(d.date),q(placeName(d.placeId)),r["Stay & travel"],r["Food"],r["Other"],r.total].join(','));});
+  rows.push([q('TOTAL'),'',groups["Stay & travel"],groups["Food"],groups["Other"],committed].join(','));
+  return rows.join('\n');
 }
 
 /* ---------- modal (day) ---------- */
@@ -724,6 +923,9 @@ document.addEventListener("click",e=>{
   const mv=e.target.closest(".ent-move");if(mv){openMove(mv.closest(".entry").getAttribute("data-id"));return;}
   const del=e.target.closest(".ent-del");if(del){removeEntry(del.closest(".entry").getAttribute("data-id"));return;}
   const rmf=e.target.closest(".rmfile");if(rmf){const en=rmf.closest(".entry");removeFile(en.getAttribute("data-id"),+rmf.getAttribute("data-fi"));return;}
+  const psave=e.target.closest("[data-plan-save]");if(psave){savePlanEdit(psave.getAttribute("data-plan-save"));return;}
+  const pcan=e.target.closest("[data-plan-cancel]");if(pcan){cancelPlanEdit(pcan.getAttribute("data-plan-cancel"));return;}
+  const pw=e.target.closest(".plan-wrap");if(pw&&!pw.classList.contains("editing")){startPlanEdit(pw.getAttribute("data-plan"));return;}
   const dc=e.target.closest(".daycost");if(dc){openDay(dc.getAttribute("data-day"));return;}
   const hd=e.target.closest("[data-day-toggle]");if(hd){toggleDay(hd.getAttribute("data-day-toggle"));return;}
   if(e.target.closest("textarea,input,select,button,a,label,.entries,.addrow,.ent-files,.ent-attach,.toolbar")) return;
@@ -732,6 +934,8 @@ document.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){if(setpick.classList.contains("open"))closeSettings();if(movepick.classList.contains("open"))closeMove();if(backdrop.classList.contains("open"))closeModal();}
   if(e.target.matches("textarea,input,select")) return;
+  const pw=e.target.closest&&e.target.closest(".plan-wrap");
+  if(pw&&!pw.classList.contains("editing")&&(e.key==="Enter"||e.key===" ")){e.preventDefault();startPlanEdit(pw.getAttribute("data-plan"));return;}
   const hd=e.target.closest&&e.target.closest("[data-day-toggle]");
   if(hd&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDay(hd.getAttribute("data-day-toggle"));return;}
   const t=e.target.closest&&e.target.closest("[data-day]");
@@ -741,6 +945,7 @@ document.getElementById("closebtn").addEventListener("click",closeModal);
 backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal();});
 
 document.addEventListener("input",e=>{
+  if(e.target.classList.contains("dc-input")){setQuick(e.target.getAttribute("data-day"),e.target.getAttribute("data-cat"),e.target.value);return;}
   const en=e.target.closest(".entry");if(!en)return;const id=en.getAttribute("data-id");const rec=STATE[id];if(!rec)return;
   const cl=e.target.classList;
   if(cl.contains("ent-note"))rec.note=e.target.value;
@@ -789,6 +994,10 @@ document.getElementById("clearBtn").addEventListener("click",()=>{
   if(!confirm(msg))return;if(CLOUD)clearCloudEntries();Object.keys(STATE).forEach(k=>delete STATE[k]);persistLocal();renderAll();flashSaved();
 });
 document.getElementById("collapseAll").addEventListener("click",()=>{const anyOpen=(CONFIG.days||[]).some(d=>!collapsed[d.id]);setAllCollapsed(anyOpen);});
+document.getElementById("csvBtn").addEventListener("click",()=>{
+  const blob=new Blob([costCSV()],{type:"text/csv"});const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=(CONFIG.name||"trip").replace(/[^\w\-]+/g,"-").toLowerCase()+"-costs.csv";a.click();URL.revokeObjectURL(url);
+});
 
 /* ---------- boot ---------- */
 loadCollapse();
